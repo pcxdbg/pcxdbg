@@ -1,0 +1,36 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "allowJs": true,
+        "baseUrl": "src",
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "es2016"
+        ],
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "removeComments": false,
+        "paths": {
+            "environments": [
+                "./environments"
+            ]
+        },
+        "target": "es2017",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "node",
+            "jasmine"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
