@@ -121,6 +121,7 @@ class ShortcutManager {
     onKeydown(keyboardEvent: KeyboardEvent) {
         let combination: string[] = [];
         let combinationName: string = '';
+        let key: number = keyboardEvent.which;
 
         if (keyboardEvent.ctrlKey) {
             combination.push('Ctrl');
@@ -134,10 +135,12 @@ class ShortcutManager {
             combination.push('Shift');
         }
 
-        if (keyboardEvent.which in KEY_MAPPING) {
-            combination.push(KEY_MAPPING[keyboardEvent.which]);
+        if (16 <= key && key <= 18) {
+            // Ignore control, alt and shift
+        } else if (key in KEY_MAPPING) {
+            combination.push(KEY_MAPPING[key]);
         } else {
-            console.warn('unmapped keyboard event: ' + keyboardEvent.which, keyboardEvent);
+            console.warn('unmapped keyboard event: ' + key, keyboardEvent);
         }
   
         combinationName = combination.join('+');
