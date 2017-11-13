@@ -1,27 +1,44 @@
 
 /**
- * Component decorator
- * @param target Target class
- */
-const Component: ClassDecorator = targetClass => ComponentManager.registerComponentClass(targetClass);
-
-/**
  * Component manager
  */
 class ComponentManager {
     private static REGEXP_CONSTRUCTORPARAMS: RegExp = /constructor\(\s*([^)]+?)\s*\)/;
-    private static REGEXP_CONSTRUCTORPAAMSLIST: RegExp = /\s*,\s*/;
-    private static COMPONENT_CLASSES: {[componentId: string]: Function} = {};
-    private static COMPONENT_INSTANCES: {[componentId: string]: Object} = {};
+    private static REGEXP_METHODPARAMS: RegExp = /\(\s*([^)]+?)\s*\)/;
+    private static REGEXP_PARAMETERSLIST: RegExp = /\s*,\s*/;
+
+    private componentClasses: {[componentId: string]: Function} = {};
+    private componentMethods: {[componentId: string]: string[]} = {};
+    private componentInstances: {[componentId: string]: Object} = {};
+
+    /**
+     * Class constructor
+     */
+    constructor() {
+        let componentId: string = this.buildComponentIdFromClass(ComponentManager);
+        this.componentClasses[componentId] = ComponentManager;
+        this.componentInstances[componentId] = this;
+    }
 
     /**
      * Register a component class
      * @param componentClass Component class
      * @param <T>            Component class type
      */
-    static registerComponentClass<T extends Function>(componentClass: T): void {
-        let componentId: string = ComponentManager.buildComponentIdFromClass(componentClass);
-        ComponentManager.COMPONENT_CLASSES[componentId] = componentClass;
+    registerComponentClass<T extends Function>(componentClass: T): void {
+        let componentId: string = this.buildComponentIdFromClass(componentClass);
+        this.componentClasses[componentId] = componentClass;
+    }
+
+    /**
+     * Register a component class method
+     * @param componentClass Component class
+     * @param methodName     Method name
+     */
+    registerComponentMethod<T extends Function>(componentClass: T, methodName: string): void {
+        let componentId: string = this.buildComponentIdFromClass(componentClass.constructor);
+        let methodList: string[] = this.componentMethods[componentId] = this.componentMethods[componentId] || [];
+        methodList.push(methodName);
     }
 
     /**
@@ -30,10 +47,10 @@ class ComponentManager {
      * @param <T>            Component class type
      * @return Component instance
      */
-    static getComponent<T extends Function>(componentClass: T): T {
-        let componentId: string = ComponentManager.buildComponentIdFromClass(componentClass);
-        ComponentManager.instantiateIfNecessary(componentClass);
-        return <T> ComponentManager.COMPONENT_INSTANCES[componentId];
+    getComponent<T extends Function>(componentClass: T): T {
+        let componentId: string = this.buildComponentIdFromClass(componentClass);
+        this.instantiateIfNecessary(componentClass);
+        return <T> this.componentInstances[componentId];
     }
 
     /**
@@ -41,48 +58,106 @@ class ComponentManager {
      * @param componentClass Component class
      * @param <T>            Component class type
      */
-    private static instantiateIfNecessary<T extends Function>(componentClass: T): void {
-        let componentId: string = ComponentManager.buildComponentIdFromClass(componentClass);
+    private instantiateIfNecessary<T extends Function>(componentClass: T): void {
+        let componentId: string = this.buildComponentIdFromClass(componentClass);
         let constructorArgumentNames: string[];
         let constructorArguments: any[] = [];
-        let constructor: {new (...args: any[]): T};
+        let constructor: new (...args: any[]) => T;
+        let instance: T;
 
-        if (componentId in ComponentManager.COMPONENT_INSTANCES) {
+        if (componentId in this.componentInstances) {
             return;
-        } else if (!(componentId in ComponentManager.COMPONENT_CLASSES)) {
+        } else if (!(componentId in this.componentClasses)) {
             throw new Error('no component of type ' + componentClass.name + ' registered');
         }
 
-        ComponentManager.getConstructorArgumentNames(componentClass).forEach(constructorArgumentName => {
-            let injectedComponentId: string = ComponentManager.buildComponentIdFromArgument(constructorArgumentName);
+        constructorArgumentNames = this.getConstructorArgumentNames(componentClass);
+        constructorArguments = this.buildInjectedArguments(constructorArgumentNames, componentClass.name, 'constructor');
+
+        constructor = <new (...args: any[]) => T> <any> componentClass;
+        instance = new constructor(... constructorArguments);
+        this.componentInstances[componentId] = instance;
+
+        this.callInjectionMethods(componentClass, instance);
+    }
+
+    /**
+     * Call injection methods on a component instancce
+     * @param componentClass Component class
+     * @param instance       Instance
+     */
+    private callInjectionMethods<T extends Function>(componentClass: T, instance: T): void {
+        let componentId: string = this.buildComponentIdFromClass(componentClass);
+        let parentClass: Function = Object.getPrototypeOf(componentClass.prototype).constructor;
+        let injectedMethods: string[] = this.componentMethods[componentId] || [];
+
+        injectedMethods.forEach(methodName => this.callInjectionMethod(componentClass, instance, methodName));
+
+        if (parentClass !== Object) {
+            this.callInjectionMethods(parentClass, instance);
+        }
+    }
+
+    /**
+     * Call an injection method
+     * @param componentClass Component class
+     * @param instance       Instance
+     * @param methodName     Method name
+     * @param <T>            Component class type
+     */
+    private callInjectionMethod<T extends Function>(componentClass: T, instance: T, methodName: string): void {
+        let method: Function = componentClass.prototype[methodName];
+        let methodArgumentNames: string[] = this.getMethodArgumentNames(method);
+        let methodArguments: any[] = this.buildInjectedArguments(methodArgumentNames, componentClass.name, methodName);
+        method.apply(instance, methodArguments);
+    }
+
+    /**
+     * Build injected arguments
+     * @param argumentNames Argument names
+     * @param className     Class name
+     * @param methodName    Method name
+     * @return List of injected instances
+     */
+    private buildInjectedArguments(argumentNames: string[], className: string, methodName: string): any[] {
+        let injectedArguments: any[] = [];
+
+        argumentNames.forEach(argumentName => {
+            let injectedComponentId: string = this.buildComponentIdFromArgument(argumentName);
             let injectedComponentClass: Function;
             let injectedComponent: Object;
 
-            if (!(injectedComponentId in ComponentManager.COMPONENT_CLASSES)) {
-                throw new Error('no matching component found for ' + componentClass.name + ' constructor argument ' + constructorArgumentName);
+            if (!(injectedComponentId in this.componentClasses)) {
+                throw new Error('no matching component found for ' + className + '.' + methodName + 'argument ' + argumentName);
             }
 
-            injectedComponentClass = ComponentManager.COMPONENT_CLASSES[injectedComponentId];
-            injectedComponent = ComponentManager.getComponent(injectedComponentClass);
-            constructorArguments.push(injectedComponent);
+            injectedComponentClass = this.componentClasses[injectedComponentId];
+            injectedComponent = this.getComponent(injectedComponentClass);
+            injectedArguments.push(injectedComponent);
         });
 
-        constructor = <{new (...args: any[]): T}> <any> componentClass;
-
-        ComponentManager.COMPONENT_INSTANCES[componentId] = new constructor(... constructorArguments);
+        return injectedArguments;
     }
-
     /**
      * Get the list of argument names for a class' constructor
      * @param componentClass Component class
      * @param <T>            Component class type
      * @return List of argument names
      */
-    private static getConstructorArgumentNames<T extends Function>(componentClass: T): string[] {
+    private getConstructorArgumentNames<T extends Function>(componentClass: T): string[] {
         let classCode: string = componentClass.toString();
         let matches: string[] = ComponentManager.REGEXP_CONSTRUCTORPARAMS.exec(classCode);
         if (matches && matches[1]) {
-            return matches[1].split(ComponentManager.REGEXP_CONSTRUCTORPAAMSLIST);
+            return matches[1].split(ComponentManager.REGEXP_PARAMETERSLIST);
+        }
+
+        return [];
+    }
+
+    private getMethodArgumentNames(method: Function): string[] {
+        let matches: string[] = ComponentManager.REGEXP_METHODPARAMS.exec(method.toString());
+        if (matches && matches[1]) {
+            return matches[1].split(ComponentManager.REGEXP_PARAMETERSLIST);
         }
 
         return [];
@@ -94,7 +169,7 @@ class ComponentManager {
      * @param <T>            Component class type
      * @return Component identifier
      */
-    private static buildComponentIdFromClass<T extends Function>(componentClass: T): string {
+    private buildComponentIdFromClass<T extends Function>(componentClass: T): string {
         return componentClass.name.toLowerCase();
     }
 
@@ -103,13 +178,32 @@ class ComponentManager {
      * @param argumentName Argument name
      * @return Component identifier
      */
-    private static buildComponentIdFromArgument(argumentName: string): string {
+    private buildComponentIdFromArgument(argumentName: string): string {
         return argumentName.toLowerCase();
     }
 
 }
 
+const componentManager: ComponentManager = new ComponentManager();
+
+type ClassOrMethodDecorator = (target: Object|Function, propertyKey?: string|symbol) => void;
+
+/**
+ * Component decorator
+ * @param target      Target
+ * @param propertyKey Property key
+ * @param descriptor  Property descriptor
+ */
+const Component: ClassOrMethodDecorator = (target, propertyKey) => {
+    if (propertyKey) {
+        componentManager.registerComponentMethod(<Function> target, <string> propertyKey);
+    } else {
+        componentManager.registerComponentClass(<Function> target);
+    }
+}
+
 export {
     Component,
-    ComponentManager
+    ComponentManager,
+    componentManager
 };
