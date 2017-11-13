@@ -230,7 +230,7 @@ module.exports = {
             test: /\.css$/,
             loaders: [
                 'exports-loader?module.exports.toString()',
-                'css-loader?{"sourceMap":false,"importLoaders":1}',
+                'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
                 'postcss-loader'
             ]
         }, {
@@ -238,7 +238,7 @@ module.exports = {
             test: /\.scss$|\.sass$/,
             loaders: [
                 'exports-loader?module.exports.toString()',
-                'css-loader?{"sourceMap":false,"importLoaders":1}',
+                'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
                 'postcss-loader',
                 'sass-loader'
             ]
@@ -247,7 +247,7 @@ module.exports = {
             test: /\.css$/,
             loaders: ExtractTextPlugin.extract({
                 use: [
-                    'css-loader?{"sourceMap":false,"importLoaders":1}',
+                    'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
                     'postcss-loader'
                 ],
                 fallback: 'style-loader',
@@ -258,7 +258,7 @@ module.exports = {
             test: /\.scss$|\.sass$/,
             loaders: ExtractTextPlugin.extract({
                 use: [
-                    'css-loader?{"sourceMap":false,"importLoaders":1}',
+                    'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
                     'postcss-loader',
                     'sass-loader'
                 ],
