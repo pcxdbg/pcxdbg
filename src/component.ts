@@ -1,4 +1,6 @@
 
+type ClassConstructorTypeFromType<T> = new (...args: any[]) => T;
+
 /**
  * Component manager
  */
@@ -44,10 +46,10 @@ class ComponentManager {
     /**
      * Get a component
      * @param componentClass Component class
-     * @param <T>            Component class type
+     * @param <T>            Component type
      * @return Component instance
      */
-    getComponent<T extends Function>(componentClass: T): T {
+    getComponent<T>(componentClass: ClassConstructorTypeFromType<T>): T {
         let componentId: string = this.buildComponentIdFromClass(componentClass);
         this.instantiateIfNecessary(componentClass);
         return <T> this.componentInstances[componentId];
@@ -132,7 +134,7 @@ class ComponentManager {
             }
 
             injectedComponentClass = this.componentClasses[injectedComponentId];
-            injectedComponent = this.getComponent(injectedComponentClass);
+            injectedComponent = this.getComponent(<any> injectedComponentClass);
             injectedArguments.push(injectedComponent);
         });
 

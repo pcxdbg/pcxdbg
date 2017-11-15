@@ -1,9 +1,8 @@
-import {Application} from './app/application';
+import {ApplicationView} from './app/application';
 import {I18nManager} from './lng/i18n';
-import {ComponentManager} from './component';
+import {componentManager} from './component';
 
 window.addEventListener('load', async () => {
-    let i18nManager: I18nManager = <I18nManager> <any> ComponentManager.getComponent(I18nManager);
-    await i18nManager.initialize();
-    ComponentManager.getComponent(Application);
+    await componentManager.getComponent(I18nManager).initialize();
+    componentManager.getComponent(ApplicationView);
 }, false);
