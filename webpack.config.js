@@ -28,7 +28,7 @@ function getPlugins() {
 
     plugins.push(new DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('release'),
-        'process.env.REVISION_ID': JSON.stringify(childProcess.execSync('git rev-parse HEAD').toString()),
+        'process.env.REVISION_ID': JSON.stringify(childProcess.execSync('git rev-parse --short=10 --verify HEAD').toString()),
         'process.env.REVISION_NUMBER': JSON.stringify(childProcess.execSync('git rev-list HEAD --count').toString()),
         'process.env.BUILD_TIME': JSON.stringify(new Date().getTime())
     }));
