@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const childProcess = require('child_process');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -26,7 +27,10 @@ function getPlugins() {
     var plugins = [];
 
     plugins.push(new DefinePlugin({
-        'process.env.NODE_ENV': '"release"'
+        'process.env.NODE_ENV': JSON.stringify('release'),
+        'process.env.REVISION_ID': JSON.stringify(childProcess.execSync('git rev-parse HEAD').toString()),
+        'process.env.REVISION_NUMBER': JSON.stringify(childProcess.execSync('git rev-list HEAD --count').toString()),
+        'process.env.BUILD_TIME': JSON.stringify(new Date().getTime())
     }));
 
     plugins.push(new NoEmitOnErrorsPlugin());
