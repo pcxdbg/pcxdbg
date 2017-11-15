@@ -25,12 +25,15 @@ let style_paths = styles.map(style_src => path.join(process.cwd(), style_src));
 
 function getPlugins() {
     var plugins = [];
+    var revisionId = childProcess.execSync('git rev-parse --short=10 --verify HEAD').toString().replace(/\r?\n|\r/g, '');
+    var revisionNumber = childProcess.execSync('git rev-list HEAD --count').toString().replace(/\r?\n|\r/g, '');
+    var buildTime = new Date().getTime();
 
     plugins.push(new DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('release'),
-        'process.env.REVISION_ID': JSON.stringify(childProcess.execSync('git rev-parse --short=10 --verify HEAD').toString()),
-        'process.env.REVISION_NUMBER': JSON.stringify(childProcess.execSync('git rev-list HEAD --count').toString()),
-        'process.env.BUILD_TIME': JSON.stringify(new Date().getTime())
+        'process.env.REVISION_ID': JSON.stringify(revisionId),
+        'process.env.REVISION_NUMBER': JSON.stringify(revisionNumber),
+        'process.env.BUILD_TIME': JSON.stringify(buildTime)
     }));
 
     plugins.push(new NoEmitOnErrorsPlugin());
