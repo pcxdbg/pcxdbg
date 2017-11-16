@@ -6,6 +6,7 @@ const argv = require('minimist')(process.argv.slice(1));
 
 const PLATFORM_MACOS = 'darwin';
 const PLATFORM_WIN32 = 'win32';
+const PLATFORM_LINUX = 'linux';
 const ARCHITECTURE_32BIT = 'ia32';
 const ARCHITECTURE_64BIT = 'x64';
 
@@ -24,21 +25,21 @@ const defaultOptions = {
 };
 
 function pack(platform, architecture, callback) {
-    if (platform === PLATFORM_MACOS && architecture === ARCHITECTURE_32BIT) return;
-
-    let icon = 'src/favicon';
-
-    if (icon) {
-        defaultOptions.icon = icon + (() => {
-            let extension = '.png';
-            if (platform === PLATFORM_MACOS) {
-                extension = '.icns';
-            } else if (platform === PLATFORM_WIN32) {
-                extension = '.ico';
-            }
-            return extension;
-        })();
+    if (platform === PLATFORM_MACOS && architecture === ARCHITECTURE_32BIT) {
+        return;
     }
+
+    let icon;
+
+    if (platform === PLATFORM_MACOS) {
+        icon = 'src/ico/mac/icon.icns';
+    } else if (platform === PLATFORM_WIN32) {
+        icon = 'src/ico/win/icon.ico';
+    } else if (platform === PLATFORM_LINUX) {
+        icon = 'src/ico/png/1024x1024.png';
+    }
+
+    defaultOptions.icon = icon;
 
     const options = Object.assign({}, defaultOptions, {
         platform: platform,
