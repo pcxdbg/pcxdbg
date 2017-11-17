@@ -2,6 +2,8 @@ import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 
 const PLATFORM_MACOS: string = 'darwin';
+const PLATFORM_WIN32: string = 'win32';
+const PLATFORM_LINUX: string = 'linux';
 
 const commandLineArguments: string[] = process.argv.slice(1);
 
@@ -30,7 +32,7 @@ function createBrowserWindow(): void {
     };
 
     browserWindow = new BrowserWindow(options);
-    browserWindow.loadURL('file://' + __dirname + '/index.html');
+    browserWindow.loadURL('file://' + path.join(__dirname, 'index.html'));
 
     if (serveMode) {
         browserWindow.webContents.openDevTools();

@@ -1,4 +1,4 @@
-import {AttachableElement, ContainerElement} from '../ui/element';
+import {UIElement} from '../ui/element';
 import {Component} from '../component';
 import {Icon, IconManager} from '../ui/icon';
 import {I18nManager} from '../lng/i18n';
@@ -17,7 +17,7 @@ class TitleBarControlIcon {
  * Title bar view
  */
 @Component
-class TitleBarView extends AttachableElement {
+class TitleBarView extends UIElement {
     private static ICON_LOGO: string = 'title-bar-logo';
     private static ICON_MINIMIZE: string = 'title-bar-minimize';
     private static ICON_RESTORE: string = 'title-bar-restore';
@@ -38,9 +38,7 @@ class TitleBarView extends AttachableElement {
         </title-bar-controls>
     `;
 
-    private labelTitle: ContainerElement;
     private maximized: boolean;
-    private iconLogo: Icon;
 
     /**
      * Class constructor
@@ -49,7 +47,7 @@ class TitleBarView extends AttachableElement {
      */
     constructor(iconManager: IconManager, quickLaunch: QuickLaunch) {
         super('title-bar', TitleBarView.HTML);
-        let iconContainers: ContainerElement[];
+        let controlIcons: UIElement[];
         let titleBarControlIcons: TitleBarControlIcon[] = [
             { name: TitleBarView.ICON_MINIMIZE, action: () => this.minimize() },
             { name: TitleBarView.ICON_RESTORE, action: () => this.restore() },
@@ -57,23 +55,26 @@ class TitleBarView extends AttachableElement {
             { name: TitleBarView.ICON_CLOSE, action: () => this.close() }
         ];
 
-        iconManager.createIcon(24, 24, TitleBarView.ICON_LOGO).attachTo(this.selectContainer(':scope > title-bar-application > title-bar-application-icon'));
+        this.element('title-bar-application', 'title-bar-application-icon')
+            .attach(iconManager.createIcon(24, 24, TitleBarView.ICON_LOGO))
+        ;
 
-        this.labelTitle = this.selectContainer(':scope > title-bar-application > title-bar-application-title');
+        this.element('title-bar-controls')
+            .attach(quickLaunch)
+        ;
 
-        this.selectContainer(':scope > title-bar-controls').attach(quickLaunch);
-
-        iconContainers = this.selectContainers(':scope > title-bar-controls > title-bar-control-icons > title-bar-control-icon');
+        controlIcons = this.elements('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon');
         for (let i: number = 0; i !== titleBarControlIcons.length; ++i) {
             let titleBarControlIcon: TitleBarControlIcon = titleBarControlIcons[i];
-            let iconContainer: ContainerElement = iconContainers[i];
 
-            iconContainer.click(titleBarControlIcon.action);
-            iconManager.createIcon(16, 16, titleBarControlIcon.name).attachTo(iconContainer);
+            controlIcons[i]
+                .attach(iconManager.createIcon(16, 16, titleBarControlIcon.name))
+                .click(titleBarControlIcon.action)
+            ;
         }
 
         this.setMaximized(false); // TODO: recover from previous run
-        this.i18n();
+        this.applyTranslations();
     }
 
     /**
@@ -82,7 +83,7 @@ class TitleBarView extends AttachableElement {
      * @param titleParameters Title parameters
      */
     setTitle(titleId: string, titleParameters?: {[parameterName: string]: any}): void {
-        this.labelTitle.setI18n(titleId, titleParameters).i18n();
+        this.element('title-bar-application', 'title-bar-application-title').i18n(titleId, titleParameters).applyTranslations();
     }
 
     /**
@@ -119,11 +120,11 @@ class TitleBarView extends AttachableElement {
      */
     private setMaximized(maximized: boolean): void {
         let currentWindow: Electron.BrowserWindow = remote.getCurrentWindow();
-        let iconMaximize: ContainerElement = this.selectContainer(':scope > title-bar-controls > title-bar-control-icons > title-bar-control-icon:nth-child(3)');
-        let iconRestore: ContainerElement = this.selectContainer(':scope > title-bar-controls > title-bar-control-icons > title-bar-control-icon:nth-child(2)');
-        let hidden: ContainerElement = maximized ? iconMaximize : iconRestore;
-        let shown: ContainerElement = maximized ? iconRestore : iconMaximize;
-        
+        let iconMaximize: UIElement = this.element('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon:nth-child(3)');
+        let iconRestore: UIElement = this.element('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon:nth-child(2)');
+        let hidden: UIElement = maximized ? iconMaximize : iconRestore;
+        let shown: UIElement = maximized ? iconRestore : iconMaximize;
+
         // TODO: https://gist.github.com/medmunds/fb1cd6b370a6cec5d618
         this.maximized = maximized;
         if (maximized) {

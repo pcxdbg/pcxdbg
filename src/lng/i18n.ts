@@ -31,7 +31,6 @@ class I18nManager {
             i18next.on('initialized', () => resolve());
             i18next.on('languageChanged', language => this.onLanguageChange(language));
             i18next.on('missingKey', (language, namespace, key, result) => this.onMissingKey(<string> <any> language, namespace, key));
-
             i18next
                 .use(i18nextXHRBackend)
                 .use(i18nextBrowserLanguageDetector)

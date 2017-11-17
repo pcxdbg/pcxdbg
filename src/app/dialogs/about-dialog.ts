@@ -4,7 +4,7 @@ import {Icon, IconManager} from '../../ui/icon';
 import {List, ListItemDefinition} from '../../ui/list';
 import {ModalManager, ModalView} from '../../ui/modal';
 import {I18nManager} from '../../lng/i18n';
-import {AttachableElement, ContainerElement} from '../../ui/element';
+import {UIElement} from '../../ui/element';
 import {FileUtils} from '../../util/file-utils';
 import {remote, shell} from 'electron';
 import * as path from 'path';
@@ -103,26 +103,26 @@ class AboutDialog extends ModalView {
      * Build the dialog box
      */
     private async buildDialog(): Promise<void> {
-        let dialog: AttachableElement = new AttachableElement('about-dialog', AboutDialog.HTML);
-        let versionInfoBlock: ContainerElement = dialog.selectContainer(':scope > about-content > version-info-list');
+        let dialogElement: UIElement = new UIElement('about-dialog', AboutDialog.HTML);
+        let versionInfoBlock: UIElement = dialogElement.element('about-content', 'version-info-list');
         let versionInfoList: VersionInformation[] = this.prepareVersionInformationList();
         let dependencyList: List<DependencyInformation> = await this.buildDependencyList();
-        let iconLogo: Icon = this.iconManager.createIcon(64, 64, 'title-bar-logo');
         let closeButton: Button = new Button();
 
         versionInfoList.forEach(versionInfo => this.createVersionInformationElement(versionInfo).attachTo(versionInfoBlock));
 
         closeButton
-            .click(() => this.close())
             .label('app:dialog.control.close')
+            .click(() => this.close())
         ;
 
-        dialog.selectContainer(':scope > about-logo').attach(iconLogo);
-        dialog.selectContainer(':scope > about-content > dependency-list').attach(dependencyList);
-        dialog.selectContainer(':scope > about-content > about-close').attach(closeButton);
+        dialogElement.element('about-logo').attach(this.iconManager.createIcon(64, 64, 'title-bar-logo'));
+        dialogElement.element('about-content', 'dependency-list').attach(dependencyList);
+        dialogElement.element('about-content', 'about-close').attach(closeButton);
 
-        this.getContentContainer().attach(dialog);
-        this.i18n();
+        this.attach(dialogElement);
+
+        dialogElement.applyTranslations();
     }
 
     /**
@@ -130,15 +130,11 @@ class AboutDialog extends ModalView {
      * @param versionInfo Version information
      * @return Element
      */
-    private createVersionInformationElement(versionInfo: VersionInformation): AttachableElement {
-        let element = new AttachableElement('version-info');
-
-        element
-            .setClass(versionInfo.name)
-            .setI18n(versionInfo.value, versionInfo.parameters)
-        ;
-
-        return element;
+    private createVersionInformationElement(versionInfo: VersionInformation): UIElement {
+        let versionInfoElement: UIElement = new UIElement('version-info');
+        versionInfoElement.i18n(versionInfo.value, versionInfo.parameters);
+        versionInfoElement.class(versionInfo.name);
+        return versionInfoElement;
     }
 
     /**
@@ -204,7 +200,7 @@ class AboutDialog extends ModalView {
         });
 
         itemDefinition = {
-            provider: (item, row) => row.getElement().setAttribute('title', item.description)
+            provider: (item, row) => row.attribute('title', item.description)
         };
 
         dependencies.forEach(dependency => list.addItem(dependency, itemDefinition));

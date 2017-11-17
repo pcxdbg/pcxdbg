@@ -1,4 +1,4 @@
-import {AttachableElement} from '../ui/element';
+import {UIElement} from '../ui/element';
 import {Menu, MenuManager} from '../ui/menu';
 import {DocumentManager} from '../ui/document';
 import {ModalManager} from '../ui/modal';
@@ -10,7 +10,7 @@ import {remote, shell} from 'electron';
  * Main menu view
  */
 @Component
-class MainMenuView extends AttachableElement {
+class MainMenuView extends UIElement {
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private menuManager: MenuManager;
@@ -28,7 +28,7 @@ class MainMenuView extends AttachableElement {
         this.modalManager = modalManager;
         this.menuManager = menuManager;
         this.menu = this.buildMenu();
-        this.menu.attachTo(this.selectContainer(null));
+        this.menu.attachTo(this);
     }
 
     /**
