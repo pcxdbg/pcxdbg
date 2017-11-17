@@ -1,0 +1,3 @@
+﻿<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path fill="#ffffff" d="M3,6h7v7h-7v-5h1v4h5v-4h-6M6,6v-3h7v7h-3v-1h2v-4h-5v1"/><!-- TODO: check dimensions, there might be a pixel off -->
+</svg>
