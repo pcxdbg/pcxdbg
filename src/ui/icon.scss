@@ -1,0 +1,62 @@
+$iconcolor-outline: #2d2d30;
+$iconcolor-content: #c1c1c1;
+$iconcolor-blue: #7ac1ff;
+$iconcolor-green: #8dd28a;
+$iconcolor-orange: #d7ab69;
+$iconcolor-red: #f38b76;
+
+icon {
+    > svg > * {
+        &.outline {
+            &:not(.stroke) {
+                fill: $iconcolor-outline;
+            }
+
+            &.stroke {
+                stroke: $iconcolor-outline;
+            }
+        }
+
+        &.content {
+            &:not(.stroke) {
+                fill: $iconcolor-content;
+
+                &.blue {
+                    fill: $iconcolor-blue;
+                }
+
+                &.green {
+                    fill: $iconcolor-green;
+                }
+
+                &.orange {
+                    fill: $iconcolor-orange;
+                }
+
+                &.red {
+                    fill: $iconcolor-red;
+                }
+            }
+
+            &.stroke {
+                stroke: $iconcolor-content;
+
+                &.blue {
+                    stroke: $iconcolor-blue;
+                }
+
+                &.green {
+                    stroke: $iconcolor-green;
+                }
+
+                &.orange {
+                    stroke: $iconcolor-orange;
+                }
+
+                &.red {
+                    stroke: $iconcolor-red;
+                }
+            }
+        }
+    }
+}

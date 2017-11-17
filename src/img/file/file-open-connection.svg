@@ -4,5 +4,5 @@
 <path fill-rule="evenodd" d="M15,9a5,5 0 0 1 -9.9,1h1.05a4,4 0 1 0 3.85,-5v-1a5,5 0 0 1 5,5z"/>
 <path d="M11,5h1v8h-1zm-3,2l1,-0.75v6.75h-1zm-1.5,1l1.5,-1h6v1zm-0.5,3v-1h8v1z"/>
 </g>
-<path class="content" fill="none" stroke="#7ac1ff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M5,8.5c-3,0 -3.5,-5 3.5,-4l-2,1.5l2,-1.5l-2,-1.75"/>
+<path class="content-blue-stroke" fill="none" stroke="#7ac1ff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M5,8.5c-3,0 -3.5,-5 3.5,-4l-2,1.5l2,-1.5l-2,-1.75"/>
 </svg>

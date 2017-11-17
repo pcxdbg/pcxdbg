@@ -1,6 +1,6 @@
 ﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <path class="outline" fill="#2d2d30" d="M6,0v6h-6v10h10v-6h6v-7.5l-3,-3z"/>
-<g class="content" fill="#7ac1ff">
+<g class="content blue" fill="#7ac1ff">
 <path d="M7,1v5l3,3h5v-6l-2,-2v3h-4v-3z"/>
 <rect x="11" y="1" width="1" height="2"/>
 <path d="M1,7v8h8v-6l-2,-2v3h-4v-3z"/>
