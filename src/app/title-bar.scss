@@ -1,0 +1,87 @@
+$logo-width: 24px;
+$logo-height: 24px;
+$logo-margin: 6px;
+$icon-regionwidth: 34px;
+$icon-regionheight: 26px;
+$icon-hoverbackground: #3f3f41;
+
+title-bar {
+    -webkit-app-region: drag;
+    position: absolute;
+    z-index: $titlebar-zindex;
+    top: 0px;
+    right: 0px;
+    height: $titlebar-height;
+    left: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    > title-bar-application {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        > title-bar-application-icon {
+            margin-left: $logo-margin;
+
+            icon {
+                width: $logo-width;
+                height: $logo-height;
+            }
+        }
+
+        > title-bar-application-title {
+            margin-left: $logo-margin;
+            line-height: $titlebar-height;
+            color: #9a9a9a;
+            text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+        }
+    }
+
+    > title-bar-controls {
+        -webkit-app-region: no-drag;
+        height: $titlebar-height;
+        display: flex;
+        flex-direction: row;
+
+        > quick-launch {
+            order: 1;
+            margin: 0px 2px;
+        }
+
+        > title-bar-control-icons {
+            order: 2;
+            display: flex;
+            flex-direction: row;
+
+            > title-bar-control-icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: $icon-regionwidth;
+                height: $icon-regionheight;
+
+                &[hidden] {
+                    display: none;
+                }
+
+                &:hover {
+                    background-color: $icon-hoverbackground;
+                }
+            }
+        }
+    }
+}
+
+application:not([has-focus]) title-bar > .id {
+    > .logo {
+        opacity: 0.4;
+    }
+
+    > .title {
+        color: #6f6f6f;
+    }
+
+}
