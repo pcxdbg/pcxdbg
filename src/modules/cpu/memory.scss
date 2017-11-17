@@ -1,0 +1,43 @@
+
+table.memory-view {
+    font-family: courier new;
+    background-color: #1e1e1e;
+    border-collapse: separate;
+    border-spacing: 0px;
+
+    tr {
+        > td {
+            border-style: solid;
+            border-color: transparent;
+            border-width: 2px 0px;
+
+            &.icon {
+                width: 18px;
+            }
+
+            &.addr {
+                width: 68px;
+                color: #237cad;
+            }
+
+            &.data {
+                width: 648px;
+
+                > span:nth-child(n + 2) {
+                    margin-left: 6px;
+                }
+            }
+
+            &.char {
+
+            }
+        }
+
+        &[selected] {
+            > td {
+                background-color: #0f0f0f;
+                border-color: #282828;
+            }
+        }
+    }
+}

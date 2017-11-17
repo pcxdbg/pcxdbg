@@ -1,0 +1,12 @@
+{
+    "window": {
+        "title-bar": {
+            "auto-hide": {
+                "off": "Disable Auto Hide",
+                "on": "Enable Auto Hide"
+            },
+            "close": "Close",
+            "position": "Window Position"
+        }
+    }
+}

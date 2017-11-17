@@ -1,0 +1,37 @@
+
+quick-launch {
+    position: relative;
+    padding: 2px 0px;
+
+    input[type=text] {
+        width: 200px;
+    }
+
+    input[type=submit] {
+        position: absolute;
+        right: 1px;
+        top: 3px;
+        height: $input-lineheight;
+        width: 18px;
+        border: none;
+        background-color: transparent;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+
+        &:hover {
+            background-color: #2d2d30;
+        }
+    }
+
+    menu {
+        min-width: 200px;
+    }
+      
+    &:hover {
+        input[type=text] {
+            //background-color: map-get($input, active-background);
+            //border-color: map-get($input, active-border-color);
+        }
+    }
+}

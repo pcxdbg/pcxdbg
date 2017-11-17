@@ -1,0 +1,25 @@
+@import "constants";
+@import "title-bar";
+@import "quick-launch";
+@import "main-menu";
+@import "status-bar";
+@import "host-explorer";
+@import "network-explorer";
+@import "dialogs/about-dialog";
+@import "dialogs/open-connection";
+
+application {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    display: block;
+    background-color: #2d2d30;
+    border: solid 1px #434346;
+    box-sizing: border-box;
+
+    &[has-focus] {
+        border-color: $color-primary;
+    }
+}

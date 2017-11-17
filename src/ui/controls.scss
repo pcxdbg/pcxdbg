@@ -1,0 +1,113 @@
+
+// $window-padding: 6px;
+
+$window-content-backgroundcolor: #282929;
+
+$dialog-content-backgroundcolor: #282929;
+
+$scrollbar-background: #3e3e42;
+$scrollbar-color: #686868;
+$scrollbar-size: 17px;
+
+$input-backgroundcolor: #333337;
+$input-border: solid 1px #3f3f46;
+$input-height: 22px;
+$input-lineheight: 20px;
+$input-padding: 4px;
+$input-fontsize: 9pt;
+$input-textcolor: #f1f1f1;
+$input-backgroundcolor-active: #3f3f46;
+$input-bordercolor-active: $color-primary;
+
+$menu-backgroundcolor: #1b1b1c;
+$menu-border: solid 1px #333337;
+$menu-boxshadow: 2px 2px 3px rgba(0,0,0,0.5);
+
+$toolbar-height: 24px;
+$toolbaritem-height: $toolbar_height;
+$toolbaritemselectlabel-margin: 6px;
+$toolbariteminputlabel-margin: 6px;
+$toolbargrip-width: 5px;
+$toolbargrip-height: 18px;
+$toolbargrip-margin: 2px;
+$toolbarseparator-height: 20px;
+$toolbarseparator-margin: 4px;
+$toolbarseparator-color-left: #222222;
+$toolbarseparator-color-right: #46464a;
+
+$listheader-background: #252526;
+$listheader-backgroundhover: $menuitem-backgroundcolorhover;
+$listheader-color: $color-text;
+$listheader-border: 1px solid #3f3f46;
+$listheader-fontsize: 9pt;
+$listheader-fontweight: normal;
+$listheader-padding: 10px;
+$listcell-padding: $listheader-padding;
+$listcell-backgroundselected: $color-background-highlight;
+$listcell-border: $listheader-border;
+
+:focus {
+    outline: 0;
+}
+  
+::-webkit-scrollbar {
+    width: $scrollbar-size;
+    height: $scrollbar-size;
+}
+  
+::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-color;
+    background-clip: padding-box;
+    border: solid 4px $scrollbar-background;
+}
+  
+::-webkit-scrollbar-button {
+    width: 17px;
+    height: 13px;
+    background-color: $scrollbar-background;
+}
+  
+::-webkit-scrollbar-track {
+    background-color: $scrollbar-background;
+}
+
+input {
+    -webkit-appearance: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: $font-family;
+    font-size: $input-fontsize;
+}
+
+input[type=text] {
+    background-color: $input-backgroundcolor;
+    border: $input-border;
+    height: $input-height;
+    padding: 0px $input-padding;
+    line-height: $input-lineheight;
+    color: $input-textcolor;
+    text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+
+    &:hover, &:focus {
+        background-color: $input-backgroundcolor-active;
+        border-color: $input-bordercolor-active;
+
+        &::-webkit-input-placeholder {
+            color: #f1f1f1;
+        }
+    }
+
+    &::-webkit-input-placeholder {
+        color: #999999;
+        text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+    }
+}
+
+svg {
+    display: block;
+}
+
+menu {
+    margin: 0px;
+    padding: 0px;
+}

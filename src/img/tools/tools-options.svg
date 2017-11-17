@@ -1,0 +1,19 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<rect id="t" x="-1" y="-1" width="2" height="2"/>
+</defs>
+<g fill="#c1c1c1">
+<path fill-rule="evenodd" d="M2,8a4,4 0 1,0 12,0a4,4 0 1,0 -12,0m2,0a4,4 0 1,0 8,0a4,4 0 1,0 -8,0"/>
+<circle cx="8" cy="8" r="2"/>
+<g transform="translate(8,8)">
+<use transform="rotate(0) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(45) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(90) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(135) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(180) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(225) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(270) translate(0,-6)" xlink:href="#t"/>
+<use transform="rotate(315) translate(0,-6)" xlink:href="#t"/>
+</g>
+</g>
+</svg>

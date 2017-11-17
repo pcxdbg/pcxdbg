@@ -1,0 +1,142 @@
+// Window
+$title-height: $windowtitle-height;
+$title-backgroundcolor: $windowtitle-backgroundcolor;
+$title-backgroundcolor-focus: $windowtitle-backgroundcolor-focus;
+$content-backgroundcolor: $window-content-backgroundcolor;
+$label-padding: $windowtitlelabel-padding;
+$controls-minwidth: $windowtitlecontrols-minwidth;
+$controls-padding: $windowtitlecontrols-padding;
+$controlicon-padding: $windowtitlecontrolicon-padding;
+
+// Window container
+$header-borderwidth: 1px;
+$header-bordercolor: #3f3f46;
+$header-textcolor: #dfdfdf;
+$header-textcolorselected: $color-primary;
+$header-backgroundcolorselected: #282929; 
+$content-borderwidth: $header-borderwidth;
+$content-bordercolor: $header-bordercolor;
+
+window {
+    display: flex;
+    flex-direction: column;
+
+    &[hidden] {
+        display: none;
+    }
+
+    > window-titlebar {
+        background-repeat: repeat-x;
+        background-position: center;
+        background-color: $title-backgroundcolor;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        > window-titlebar-text {
+            display: block;
+            padding: $label-padding;
+            line-height: $title-height;
+            background-color: $title-backgroundcolor;
+            color: $windowtitle-color;
+        }
+
+        > window-titlebar-controls {
+            display: flex;
+            flex-direction: row;
+            background-color: $title-backgroundcolor;
+            padding-left: $controls-padding;
+            min-width: $controls-minwidth;
+
+            > icon {
+                margin-right: $controlicon-padding;
+            }
+        }
+    }
+
+    > window-content {
+        background-color: $content-backgroundcolor;
+        flex-grow: 1;
+        overflow: auto;
+    }
+
+    &[has-focus] {
+        > window-titlebar {
+            background-color: $title-backgroundcolor-focus;
+
+            > window-titlebar-text {
+                background-color: $title-backgroundcolor-focus;
+                color: $windowtitle-color-focus;
+            }
+
+            > window-titlebar-controls {
+                background-color: $title-backgroundcolor-focus;
+            }
+        }
+    }
+
+    &[can-move] {
+        > window-titlebar {
+            background-image: url(images/window-grip-pattern-3d.svg);
+        }
+    }
+
+    &[can-move][has-focus] {
+        > window-titlebar {
+            background-image: url(images/window-grip-pattern-3l.svg);
+        }
+    }
+}
+
+window-container {
+    display: flex;
+    flex-direction: column;
+
+    > window-container-headers {
+        order: 2;
+        position: relative;
+        height: 20px;
+        border-top: solid $header-borderwidth $header-bordercolor;
+
+        > window-container-headers-tabs {
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: -1px;
+            bottom: 0px;
+            display: flex;
+            flex-direction: row;
+
+            > window-container-tab {
+                border: solid $header-borderwidth transparent;
+                color: $header-textcolor;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                padding: 0px 5px;
+                text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+
+                &[selected] {
+                    border: solid $header-borderwidth $header-bordercolor;
+                    border-top-color: $header-backgroundcolorselected;
+                    background-color: $header-backgroundcolorselected;
+                    color: #0e97dd;
+                }
+            }
+        }
+    }
+
+    > window-container-windows {
+        order: 1;
+        border: solid $content-borderwidth $content-bordercolor;
+        border-bottom-style: none;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        > window {
+            flex-grow: 1;
+        }
+    }
+}

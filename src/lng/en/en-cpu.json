@@ -1,0 +1,25 @@
+{
+    "breakpoint-list": {
+        "title": "Breakpoints"
+    },
+    "call-stack": {
+        "title": "Call Stack"
+    },
+    "disassembly": {
+        "title": "Disassembly"
+    },
+    "memory": {
+        "title": "Memory"
+    },
+    "thread-list": {
+        "title": "Threads"
+    },
+    "watch-list": {
+        "columns": {
+            "name": "Name",
+            "type": "Type",
+            "value": "Value"
+        },
+        "title": "Watches"
+    }
+}
