@@ -14,7 +14,7 @@
     "start": "npm-run-all --parallel webpack:watch electron:serve",
     "webpack:watch": "webpack --watch",
     "start:web": "webpack-dev-server --content-base . --port 4000 --inline",
-    "build:electron:main": "tsc src/pcxdbg.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd ..",
+    "build:electron:main": "tsc src/pcxdbg.ts --outDir dist --skipLibCheck && copyfiles package.json dist && cd dist && npm install --prod && cd ..",
     "build": "webpack --display-error-details && npm run build:electron:main",
     "build:release": "cross-env NODE_ENV=prod npm run build",
     "electron:serve": "npm run build:electron:main && electron ./dist --serve",
@@ -29,14 +29,12 @@
     "tslint": "tslint --config ./conf/tslint.json '**/*.ts' --exclude '**/node_modules/**'"
   },
   "dependencies": {
-    "core-js": "2.5.1",
     "i18next": "10.0.7",
     "i18next-browser-languagedetector": "2.1.0",
     "i18next-xhr-backend": "1.5.0",
     "moment": "2.19.2"
   },
   "devDependencies": {
-    "@types/core-js": "0.9.43",
     "@types/i18next": "8.4.2",
     "@types/i18next-xhr-backend": "1.4.1",
     "@types/jest": "21.1.6",
