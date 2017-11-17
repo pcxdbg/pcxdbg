@@ -1,0 +1,13 @@
+{
+    "mapCoverage": true,
+    "moduleFileExtensions": [
+        "ts",
+        "js",
+        "json"
+    ],
+    "roots": ["<rootDir>../src"],
+    "testRegex": "\\.spec\\.ts",
+    "transform": {
+        "^.+\\.ts$": "ts-jest"
+    }
+}
