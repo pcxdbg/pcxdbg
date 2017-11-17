@@ -1,0 +1,66 @@
+
+status-bar {
+    position: absolute;
+    z-index: $statusbar-zindex;
+    height: $statusbar-height;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    /*  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    */
+    background-color: $color-primary;
+    color: $color-text-highlight;
+    text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+    user-select: none;
+
+    > * {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+    }
+
+    > status-bar-backgroundtasks {
+        left: 0px;
+        width: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            background-color: #3395d6;
+        }
+    }
+
+    > status-bar-label {
+        left: 28px;
+        display: flex;
+        align-items: center;
+    }
+
+    > .debug-info {
+        right: 304px;
+        display: flex;
+        align-items: center;
+    }
+
+    > .edit-info {
+        right: 64px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        > div {
+            width: 64px;
+        }
+    }
+
+    > status-bar-resizer {
+        position: absolute;
+        top: auto;
+        right: 0px;
+    }
+}

@@ -1,0 +1,7 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="p" d="M0,6h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm0,-2h1v1h-1zm-2,0h1v1h-1zm-2,0h1v1h-1zm2,-2h1v1h-1zm2,0h1v1h-1zm0,-2h1v1h-1z"/>
+</defs>
+<g transform="translate(3,3)" fill="#000000" opacity="0.25"><use href="#p"/></g>
+<g transform="translate(4,4)" fill="#ffffff" opacity="0.5"><use href="#p"/></g>
+</svg>
