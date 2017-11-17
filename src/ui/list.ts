@@ -143,7 +143,7 @@ class List<T> extends UIElement {
             if (selectedRow) {
                 selectedRow.removeAttribute('selected');
             }
-    
+
             rowElement.attribute('selected', '');
             if (definition && definition.click) {
                 definition.click(item);

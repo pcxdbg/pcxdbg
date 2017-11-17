@@ -46,7 +46,7 @@ try {
         if (browserWindow === null) {
             createBrowserWindow();
         }
-    })
+    });
     app.on('ready', () => createBrowserWindow());
     app.on('window-all-closed', () => {
         if (process.platform !== PLATFORM_MACOS) {

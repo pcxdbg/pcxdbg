@@ -64,7 +64,7 @@ class MemoryView extends Window {
         cellChar.className = 'char';
 
         cellAddr.innerText = this.hexFromData(this.offset + rowIndex * this.columns, undefined, true);
-        
+
         for (let columnIndex: number = 0; columnIndex !== this.columns; ++columnIndex) {
             let spanData: HTMLSpanElement = document.createElement('span');
             let spanChar: HTMLSpanElement = document.createElement('span');
@@ -110,8 +110,13 @@ class MemoryView extends Window {
         }
     }
 
+    /**
+     * Event triggered when data gets selected
+     * @param rowIndex    Row index
+     * @param columnIndex Column index
+     */
     private selectData(rowIndex: number, columnIndex: number): void {
-
+        // TODO
     }
 
     /**
@@ -124,9 +129,9 @@ class MemoryView extends Window {
     private hexFromData(value: number, width?: number, prefix?: boolean): string {
         let str: string = value.toString(16);
         let pfx: string = prefix ? '0x' : '';
-    
+
         width = width || 8;
-    
+
         if (width && str.length < width) {
             for (let i: number = 0, end: number = width - str.length; i !== end; ++i) {
                 pfx += '0';

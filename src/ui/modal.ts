@@ -102,7 +102,7 @@ class ModalManager {
             throw new Error('no modal found matching identifier "' + modalId + '"');
         }
 
-        if (this.activeModal != null) {
+        if (this.activeModal !== null) {
             this.activeModal.removeAttribute('active');
         }
 

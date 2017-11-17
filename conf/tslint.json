@@ -30,7 +30,12 @@
             "check-open-brace",
             "check-whitespace"
         ],
-        "quotemark": true,
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape",
+            "avoid-template"
+        ],
         "radix": true,
         "semicolon": true,
         "switch-default": true,

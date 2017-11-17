@@ -202,7 +202,7 @@ const Component: ClassOrMethodDecorator = (target, propertyKey) => {
     } else {
         componentManager.registerComponentClass(<Function> target);
     }
-}
+};
 
 export {
     Component,

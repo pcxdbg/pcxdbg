@@ -24,13 +24,6 @@ import {Component} from '../component';
 @Component
 class Application {
 
-    /**
-     * Class constructor
-     */
-    constructor() {
-
-    }
-
 }
 
 /**
@@ -118,7 +111,7 @@ class ApplicationView extends UIElement {
      */
     @Component
     setModules(apuModule: ApuModule, cameraModule: CameraModule, cpuModule: CpuModule, gpuModule: GpuModule, inputModule: InputModule, networkModule: NetworkModule, onlineModule: OnlineModule, storageModule: StorageModule, systemModule: SystemModule): void {
-
+        // Ensures injected modules are instantiated
     }
 
     /**

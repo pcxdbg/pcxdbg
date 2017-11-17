@@ -12,7 +12,7 @@ class DocumentManager {
      * @param <T>           Document type
      */
     registerDocumentClass<T extends Function>(documentClass: T): void {
-
+        // TODO
     }
 
     /**

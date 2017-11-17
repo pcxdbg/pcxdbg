@@ -75,7 +75,7 @@ class Menu extends UIElement {
     private parentMenu: Menu;
     private popupMenu: boolean;
     private menuItems: {[id: string]: MenuItemData} = {};
-    
+
     /**
      * Class constructor
      * @param menuManager     Menu manager
@@ -310,7 +310,7 @@ class Menu extends UIElement {
         let labelElement: UIElement = itemData.element.element('menu-item-label');
         let labelText: string;
         let n: number;
-        
+
         if (itemDefinition.label) {
             labelText = componentManager.getComponent(I18nManager).translateKey(itemDefinition.label, itemDefinition.labelParameters);
         } else {

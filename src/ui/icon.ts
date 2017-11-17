@@ -86,7 +86,7 @@ class Icon extends UIElement {
     private width: number;
     private height: number;
     private src: string;
-    
+
     /**
      * Class constructor
      * @param iconManager Icon manager

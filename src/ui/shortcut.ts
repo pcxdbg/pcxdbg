@@ -96,7 +96,7 @@ class ShortcutManager {
     constructor() {
       document.addEventListener('keydown', this.keydownListener, false);
     }
-  
+
     /**
      * Register a shortcut
      * @param combination Combination
@@ -105,7 +105,7 @@ class ShortcutManager {
     registerShortcut(combination: string, handler: ShortcutHandler) {
       this.registeredShortcuts[combination] = handler;
     }
-  
+
     /**
      * Unregister a shortcut
      * @param combination Combination
@@ -116,7 +116,7 @@ class ShortcutManager {
 
     /**
      * Keyboard event handling
-     * @param keyboardEvent Keyboard event 
+     * @param keyboardEvent Keyboard event
      */
     onKeydown(keyboardEvent: KeyboardEvent) {
         let combination: string[] = [];
@@ -142,7 +142,7 @@ class ShortcutManager {
         } else {
             console.warn('unmapped keyboard event: ' + key, keyboardEvent);
         }
-  
+
         combinationName = combination.join('+');
         if (combinationName in this.registeredShortcuts) {
             this.registeredShortcuts[combinationName](combinationName);

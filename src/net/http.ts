@@ -36,7 +36,7 @@ class HttpRequestInstance<RQ, RS> {
     private static HEADERVALUE_SEPARATOR: string = '\u003a\u0020';
     private static HEADERNAME_CONTENTTYPE: string = 'content-type';
     private static REGEXP_JSON: RegExp = /\+json$/;
-    
+
     private xmlHttpRequest: XMLHttpRequest;
     private httpRequest: HttpRequest<RQ>;
     private promise: Promise<HttpResponse<RS>>;
@@ -91,7 +91,7 @@ class HttpRequestInstance<RQ, RS> {
      * Callback triggered when a request fails
      * @param errorEvent Error event
      */
-    private onRequestError<RQ, RS>(errorEvent: ErrorEvent): void {
+    private onRequestError(errorEvent: ErrorEvent): void {
         console.error('HTTP request failed', errorEvent);
         this.promiseReject('HTTP request failed');
     }
