@@ -1,0 +1,10 @@
+
+main-menu {
+    position: fixed;
+    z-index: $mainmenu-zindex;
+    left: 2px;
+    right: 2px;
+    top: $titlebar-height;
+    height: $mainmenu-height;
+    cursor: default;
+}
