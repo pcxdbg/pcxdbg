@@ -16,6 +16,7 @@ const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', '
 const baseHref = '';
 const deployUrl = '';
 const isRelease = (process.env.NODE_ENV === 'release');
+const postcssLoader = 'postcss-loader?{"config":{"path": "./conf"}}';
 const styles = [
     './src/pcxdbg.scss'
 ];
@@ -238,7 +239,7 @@ module.exports = {
             loaders: [
                 'exports-loader?module.exports.toString()',
                 'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
-                'postcss-loader'
+                postcssLoader
             ]
         }, {
             exclude: style_paths,
@@ -246,7 +247,7 @@ module.exports = {
             loaders: [
                 'exports-loader?module.exports.toString()',
                 'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
-                'postcss-loader',
+                postcssLoader,
                 'sass-loader'
             ]
         }, {
@@ -255,7 +256,7 @@ module.exports = {
             loaders: ExtractTextPlugin.extract({
                 use: [
                     'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
-                    'postcss-loader'
+                    postcssLoader
                 ],
                 fallback: 'style-loader',
                 publicPath: ''
@@ -266,7 +267,7 @@ module.exports = {
             loaders: ExtractTextPlugin.extract({
                 use: [
                     'css-loader?{"sourceMap":false,"importLoaders":1,"url":false}',
-                    'postcss-loader',
+                    postcssLoader,
                     'sass-loader'
                 ],
                 fallback: 'style-loader',
