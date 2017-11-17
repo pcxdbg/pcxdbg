@@ -2,9 +2,9 @@
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](https://github.com/pcxdbg/pcxdbg/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/Language-TypeScript-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
-[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg)][https://travis-ci.org/pcxdbg/pcxdbg]
+[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg?style=flat-square)](https://travis-ci.org/pcxdbg/pcxdbg)
 [![Known Vulnerabilities](https://snyk.io/test/github/pcxdbg/pcxdbg/badge.svg)](https://snyk.io/test/github/pcxdbg/pcxdbg)
-[![Greenkeeper badge](https://badges.greenkeeper.io/pcxdbg/pcxdbg.svg)](https://greenkeeper.io/)
+[![Greenkeeper](https://badges.greenkeeper.io/pcxdbg/pcxdbg.svg)](https://greenkeeper.io/)
 
 A cross-platform debugger front-end written in [TypeScript](https://www.typescriptlang.org/) and embedded within an [Electron](https://electron.atom.io/) host.
 
@@ -20,16 +20,8 @@ Then an Electron host with live reload can be started using:
 
 ## Packaging
 
-The application can be packaged for any of the three supported platforms: Linux, MacOS or Windows. In each case, only the 64-bit version of those platforms is supported.
+The application can be packaged for any of the three supported platforms: Linux, MacOS or Windows. For each platform, only 64-bit version of the binaries are built.
 
-To build the Linux binaries:
-
-```npm run electron:linux```
-
-To build the MacOS binaries:
-
-```npm run electron:macos```
-
-To build the Windows binaries:
-
-```npm run electron:win32```
+* Linux: ```npm run electron:linux```
+* MacOS: ```npm run electron:macos```
+* Windows: ```npm run electron:win32```
