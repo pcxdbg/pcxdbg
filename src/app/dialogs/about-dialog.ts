@@ -71,7 +71,7 @@ class AboutDialog extends ModalView {
     private versionOpenSSL: string;
     private versionV8: string;
     private revisionId: string;
-    private revisionNumber: number;
+    private revisionNumber: string;
     private buildDate: Date;
 
     /**
