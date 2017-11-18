@@ -1,0 +1,12 @@
+<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<g id="window-close-all-documents">
+<path class="outline" fill="#2d2d30" d="M0,0h8.5l3.5,3.5v10.5h-12z"/>
+<path class="content" fill="#c1c1c1" fill-rule="evenodd" d="M1,1h7l3,3v9h-10zm1,1h5v3h3v7h-8z"/>
+</g>
+</defs>
+<use href="#window-close-all-documents" transform="translate(2,0)"/>
+<use href="#window-close-all-documents" transform="translate(4,2)"/>
+<path class="outline" fill="#2d2d30" d="M0,0h8v7h-8z"/>
+<path class="content" fill="#c1c1c1" fill-rule="evenodd" d="M1,1h6v5h-6zm2,0.5l1,1l1,-1l1,1l-1,1l1,1l-1,1l-1,-1l-1,1l-1,-1l1,-1l-1,-1z"/>
+</svg>

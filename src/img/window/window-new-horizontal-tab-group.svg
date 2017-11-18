@@ -1,0 +1,9 @@
+<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="window-new-horizontal-tab-group" class="content" fill="#c1c1c1" fill-rule="evenodd" d="M1,1h14v6h-14zm1,3h12v2h-12z"/>
+</defs>
+<path class="outline" fill="#2d2d30" d="M0,0h16v15h-16z"/>
+<use href="#window-new-horizontal-tab-group"/>
+<use href="#window-new-horizontal-tab-group" transform="translate(0,7)"/>
+</g>
+</svg>

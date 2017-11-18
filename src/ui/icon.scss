@@ -4,6 +4,7 @@ $iconcolor-blue: #7ac1ff;
 $iconcolor-error: #ff3c2b;
 $iconcolor-green: #8dd28a;
 $iconcolor-orange: #d7ab69;
+$iconcolor-yellow: #f0c993;
 $iconcolor-pink: #d08fe1;
 $iconcolor-purple: #a074c4;
 $iconcolor-red: #f2806a;
@@ -52,6 +53,9 @@ icon {
                     fill: $iconcolor-red;
                 }
 
+                &.yellow {
+                    fill: $iconcolor-yellow;
+                }
             }
 
             &.stroke {
@@ -83,6 +87,10 @@ icon {
 
                 &.red {
                     stroke: $iconcolor-red;
+                }
+
+                &.yellow {
+                    stroke: $iconcolor-yellow;
                 }
             }
         }

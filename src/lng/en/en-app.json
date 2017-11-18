@@ -135,6 +135,7 @@
             "options": "Options"
         },
         "view": {
+            "all-windows": "All Windows",
             "bookmark-window": "Bookmark Window",
             "call-hierarchy": "Call Hierarchy",
             "chat": "Chat",
@@ -167,6 +168,8 @@
             "hide": "&Hide",
             "label": "&Window",
             "manage-window-layouts": "&Manage Window Layouts",
+            "new-horizontal-tab-group": "New Hori&zontal Tab Group",
+            "new-vertical-tab-group": "New &Vertical Tab Group",
             "new-window": "&New Window",
             "pin-tab": "&Pin Tab",
             "reset-window-layout": "&Reset Winow Layout",

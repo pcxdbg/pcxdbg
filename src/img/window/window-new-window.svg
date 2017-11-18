@@ -1,0 +1,16 @@
+<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="window-new-window-o" class="outline" fill="#2d2d30" d="M0,-4.5h1.5v1h2v2h1v1.5h-4.5z"/>
+<path id="window-new-window-c" class="content yellow" fill="#f0c993" d="M0,-0.5v-3h0.5v2.25l1.25,-1.25h0.75v0.75l-1.25,1.25h2.25v0.5h-3v-0.5z"/>
+</defs>
+<path class="outline" fill="#2d2d30" d="M4,5h12v10h-12z"/>
+<path class="content" fill="#c1c1c1" fill-rule="evenodd" d="M5,6h10v8h-10zm1,2h8v5h-8z"/>
+<use href="#window-new-window-o" transform="translate(4.5,4.5)"/>
+<use href="#window-new-window-o" transform="translate(4.5,4.5) scale(1,-1)"/>
+<use href="#window-new-window-o" transform="translate(4.5,4.5) scale(-1,-1)"/>
+<use href="#window-new-window-o" transform="translate(4.5,4.5) scale(-1,1)"/>
+<use href="#window-new-window-c" transform="translate(4.5,4.5)"/>
+<use href="#window-new-window-c" transform="translate(4.5,4.5) scale(1,-1)"/>
+<use href="#window-new-window-c" transform="translate(4.5,4.5) scale(-1,-1)"/>
+<use href="#window-new-window-c" transform="translate(4.5,4.5) scale(-1,1)"/>
+</svg>

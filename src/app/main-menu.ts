@@ -104,6 +104,7 @@ class MainMenuView extends UIElement {
                     .item({id: 'view-toolbarsstandard', label: 'app:main-menu.view.toolbars.standard', handler: () => this.onViewToolbar('standard'), icon: 'menuitem-checked'})
                 .popup()
                 .item({id: 'view-fullscreen', label: 'app:main-menu.view.fullscreen', handler: () => this.onViewFullScreen(), icon: 'view-fullscreen', shortcut: 'Alt+Shift+Enter'})
+                .item({id: 'view-allwindows', label: 'app:main-menu.view.all-windows', handler: () => this.onViewAllWindows(), icon: 'view-all-windows', shortcut: 'Alt+Shift+M'})
                 .separator()
                 .item({id: 'view-navigatebackward', label: 'app:main-menu.view.navigate-backward', handler: () => this.onViewNavigateBackward(), icon: 'view-navigate-backward', shortcut: 'Ctrl+-'})
                 .item({id: 'view-navigateforward', label: 'app:main-menu.view.navigate-forward', handler: () => this.onViewNavigateForward(), icon: 'view-navigate-forward', shortcut: 'Ctrl+Shift+-'})
@@ -173,6 +174,8 @@ class MainMenuView extends UIElement {
                 .item({label: 'app:main-menu.window.reset-window-layout', handler: () => this.onWindowResetWindowLayout()})
                 .separator()
                 .item({id: 'window-autohideall', label: 'app:main-menu.window.auto-hide-all', handler: () => this.onWindowAutoHideAll()})
+                .item({id: 'window-newhorizontaltabgroup', label: 'app:main-menu.window.new-horizontal-tab-group', handler: () => this.onWindowNewHorizontalTabGroup(), icon: 'window-new-horizontal-tab-group'})
+                .item({id: 'window-newverticaltabgroup', label: 'app:main-menu.window.new-vertical-tab-group', handler: () => this.onWindowNewVerticalTabGroup(), icon: 'window-new-vertical-tab-group'})
                 .item({id: 'window-closeall', label: 'app:main-menu.window.close-all-documents', handler: () => this.onWindowCloseAllDocuments(), icon: 'window-close-all-documents'})
                 .separator()
                 // TODO: list of documents opened
@@ -433,6 +436,13 @@ class MainMenuView extends UIElement {
     }
 
     /**
+     * Callback triggered when View => All Windows is selected
+     */
+    private onViewAllWindows(): void {
+        console.warn('View => All Windows not implemented');
+    }
+
+    /**
      * Callback triggered when View => Navigate Backward is selected
      */
     private onViewNavigateBackward(): void {
@@ -685,6 +695,20 @@ class MainMenuView extends UIElement {
      */
     private onWindowAutoHide(): void {
         console.warn('Window => Auto Hide not implemented');
+    }
+
+    /**
+     * Callback triggered when Window => New Horizontal Tab Group is selected
+     */
+    private onWindowNewHorizontalTabGroup(): void {
+        console.warn('Window => New Horizontal Tab Group not implemented');
+    }
+
+    /**
+     * Callback triggered when Window => New Vertical Tab Group is selected
+     */
+    private onWindowNewVerticalTabGroup(): void {
+        console.warn('Window => New Vertical Tab Group not implemented');
     }
 
     /**
