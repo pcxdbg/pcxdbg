@@ -43,6 +43,7 @@
             "continue": "Continue",
             "delete-all-breakpoints": "Delete All Breakpoints",
             "detach-all": "Detach All",
+            "disable-all-breakpoints": "Disable All Breakpoints",
             "label": "&Debug",
             "new-breakpoint": {
                 "data": "Data Breakpoint...",
@@ -74,14 +75,23 @@
             }
        },
         "edit": {
-            "copy": "Copy",
-            "cut": "Cut",
-            "delete": "Delete",
+            "copy": "&Copy",
+            "cut": "Cu&t",
+            "delete": "&Delete",
+            "find-replace": {
+                "label": "&Find and Replace"
+            },
+            "goto": {
+                "file": "Go To F&ile...",
+                "function": "Go To &Function...",
+                "label": "&Go To",
+                "line": "Go To &Line..."
+            },
             "label": "&Edit",
-            "paste": "Paste",
-            "redo": "Redo",
-            "select-all": "Select All",
-            "undo": "Undo"
+            "paste": "&Paste",
+            "redo": "&Redo",
+            "select-all": "Select &All",
+            "undo": "&Undo"
         },
         "file": {
             "close": "&Close",
@@ -120,6 +130,7 @@
         },
         "tools": {
             "customize": "Customize",
+            "extensions": "Extensions and &Updates...",
             "label": "&Tools",
             "options": "Options"
         },
@@ -129,7 +140,7 @@
             "chat": "Chat",
             "command-window": "Command Window",
             "error-list": "Error List",
-            "fullscreen": "Full Screen",
+            "fullscreen": "F&ull Screen",
             "host-explorer": "Host Explorer",
             "label": "&View",
             "navigate-backward": "Navigate Backward",
@@ -139,7 +150,8 @@
             "object-browser": "Object Browser",
             "output": "Output",
             "toolbars": {
-                "label": "Toolbars"
+                "label": "&Toolbars",
+                "standard": "Standard"
             }
         },
         "window": {

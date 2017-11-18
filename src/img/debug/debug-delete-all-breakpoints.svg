@@ -1,0 +1,14 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="delete-all-breakpoints-o" class="outline" fill="#2d2d30" d="M-5.5,0a5.5,5.5 0 1,0 11,0a5.5,5.5 0 1,0 -11,0"/>
+<path id="delete-all-breakpoints-c" class="content" fill="#c1c1c1" fill-rule="evenodd" d="M-4.5,0a4.5,4.5 0 1,0 9,0a4.5,4.5 0 1,0 -9,0"/>
+<g id="delete-all-breakpoints">
+<use href="#delete-all-breakpoints-o"/>
+<use href="#delete-all-breakpoints-c"/>
+</g>
+</defs>
+<use href="#delete-all-breakpoints" transform="translate(10.5,5.5)"/>
+<use href="#delete-all-breakpoints" transform="translate(5.5,10.5)"/>
+<path class="outline" fill="#2d2d30" transform="scale(0.57,0.57)" d="M1,5.5v-3.5h3.5l10.5,10.5v3h-1zM3.5,15.5h-3.5v-4l12,-10h2.5v2.5z"/>
+<path class="content red" fill="#f2806a" transform="scale(0.5,0.5) translate(1,1)" d="M2,5v-2h2l10,10v1.5zM3,14.5h-2v-2.5l11.5,-9.5h1v1z"/>
+</svg>

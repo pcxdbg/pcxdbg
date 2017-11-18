@@ -1,9 +1,12 @@
 $iconcolor-outline: #2d2d30;
 $iconcolor-content: #c1c1c1;
 $iconcolor-blue: #7ac1ff;
+$iconcolor-error: #ff3c2b;
 $iconcolor-green: #8dd28a;
 $iconcolor-orange: #d7ab69;
-$iconcolor-red: #f38b76;
+$iconcolor-pink: #d08fe1;
+$iconcolor-purple: #a074c4;
+$iconcolor-red: #f2806a;
 
 icon {
     > svg * {
@@ -25,6 +28,10 @@ icon {
                     fill: $iconcolor-blue;
                 }
 
+                &.error {
+                    fill: $iconcolor-error;
+                }
+                
                 &.green {
                     fill: $iconcolor-green;
                 }
@@ -33,9 +40,18 @@ icon {
                     fill: $iconcolor-orange;
                 }
 
+                &.pink {
+                    fill: $iconcolor-pink;
+                }
+
+                &.purple {
+                    fill: $iconcolor-purple;
+                }
+
                 &.red {
                     fill: $iconcolor-red;
                 }
+
             }
 
             &.stroke {
@@ -45,12 +61,24 @@ icon {
                     stroke: $iconcolor-blue;
                 }
 
+                &.error {
+                    stroke: $iconcolor-error;
+                }
+
                 &.green {
                     stroke: $iconcolor-green;
                 }
 
                 &.orange {
                     stroke: $iconcolor-orange;
+                }
+
+                &.pink {
+                    stroke: $iconcolor-pink;
+                }
+
+                &.purple {
+                    stroke: $iconcolor-purple;
                 }
 
                 &.red {

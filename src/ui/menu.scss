@@ -74,12 +74,14 @@ menu-item {
         display: none;
     }
 
-    &:hover, &[active] {
-        background-color: $menuitem-backgroundcolorhover;
+    &:not([disabled]) {
+        &:hover, &[active] {
+            background-color: $menuitem-backgroundcolorhover;
 
-        > menu-item-expander {
-            path {
-                fill: $color-primary;
+            > menu-item-expander {
+                path {
+                    fill: $color-primary;
+                }
             }
         }
     }
@@ -127,6 +129,34 @@ menu-item {
 
     &[active] > menu[popup] {
         display: block;
+    }
+
+    &[disabled] {
+        > menu-item-label {
+            color: #656565;
+
+            > menu-item-label-key {
+                text-decoration: none;
+            }
+        }
+
+        > menu-item-icon > icon > svg * {
+            &.content {
+                &:not(.stroke) {
+                    fill: #3e3e3f;
+                }
+
+                &.stroke {
+                    stroke: #3e3e3f;
+                }
+            }
+        }
+
+        > menu-item-expander {
+            path {
+                fill: #3e3e3f;
+            }
+        }
     }
 }
 

@@ -1,0 +1,26 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="edit-select-all-o" class="outline" fill="#2d2d30" d="M0.75,-0.75h-1.5v-2.75h1.5z"/>
+<path id="edit-select-all-c" class="content" fill="#c1c1c1" d="M0.375,-1.5h-0.75v-1.5h0.75z"/>
+</defs>
+<use href="#edit-select-all-o" transform="translate(5.5,4)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(45)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(45)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(90)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(135)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(180)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(225)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(270)"/>
+<use href="#edit-select-all-o" transform="translate(5.5,4) rotate(315)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(45)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(90)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(135)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(180)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(225)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(270)"/>
+<use href="#edit-select-all-c" transform="translate(5.5,4) rotate(315)"/>
+<path class="outline" fill="#2d2d30" d="M12,15h-2.5l-2,-3l-3,2l0.3-11.7l10,8.7h-3.7z"/>
+<path class="content" fill="#c1c1c1" d="M11,14h-1l-2.5,-3.5l-2,1.5v-8l7,6h-3z"/>
+</g>
+</svg>

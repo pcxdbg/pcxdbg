@@ -67,6 +67,14 @@ class MainMenuView extends UIElement {
                 .item({id: 'file-exit', label: 'app:main-menu.file.exit', handler: () => this.onFileExit(), icon: 'file-exit', shortcut: 'Alt+F4'})
             .popup()
             .popup('app:main-menu.edit.label')
+                .popup('app:main-menu.edit.goto.label')
+                    .item({id: 'edit-gotoline', label: 'app:main-menu.edit.goto.line', handler: () => this.onEditGotoLine(), shortcut: 'Ctrl+G'})
+                    .item({id: 'edit-gotofunction', label: 'app:main-menu.edit.goto.function', handler: () => this.onEditGotoFunction(), shortcut: 'Ctrl+Shift+G'})
+                    .item({id: 'edit-gotofile', label: 'app:main-menu.edit.goto.file', handler: () => this.onEditGotoFile(), shortcut: 'Ctrl+Alt+Shift+G'})
+                .popup()
+                .popup('app:main-menu.edit.find-replace.label')
+                .popup()
+                .separator()
                 .item({id: 'edit-undo', label: 'app:main-menu.edit.undo', handler: () => this.onEditUndo(), icon: 'edit-undo', shortcut: 'Ctrl+Z'})
                 .item({id: 'edit-redo', label: 'app:main-menu.edit.redo', handler: () => this.onEditRedo(), icon: 'edit-redo', shortcut: 'Ctrl+Y'})
                 .separator()
@@ -93,6 +101,7 @@ class MainMenuView extends UIElement {
                 .separator()
                 .popup('app:main-menu.view.toolbars.label')
                     // TODO
+                    .item({id: 'view-toolbarsstandard', label: 'app:main-menu.view.toolbars.standard', handler: () => this.onViewToolbar('standard'), icon: 'menuitem-checked'})
                 .popup()
                 .item({id: 'view-fullscreen', label: 'app:main-menu.view.fullscreen', handler: () => this.onViewFullScreen(), icon: 'view-fullscreen', shortcut: 'Alt+Shift+Enter'})
                 .separator()
@@ -137,6 +146,7 @@ class MainMenuView extends UIElement {
                     .item({id: 'debug-newdatabreakpoint', label: 'app:main-menu.debug.new-breakpoint.data', handler: () => this.onDebugNewBreakpointData()})
                 .popup()
                 .item({id: 'debug-deleteallbreakpoints', label: 'app:main-menu.debug.delete-all-breakpoints', handler: () => this.onDebugDeleteAllBreakpoints(), icon: 'debug-delete-all-breakpoints', shortcut: 'Ctrl+Shift+F9'})
+                .item({id: 'debug-disableallbreakpoints', label: 'app:main-menu.debug.disable-all-breakpoints', handler: () => this.onDebugDisableAllBreakpoints(), icon: 'debug-disable-all-breakpoints'})
             .popup()
             .popup('app:main-menu.tools.label')
                 .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
@@ -257,6 +267,27 @@ class MainMenuView extends UIElement {
     }
 
     /**
+     * Callback triggered when Edit => Go To => Line is selected
+     */
+    private onEditGotoLine(): void {
+        console.warn('Edit => Go To => Line not implemented');
+    }
+
+    /**
+     * Callback triggered when Edit => Go To => Function is selected
+     */
+    private onEditGotoFunction(): void {
+        console.warn('Edit => Go To => Function not implemented');
+    }
+
+    /**
+     * Callback triggered when Edit => Go To => File is selected
+     */
+    private onEditGotoFile(): void {
+        console.warn('Edit => Go To => File not implemented');
+    }
+
+    /**
      * Callback triggered when Edit => Undo is selected
      */
     private onEditUndo(): void {
@@ -374,6 +405,14 @@ class MainMenuView extends UIElement {
      */
     private onViewChat(): void {
         console.warn('View => Chat not implemented');
+    }
+
+    /**
+     * Callback triggered when View => Toolbars => ? is selected
+     * @param toolbarId Toolbar identifier
+     */
+    private onViewToolbar(toolbarId: string): void {
+        console.warn('View => Toolbar => ' + toolbarId.substr(0, 1).toUpperCase() + toolbarId.substr(1) + ' not implemented');
     }
 
     /**
@@ -583,6 +622,13 @@ class MainMenuView extends UIElement {
      */
     private onDebugDeleteAllBreakpoints(): void {
         console.warn('Debug => Delete All Breakpoints not implemented');
+    }
+
+    /**
+     * Callback triggered when Debug => Disable All Breakpoints is selected
+     */
+    private onDebugDisableAllBreakpoints(): void {
+        console.warn('Debug => Disable All Breakpoints not implemented');
     }
 
     /**
