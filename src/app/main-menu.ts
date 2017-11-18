@@ -139,6 +139,7 @@ class MainMenuView extends UIElement {
                 .item({id: 'debug-deleteallbreakpoints', label: 'app:main-menu.debug.delete-all-breakpoints', handler: () => this.onDebugDeleteAllBreakpoints(), icon: 'debug-delete-all-breakpoints', shortcut: 'Ctrl+Shift+F9'})
             .popup()
             .popup('app:main-menu.tools.label')
+                .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
                 .separator()
                 .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize(), icon: 'tools-customize'})
                 .item({label: 'app:main-menu.tools.options', handler: () => this.onToolsOptions(), icon: 'tools-options'})
@@ -582,6 +583,13 @@ class MainMenuView extends UIElement {
      */
     private onDebugDeleteAllBreakpoints(): void {
         console.warn('Debug => Delete All Breakpoints not implemented');
+    }
+
+    /**
+     * Callback triggered when Tools => Extensions is selected
+     */
+    private onToolsExtensions(): void {
+        console.warn('Tools => Extensions not implemented');
     }
 
     /**

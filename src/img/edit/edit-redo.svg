@@ -1,3 +1,9 @@
-﻿<svg viewbox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-<path fill="none" stroke="#7ac1ff" stroke-width="128" stroke-linejoin="round" stroke-linecap="round" d="M416,864l352,-320c320,-446 -416,-448 -576,-96l256,0l-256,0l0,-256" transform="translate(1024,0) scale(-1,1)"/>
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path id="edit-redo" fill="none" stroke-linejoin="round" stroke-linecap="round" d="M6.5,13.5l5.5,-5c5,-7 -6.5,-7 -9,-1.5h4h-4v-4"/>
+</defs>
+<g transform="translate(16,0) scale(-1,1)">
+<use href="#edit-redo" class="outline stroke" stroke="#2d2d30" stroke-width="4"/>
+<use href="#edit-redo" class="content stroke blue" stroke="#7ac1ff" stroke-width="2"/>
+</g>
 </svg>

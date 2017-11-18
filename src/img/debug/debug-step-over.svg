@@ -1,4 +1,12 @@
 ﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path fill="none" stroke="#7ac1ff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" d="M6,2c-6,2 -6,12 6,10l-2,2l2,-2l-2,-2"/>
-<circle fill="#c1c1c1" cx="7" cy="7" r="2"/>
+<defs>
+<path id="debug-step-over" fill="none" stroke-linejoin="round" stroke-linecap="round" d="M2,8c2,-5 9,-5 13,1l-4,-1l4,1l-1,-4"/>
+</defs>
+<g class="outline">
+<use href="#debug-step-over" class="stroke" stroke="#2d2d30" stroke-width="4"/>
+<circle fill="#2d2d30" cx="8" cy="13" r="3"/>
+<g class="content">
+<use href="#debug-step-over" class="stroke blue" stroke="#7ac1ff" stroke-width="2"/>
+<circle fill="#c1c1c1" cx="8" cy="13" r="2"/>
+</g>
 </svg>

@@ -6,7 +6,7 @@ $iconcolor-orange: #d7ab69;
 $iconcolor-red: #f38b76;
 
 icon {
-    > svg > * {
+    > svg * {
         &.outline {
             &:not(.stroke) {
                 fill: $iconcolor-outline;

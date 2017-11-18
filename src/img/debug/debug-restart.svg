@@ -1,3 +1,7 @@
 ﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path class="content stroke" fill="none" stroke="#c7c7c7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" d="M4,8a4,4 0 1,0 4,-4h-4l2,-2l-2,2l2,2"/>
+<defs>
+<path id="debug-restart" fill="none" stroke-linejoin="round" stroke-linecap="round" d="M4,8a4,4 0 1,0 4,-4h-4l2,-2l-2,2l2,2"/>
+</defs>
+<use href="#debug-restart" class="outline stroke" stroke="#2d2d30" stroke-width="4"/>
+<use href="#debug-restart" class="content stroke" stroke="#c1c1c1" stroke-width="2"/>
 </svg>
