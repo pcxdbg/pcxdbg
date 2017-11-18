@@ -5,5 +5,4 @@
 <path class="outline" fill="#2d2d30" d="M0,0h16v15h-16z"/>
 <use href="#window-new-horizontal-tab-group"/>
 <use href="#window-new-horizontal-tab-group" transform="translate(0,7)"/>
-</g>
 </svg>
