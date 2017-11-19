@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * Online module
  */
 @Component
-class OnlineModule implements Module {
+class OnlineModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class OnlineModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

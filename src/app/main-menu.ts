@@ -1,9 +1,12 @@
 import {UIElement} from '../ui/element';
+import {ClipboardManager} from '../ui/clipboard';
 import {Menu, MenuManager} from '../ui/menu';
+import {CommandManager} from '../ui/command';
 import {DocumentManager} from '../ui/document';
 import {ModalManager} from '../ui/modal';
 import {WindowManager} from '../ui/window';
 import {Component} from '../component';
+import {Module} from '../modules/module';
 import {remote, shell} from 'electron';
 
 /**
@@ -11,6 +14,7 @@ import {remote, shell} from 'electron';
  */
 @Component
 class MainMenuView extends UIElement {
+    private commandManager: CommandManager;
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private menuManager: MenuManager;
@@ -18,185 +22,198 @@ class MainMenuView extends UIElement {
 
     /**
      * Class constructor
-     * @param windowManager Window manager
-     * @param modalManager  Modal manager
-     * @param menuManager   Menu manager
+     * @param windowManager    Window manager
+     * @param modalManager     Modal manager
+     * @param menuManager      Menu manager
+     * @param commandManager   Command manager
+     * @param clipboardManager Clipboard manager
+     * @param moduleList       Module list
      */
-    constructor(windowManager: WindowManager, modalManager: ModalManager, menuManager: MenuManager) {
+    constructor(windowManager: WindowManager, modalManager: ModalManager, menuManager: MenuManager, commandManager: CommandManager, clipboardManager: ClipboardManager, moduleList: Module[]) {
         super('main-menu');
+        this.commandManager = commandManager;
         this.windowManager = windowManager;
         this.modalManager = modalManager;
         this.menuManager = menuManager;
-        this.menu = this.buildMenu();
+        this.menu = this.menuManager.createMenu();
+        this.buildFileMenu();
+        this.buildEditMenu();
+        this.buildViewMenu();
+        this.buildModuleMenus();
+        this.buildToolsMenu();
+        this.buildWindowMenu();
+        this.buildHelpMenu();
+        this.buildProfileMenu();
+        console.log('modules', moduleList);
         this.menu.attachTo(this);
     }
 
     /**
-     * Build the menu
-     * @return Menu
+     * Build the file menu
      */
-    private buildMenu(): Menu {
+    private buildFileMenu(): void {
         let fileRecentConnectionsMenu: Menu = this.menuManager.createPopupMenu();
         let fileRecentFilesMenu: Menu = this.menuManager.createPopupMenu();
 
-        return this.menuManager.createMenu()
-            .popup('app:main-menu.file.label')
-                .popup('app:main-menu.file.open.label')
-                    .item({id: 'file-openconnection', label: 'app:main-menu.file.open.connection', handler: () => this.onFileOpenConnection(), icon: 'file-open-connection', shortcut: 'Ctrl+Shift+O'})
-                    .separator()
-                    .item({id: 'file-openfile', label: 'app:main-menu.file.open.file', handler: () => this.onFileOpenFile(), icon: 'file-open-file', shortcut: 'Ctrl+O'})
-                .popup()
+        this.menu.popup('app:main-menu.file.label')
+            .popup('app:main-menu.file.open.label')
+                .item({id: 'file-openconnection', label: 'app:main-menu.file.open.connection', handler: () => this.onFileOpenConnection(), icon: 'file-open-connection', shortcut: 'Ctrl+Shift+O'})
                 .separator()
-                .item({id: 'file-close', label: 'app:main-menu.file.close', handler: () => this.onFileClose(), shortcut: 'Ctrl+F4'})
-                .item({id: 'file-closeconnection', label: 'app:main-menu.file.close-connection', handler: () => this.onFileCloseConnection(), icon: 'file-close-connection', shortcut: 'Ctrl+Shift+F4'})
-                .separator()
-                .item({id: 'file-save', label: 'app:main-menu.file.save', handler: () => this.onFileSave(), icon: 'file-save', shortcut: 'Ctrl+S'})
-                .item({id: 'file-saveas', label: 'app:main-menu.file.save-as', handler: () => this.onFileSaveAs()})
-                .item({id: 'file-saveall', label: 'app:main-menu.file.save-all', handler: () => this.onFileSaveAll(), icon: 'file-save-all', shortcut: 'Ctrl+Shift+S'})
-                .separator()
-                .popup('app:main-menu.file.source-control.label')
-                    // TODO
-                .popup()
-                .separator()
-                .item({id: 'file-pagesetup', label: 'app:main-menu.file.page-setup', handler: () => this.onFilePageSetup(), icon: 'file-page-setup'})
-                .item({id: 'file-print', label: 'app:main-menu.file.print', handler: () => this.onFilePrint(), icon: 'file-print', shortcut: 'Ctrl+P'})
-                .separator()
-                .popup('app:main-menu.file.recent-connections', fileRecentConnectionsMenu)
-                .popup('app:main-menu.file.recent-files', fileRecentFilesMenu)
-                .separator()
-                .item({id: 'file-exit', label: 'app:main-menu.file.exit', handler: () => this.onFileExit(), icon: 'file-exit', shortcut: 'Alt+F4'})
+                .item({id: 'file-openfile', label: 'app:main-menu.file.open.file', handler: () => this.onFileOpenFile(), icon: 'file-open-file', shortcut: 'Ctrl+O'})
             .popup()
-            .popup('app:main-menu.edit.label')
-                .popup('app:main-menu.edit.goto.label')
-                    .item({id: 'edit-gotoline', label: 'app:main-menu.edit.goto.line', handler: () => this.onEditGotoLine(), shortcut: 'Ctrl+G'})
-                    .item({id: 'edit-gotofunction', label: 'app:main-menu.edit.goto.function', handler: () => this.onEditGotoFunction(), shortcut: 'Ctrl+Shift+G'})
-                    .item({id: 'edit-gotofile', label: 'app:main-menu.edit.goto.file', handler: () => this.onEditGotoFile(), shortcut: 'Ctrl+Alt+Shift+G'})
-                .popup()
-                .popup('app:main-menu.edit.find-replace.label')
-                .popup()
-                .separator()
-                .item({id: 'edit-undo', label: 'app:main-menu.edit.undo', handler: () => this.onEditUndo(), icon: 'edit-undo', shortcut: 'Ctrl+Z'})
-                .item({id: 'edit-redo', label: 'app:main-menu.edit.redo', handler: () => this.onEditRedo(), icon: 'edit-redo', shortcut: 'Ctrl+Y'})
-                .separator()
-                .item({id: 'edit-cut', label: 'app:main-menu.edit.cut', handler: () => this.onEditCut(), icon: 'edit-cut', shortcut: 'Ctrl+X'})
-                .item({id: 'edit-copy', label: 'app:main-menu.edit.copy', handler: () => this.onEditCopy(), icon: 'edit-copy', shortcut: 'Ctrl+C'})
-                .item({id: 'edit-paste', label: 'app:main-menu.edit.paste', handler: () => this.onEditPaste(), icon: 'edit-paste', shortcut: 'Ctrl+V'})
-                .item({id: 'edit-delete', label: 'app:main-menu.edit.delete', handler: () => this.onEditDelete(), icon: 'edit-delete', shortcut: 'Del'})
-                .separator()
-                .item({id: 'edit-selectall', label: 'app:main-menu.edit.select-all', handler: () => this.onEditSelectAll(), icon: 'edit-select-all', shortcut: 'Ctrl+A'})
-            .popup()
-            .popup('app:main-menu.view.label')
-                .item({label: 'app:main-menu.view.host-explorer', handler: () => this.onViewHostExplorer(), icon: 'view-host-explorer', shortcut: 'Ctrl+Alt+L'})
-                .item({label: 'app:main-menu.view.network-explorer', handler: () => this.onViewNetworkExplorer(), icon: 'view-network-explorer', shortcut: 'Ctrl+M'})
-                .separator()
-                .item({label: 'app:main-menu.view.bookmark-window', handler: () => this.onViewBookmarkWindow(), icon: 'view-bookmark-window', shortcut: 'Ctrl+K'})
-                .item({label: 'app:main-menu.view.call-hierarchy', handler: () => this.onViewCallHierarchy(), icon: 'view-call-hierarchy', shortcut: 'Ctrl+Alt+K'})
-                .item({label: 'app:main-menu.view.object-browser', handler: () => this.onViewObjectBrowser(), icon: 'view-object-browser', shortcut: 'Ctrl+Alt+J'})
-                .separator()
-                .item({label: 'app:main-menu.view.command-window', handler: () => this.onViewCommandWindow(), icon: 'view-command-window', shortcut: 'Alt+0'})
-                .item({label: 'app:main-menu.view.error-list', handler: () => this.onViewErrorList(), icon: 'view-error-list', shortcut: 'Alt+1'})
-                .item({label: 'app:main-menu.view.output', handler: () => this.onViewOutput(), icon: 'view-output', shortcut: 'Alt+2'})
-                .item({label: 'app:main-menu.view.notifications', handler: () => this.onViewNotifications(), icon: 'view-notifications', shortcut: 'Alt+3'})
-                .item({label: 'app:main-menu.view.chat', handler: () => this.onViewChat(), icon: 'view-chat', shortcut: 'Alt+4'})
-                .separator()
-                .popup('app:main-menu.view.toolbars.label')
-                    // TODO
-                    .item({id: 'view-toolbarsstandard', label: 'app:main-menu.view.toolbars.standard', handler: () => this.onViewToolbar('standard'), icon: 'menuitem-checked'})
-                .popup()
-                .item({id: 'view-fullscreen', label: 'app:main-menu.view.fullscreen', handler: () => this.onViewFullScreen(), icon: 'view-fullscreen', shortcut: 'Alt+Shift+Enter'})
-                .item({id: 'view-allwindows', label: 'app:main-menu.view.all-windows', handler: () => this.onViewAllWindows(), icon: 'view-all-windows', shortcut: 'Alt+Shift+M'})
-                .separator()
-                .item({id: 'view-navigatebackward', label: 'app:main-menu.view.navigate-backward', handler: () => this.onViewNavigateBackward(), icon: 'view-navigate-backward', shortcut: 'Ctrl+-'})
-                .item({id: 'view-navigateforward', label: 'app:main-menu.view.navigate-forward', handler: () => this.onViewNavigateForward(), icon: 'view-navigate-forward', shortcut: 'Ctrl+Shift+-'})
-            .popup()
-            .popup('app:main-menu.debug.label')
-                .popup('app:main-menu.debug.windows.label')
-                    .item({id: 'debug-windows-breakpoints', label: 'app:main-menu.debug.windows.breakpoints', handler: () => this.onDebugWindowsBreakpoints(), icon: 'debug-windows-breakpoints', shortcut: 'Alt+F9'})
-                    .item({id: 'debug-windows-output', label: 'app:main-menu.debug.windows.output', handler: () => this.onDebugWindowsOutput(), icon: 'debug-windows-output'})
-                    .separator()
-                    .item({id: 'debug-windows-watches', label: 'app:main-menu.debug.windows.watches', handler: () => this.onDebugWindowsWatches(), icon: 'debug-windows-watches'})
-                    .item({id: 'debug-windows-auto', label: 'app:main-menu.debug.windows.autos', handler: () => this.onDebugWindowsAutos(), icon: 'debug-windows-autos'})
-                    .item({id: 'debug-windows-locals', label: 'app:main-menu.debug.windows.locals', handler: () => this.onDebugWindowsLocals(), icon: 'debug-windows-locals', shortcut: 'Alt+4'})
-                    .item({id: 'debug-windows-immediates', label: 'app:main-menu.debug.windows.immediates', handler: () => this.onDebugWindowsImmediates(), icon: 'debug-windows-immediates', shortcut: 'Ctrl+Alt+I'})
-                    .separator()
-                    .item({id: 'debug-windows-callstack', label: 'app:main-menu.debug.windows.call-stack', handler: () => this.onDebugWindowsCallStack(), icon: 'debug-windows-call-stack', shortcut: 'Alt+7'})
-                    .item({id: 'debug-windows-threads', label: 'app:main-menu.debug.windows.threads', handler: () => this.onDebugWindowsThreads(), icon: 'debug-windows-threads', shortcut: 'Ctrl+Alt+H'})
-                    .item({id: 'debug-windows-modules', label: 'app:main-menu.debug.windows.modules', handler: () => this.onDebugWindowsModules(), icon: 'debug-windows-modules', shortcut: 'Ctrl+Alt+U'})
-                    .item({id: 'debug-windows-processes', label: 'app:main-menu.debug.windows.processes', handler: () => this.onDebugWindowsProcesses(), icon: 'debug-windows-processes', shortcut: 'Ctrl+Alt+Shift+P'})
-                    .separator()
-                    .item({id: 'debug-windows-memory', label: 'app:main-menu.debug.windows.memory', handler: () => this.onDebugWindowsMemory(), icon: 'debug-windows-memory'})
-                    .item({id: 'debug-windows-disassembly', label: 'app:main-menu.debug.windows.disassembly', handler: () => this.onDebugWindowsDisassembly(), icon: 'debug-windows-disassembly'})
-                    .item({id: 'debug-windows-registers', label: 'app:main-menu.debug.windows.registers', handler: () => this.onDebugWindowsRegisters(), icon: 'debug-windows-registers'})
-                .popup()
-                .separator()
+            .separator()
+            .item({id: 'file-close', label: 'app:main-menu.file.close', handler: () => this.onFileClose(), shortcut: 'Ctrl+F4'})
+            .item({id: 'file-closeconnection', label: 'app:main-menu.file.close-connection', handler: () => this.onFileCloseConnection(), icon: 'file-close-connection', shortcut: 'Ctrl+Shift+F4'})
+            .separator()
+            .item({id: 'file-save', label: 'app:main-menu.file.save', handler: () => this.onFileSave(), icon: 'file-save', shortcut: 'Ctrl+S'})
+            .item({id: 'file-saveas', label: 'app:main-menu.file.save-as', handler: () => this.onFileSaveAs()})
+            .item({id: 'file-saveall', label: 'app:main-menu.file.save-all', handler: () => this.onFileSaveAll(), icon: 'file-save-all', shortcut: 'Ctrl+Shift+S'})
+            .separator()
+            .popup('app:main-menu.file.source-control.label')
                 // TODO
-                .item({id: 'debug-continue', label: 'app:main-menu.debug.continue', handler: () => this.onDebugContinue(), icon: 'debug-continue', shortcut: 'F5'})
-                .item({id: 'debug-breakall', label: 'app:main-menu.debug.break-all', handler: () => this.onDebugBreakAll(), icon: 'debug-break-all', shortcut: 'Ctrl+Alt+Break'})
-                .item({id: 'debug-stop', label: 'app:main-menu.debug.stop', handler: () => this.onDebugStop(), icon: 'debug-stop', shortcut: 'Shift+F5'})
-                .item({id: 'debug-detachall', label: 'app:main-menu.debug.detach-all', handler: () => this.onDebugDetachAll(), icon: 'debug-detach-all'})
-                .item({id: 'debug-terminateall', label: 'app:main-menu.debug.terminate-all', handler: () => this.onDebugTerminateAll(), icon: 'debug-terminate-all'})
-                .item({id: 'debug-restart', label: 'app:main-menu.debug.restart', handler: () => this.onDebugRestart(), icon: 'debug-restart', shortcut: 'Ctrl+Shift+F5'})
-                .separator()
-                .item({id: 'debug-stepinto', label: 'app:main-menu.debug.step-into', handler: () => this.onDebugStepInto(), icon: 'debug-step-into', shortcut: 'F11'})
-                .item({id: 'debug-stepover', label: 'app:main-menu.debug.step-over', handler: () => this.onDebugStepOver(), icon: 'debug-step-over', shortcut: 'F10'})
-                .item({id: 'debug-stepout', label: 'app:main-menu.debug.step-out', handler: () => this.onDebugStepOut(), icon: 'debug-step-out', shortcut: 'Shift+F11'})
-                .separator()
-                .item({id: 'debug-togglebreakpoint', label: 'app:main-menu.debug.toggle-breakpoint', handler: () => this.onDebugToggleBreakpoint(), icon: 'debug-toggle-breakpoint', shortcut: 'F9'})
-                .popup('app:main-menu.debug.new-breakpoint.label')
-                    .item({id: 'debug-newfunctionbreakpoint', label: 'app:main-menu.debug.new-breakpoint.function', handler: () => this.onDebugNewBreakpointFunction(), shortcut: 'Ctrl+B'})
-                    .item({id: 'debug-newdatabreakpoint', label: 'app:main-menu.debug.new-breakpoint.data', handler: () => this.onDebugNewBreakpointData()})
-                .popup()
-                .item({id: 'debug-deleteallbreakpoints', label: 'app:main-menu.debug.delete-all-breakpoints', handler: () => this.onDebugDeleteAllBreakpoints(), icon: 'debug-delete-all-breakpoints', shortcut: 'Ctrl+Shift+F9'})
-                .item({id: 'debug-disableallbreakpoints', label: 'app:main-menu.debug.disable-all-breakpoints', handler: () => this.onDebugDisableAllBreakpoints(), icon: 'debug-disable-all-breakpoints'})
             .popup()
-            .popup('app:main-menu.tools.label')
-                .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
-                .separator()
-                .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize(), icon: 'tools-customize'})
-                .item({label: 'app:main-menu.tools.options', handler: () => this.onToolsOptions(), icon: 'tools-options'})
+            .separator()
+            .item({id: 'file-pagesetup', label: 'app:main-menu.file.page-setup', handler: () => this.onFilePageSetup(), icon: 'file-page-setup'})
+            .item({id: 'file-print', label: 'app:main-menu.file.print', handler: () => this.onFilePrint(), icon: 'file-print', shortcut: 'Ctrl+P'})
+            .separator()
+            .popup('app:main-menu.file.recent-connections', fileRecentConnectionsMenu)
+            .popup('app:main-menu.file.recent-files', fileRecentFilesMenu)
+            .separator()
+            .item({id: 'file-exit', label: 'app:main-menu.file.exit', handler: () => this.onFileExit(), icon: 'file-exit', shortcut: 'Alt+F4'})
+        .popup();
+    }
+
+    /**
+     * Build the edit menu
+     */
+    private buildEditMenu(): void {
+        this.menu.popup('app:main-menu.edit.label')
+            .popup('app:main-menu.edit.goto.label')
+                .item({id: 'edit-gotoline', label: 'app:main-menu.edit.goto.line', handler: () => this.onEditGotoLine(), shortcut: 'Ctrl+G'})
+                .item({id: 'edit-gotofunction', label: 'app:main-menu.edit.goto.function', handler: () => this.onEditGotoFunction(), shortcut: 'Ctrl+Shift+G'})
+                .item({id: 'edit-gotofile', label: 'app:main-menu.edit.goto.file', handler: () => this.onEditGotoFile(), shortcut: 'Ctrl+Alt+Shift+G'})
             .popup()
-            .popup('app:main-menu.window.label')
-                .item({id: 'window-newwindow', label: 'app:main-menu.window.new-window', handler: () => this.onWindowNewWindow(), icon: 'window-new-window'})
-                .item({id: 'window-split', label: 'app:main-menu.window.split', handler: () => this.onWindowSplit(), icon: 'window-split'})
-                .separator()
-                .item({id: 'window-float', label: 'app:main-menu.window.float', handler: () => this.onWindowFloat()})
-                .item({id: 'window-dock', label: 'app:main-menu.window.dock', handler: () => this.onWindowDock()})
-                .item({id: 'window-autohide', label: 'app:main-menu.window.auto-hide', handler: () => this.onWindowAutoHide()})
-                .item({id: 'window-hide', label: 'app:main-menu.window.hide', handler: () => this.onWindowHide(), icon: 'window-hide'})
-                .separator()
-                .item({label: 'app:main-menu.window.pin-tab', handler: () => this.onWindowPinTab(), icon: 'window-pin-tab'})
-                .separator()
-                .item({label: 'app:main-menu.window.save-window-layout', handler: () => this.onWindowSaveWindowLayout()})
-                .popup('app:main-menu.window.apply-window-layout.label')
-                    .item({label: 'app:main-menu.window.apply-window-layout.none-saved'})
-                .popup()
-                .item({label: 'app:main-menu.window.manage-window-layouts', handler: () => this.onWindowManageWindowLayouts()})
-                .item({label: 'app:main-menu.window.reset-window-layout', handler: () => this.onWindowResetWindowLayout()})
-                .separator()
-                .item({id: 'window-autohideall', label: 'app:main-menu.window.auto-hide-all', handler: () => this.onWindowAutoHideAll()})
-                .item({id: 'window-newhorizontaltabgroup', label: 'app:main-menu.window.new-horizontal-tab-group', handler: () => this.onWindowNewHorizontalTabGroup(), icon: 'window-new-horizontal-tab-group'})
-                .item({id: 'window-newverticaltabgroup', label: 'app:main-menu.window.new-vertical-tab-group', handler: () => this.onWindowNewVerticalTabGroup(), icon: 'window-new-vertical-tab-group'})
-                .item({id: 'window-closeall', label: 'app:main-menu.window.close-all-documents', handler: () => this.onWindowCloseAllDocuments(), icon: 'window-close-all-documents'})
-                .separator()
-                // TODO: list of documents opened
-                .item({label: 'app:main-menu.window.windows', handler: () => this.onWindowWindows()})
+            .popup('app:main-menu.edit.find-replace.label')
             .popup()
-            .popup('app:main-menu.help.label')
-                .popup('app:main-menu.help.feedback.label')
-                    .item({label: 'app:main-menu.help.feedback.report-bug', handler: () => this.onHelpFeedbackReportBug(), icon: 'help-feedback-report-bug'})
-                .popup()
-                .separator()
-                .item({label: 'app:main-menu.help.view', handler: () => this.onHelpShow(), icon: 'help-view', shortcut: 'F1'})
-                .separator()
-                .item({label: 'app:main-menu.help.about', handler: () => this.onHelpAbout()})
+            .separator()
+            .item({id: 'edit-undo', label: 'app:main-menu.edit.undo', handler: () => this.onEditUndo(), icon: 'edit-undo', shortcut: 'Ctrl+Z'})
+            .item({id: 'edit-redo', label: 'app:main-menu.edit.redo', handler: () => this.onEditRedo(), icon: 'edit-redo', shortcut: 'Ctrl+Y'})
+            .separator()
+            .item({id: 'edit-cut', label: 'app:main-menu.edit.cut', handler: () => this.onEditCut(), icon: 'edit-cut', shortcut: 'Ctrl+X'})
+            .item({id: 'edit-copy', label: 'app:main-menu.edit.copy', handler: () => this.onEditCopy(), icon: 'edit-copy', shortcut: 'Ctrl+C'})
+            .item({id: 'edit-paste', label: 'app:main-menu.edit.paste', handler: () => this.onEditPaste(), icon: 'edit-paste', shortcut: 'Ctrl+V'})
+            .item({id: 'edit-delete', label: 'app:main-menu.edit.delete', handler: () => this.onEditDelete(), icon: 'edit-delete', shortcut: 'Del'})
+            .separator()
+            .item({id: 'edit-selectall', label: 'app:main-menu.edit.select-all', handler: () => this.onEditSelectAll(), icon: 'edit-select-all', shortcut: 'Ctrl+A'})
+        .popup();
+    }
+
+    /**
+     * Build the view menu
+     */
+    private buildViewMenu(): void {
+        this.menu.popup('app:main-menu.view.label')
+            .item({label: 'app:main-menu.view.host-explorer', handler: () => this.onViewHostExplorer(), icon: 'view-host-explorer', shortcut: 'Ctrl+Alt+L'})
+            .item({label: 'app:main-menu.view.network-explorer', handler: () => this.onViewNetworkExplorer(), icon: 'view-network-explorer', shortcut: 'Ctrl+M'})
+            .separator()
+            .item({label: 'app:main-menu.view.bookmark-window', handler: () => this.onViewBookmarkWindow(), icon: 'view-bookmark-window', shortcut: 'Ctrl+K'})
+            .item({label: 'app:main-menu.view.call-hierarchy', handler: () => this.onViewCallHierarchy(), icon: 'view-call-hierarchy', shortcut: 'Ctrl+Alt+K'})
+            .item({label: 'app:main-menu.view.object-browser', handler: () => this.onViewObjectBrowser(), icon: 'view-object-browser', shortcut: 'Ctrl+Alt+J'})
+            .separator()
+            .item({label: 'app:main-menu.view.command-window', handler: () => this.onViewCommandWindow(), icon: 'view-command-window', shortcut: 'Alt+0'})
+            .item({label: 'app:main-menu.view.error-list', handler: () => this.onViewErrorList(), icon: 'view-error-list', shortcut: 'Alt+1'})
+            .item({label: 'app:main-menu.view.output', handler: () => this.onViewOutput(), icon: 'view-output', shortcut: 'Alt+2'})
+            .item({label: 'app:main-menu.view.notifications', handler: () => this.onViewNotifications(), icon: 'view-notifications', shortcut: 'Alt+3'})
+            .item({label: 'app:main-menu.view.chat', handler: () => this.onViewChat(), icon: 'view-chat', shortcut: 'Alt+4'})
+            .separator()
+            .popup('app:main-menu.view.toolbars.label')
+                // TODO: retrieve available toolbars from modules
+                .item({id: 'view-toolbarsstandard', label: 'app:main-menu.view.toolbars.standard', handler: () => this.onViewToolbar('standard'), icon: 'menuitem-checked'})
             .popup()
-            .popupText('<username>')
-                .item({id: 'profile-preferences', label: 'app:main-menu.profile.preferences', handler: () => this.onProfilePreferences()})
-                .item({id: 'profile-rights', label: 'app:main-menu.profile.rights', handler: () => this.onProfileRights()})
-                .separator()
-                .item({id: 'profile-logout', label: 'app:main-menu.profile.logout', handler: () => this.onProfileLogout()})
+            .item({id: 'view-fullscreen', label: 'app:main-menu.view.fullscreen', handler: () => this.onViewFullScreen(), icon: 'view-fullscreen', shortcut: 'Alt+Shift+Enter'})
+            .item({id: 'view-allwindows', label: 'app:main-menu.view.all-windows', handler: () => this.onViewAllWindows(), icon: 'view-all-windows', shortcut: 'Alt+Shift+M'})
+            .separator()
+            .item({id: 'view-navigatebackward', label: 'app:main-menu.view.navigate-backward', handler: () => this.onViewNavigateBackward(), icon: 'view-navigate-backward', shortcut: 'Ctrl+-'})
+            .item({id: 'view-navigateforward', label: 'app:main-menu.view.navigate-forward', handler: () => this.onViewNavigateForward(), icon: 'view-navigate-forward', shortcut: 'Ctrl+Shift+-'})
+        .popup();
+    }
+
+    /**
+     * Build the module menus
+     */
+    private buildModuleMenus(): void {
+        // TODO
+    }
+
+    /**
+     * Build the tools menu
+     */
+    private buildToolsMenu(): void {
+        this.menu.popup('app:main-menu.tools.label')
+            .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
+            .separator()
+            .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize(), icon: 'tools-customize'})
+            .item({label: 'app:main-menu.tools.options', handler: () => this.onToolsOptions(), icon: 'tools-options'})
+        .popup();
+    }
+
+    /**
+     * Build the window menu
+     */
+    private buildWindowMenu(): void {
+        this.menu.popup('app:main-menu.window.label')
+            .item({id: 'window-newwindow', label: 'app:main-menu.window.new-window', handler: () => this.onWindowNewWindow(), icon: 'window-new-window'})
+            .item({id: 'window-split', label: 'app:main-menu.window.split', handler: () => this.onWindowSplit(), icon: 'window-split'})
+            .separator()
+            .item({id: 'window-float', label: 'app:main-menu.window.float', handler: () => this.onWindowFloat()})
+            .item({id: 'window-dock', label: 'app:main-menu.window.dock', handler: () => this.onWindowDock()})
+            .item({id: 'window-autohide', label: 'app:main-menu.window.auto-hide', handler: () => this.onWindowAutoHide()})
+            .item({id: 'window-hide', label: 'app:main-menu.window.hide', handler: () => this.onWindowHide(), icon: 'window-hide'})
+            .separator()
+            .item({label: 'app:main-menu.window.pin-tab', handler: () => this.onWindowPinTab(), icon: 'window-pin-tab'})
+            .separator()
+            .item({label: 'app:main-menu.window.save-window-layout', handler: () => this.onWindowSaveWindowLayout()})
+            .popup('app:main-menu.window.apply-window-layout.label')
+                .item({label: 'app:main-menu.window.apply-window-layout.none-saved'})
             .popup()
-        ;
+            .item({label: 'app:main-menu.window.manage-window-layouts', handler: () => this.onWindowManageWindowLayouts()})
+            .item({label: 'app:main-menu.window.reset-window-layout', handler: () => this.onWindowResetWindowLayout()})
+            .separator()
+            .item({id: 'window-autohideall', label: 'app:main-menu.window.auto-hide-all', handler: () => this.onWindowAutoHideAll()})
+            .item({id: 'window-newhorizontaltabgroup', label: 'app:main-menu.window.new-horizontal-tab-group', handler: () => this.onWindowNewHorizontalTabGroup(), icon: 'window-new-horizontal-tab-group'})
+            .item({id: 'window-newverticaltabgroup', label: 'app:main-menu.window.new-vertical-tab-group', handler: () => this.onWindowNewVerticalTabGroup(), icon: 'window-new-vertical-tab-group'})
+            .item({id: 'window-closeall', label: 'app:main-menu.window.close-all-documents', handler: () => this.onWindowCloseAllDocuments(), icon: 'window-close-all-documents'})
+            .separator()
+            // TODO: list of documents opened
+            .item({label: 'app:main-menu.window.windows', handler: () => this.onWindowWindows()})
+        .popup();
+    }
+
+    /**
+     * Build the help menu
+     */
+    private buildHelpMenu(): void {
+        this.menu.popup('app:main-menu.help.label')
+            .popup('app:main-menu.help.feedback.label')
+                .item({label: 'app:main-menu.help.feedback.report-bug', handler: () => this.onHelpFeedbackReportBug(), icon: 'help-feedback-report-bug'})
+            .popup()
+            .separator()
+            .item({label: 'app:main-menu.help.view', handler: () => this.onHelpShow(), icon: 'help-view', shortcut: 'F1'})
+            .separator()
+            .item({label: 'app:main-menu.help.about', handler: () => this.onHelpAbout()})
+        .popup();
+    }
+
+    /**
+     * Build the profile menu
+     */
+    private buildProfileMenu(): void {
+        this.menu.popupText('<username>')
+            .item({id: 'profile-preferences', label: 'app:main-menu.profile.preferences', handler: () => this.onProfilePreferences()})
+            .item({id: 'profile-rights', label: 'app:main-menu.profile.rights', handler: () => this.onProfileRights()})
+            .separator()
+            .item({id: 'profile-logout', label: 'app:main-menu.profile.logout', handler: () => this.onProfileLogout()})
+        .popup();
     }
 
     /**
@@ -454,191 +471,6 @@ class MainMenuView extends UIElement {
      */
     private onViewNavigateForward(): void {
         console.warn('View => Navigate Forward not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Breakpoints is selected
-     */
-    private onDebugWindowsBreakpoints(): void {
-        console.warn('Debug => Windows => Breakpoints not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Output is selected
-     */
-    private onDebugWindowsOutput(): void {
-        console.warn('Debug => Windows => Output not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Watches is selected
-     */
-    private onDebugWindowsWatches(): void {
-        console.warn('Debug => Windows => Watches not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Autos is selected
-     */
-    private onDebugWindowsAutos(): void {
-        console.warn('Debug => Windows => Autos not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Locals is selected
-     */
-    private onDebugWindowsLocals(): void {
-        console.warn('Debug => Windows => Locals not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Immediates is selected
-     */
-    private onDebugWindowsImmediates(): void {
-        console.warn('Debug => Windows => Immediates not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Call Stack is selected
-     */
-    private onDebugWindowsCallStack(): void {
-        console.warn('Debug => Windows => Call Stack not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Threads is selected
-     */
-    private onDebugWindowsThreads(): void {
-        console.warn('Debug => Windows => Threads not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Modules is selected
-     */
-    private onDebugWindowsModules(): void {
-        console.warn('Debug => Windows => Modules not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Processes is selected
-     */
-    private onDebugWindowsProcesses(): void {
-        console.warn('Debug => Windows => Processes not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Memory is selected
-     */
-    private onDebugWindowsMemory(): void {
-        this.windowManager.openWindow('memory');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Disassembly is selected
-     */
-    private onDebugWindowsDisassembly(): void {
-        this.windowManager.openWindow('disassembly');
-    }
-
-    /**
-     * Callback triggered when Debug => Windows => Registers is selected
-     */
-    private onDebugWindowsRegisters(): void {
-        console.warn('Debug => Windows => Registers not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Continue is selected
-     */
-    private onDebugContinue(): void {
-        console.warn('Debug => Continue not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Break All is selected
-     */
-    private onDebugBreakAll(): void {
-        console.warn('Debug => Break All not implemented');
-    }
-    /**
-     * Callback triggered when Debug => Stop is selected
-     */
-    private onDebugStop(): void {
-        console.warn('Debug => Stop not implemented');
-    }
-    /**
-     * Callback triggered when Debug => Detach All is selected
-     */
-    private onDebugDetachAll(): void {
-        console.warn('Debug => Detach All not implemented');
-    }
-    /**
-     * Callback triggered when Debug => Terminate All is selected
-     */
-    private onDebugTerminateAll(): void {
-        console.warn('Debug => Terminate All not implemented');
-    }
-    /**
-     * Callback triggered when Debug => Restart is selected
-     */
-    private onDebugRestart(): void {
-        console.warn('Debug => Restart not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Step Into is selected
-     */
-    private onDebugStepInto(): void {
-        console.warn('Debug => Step Into not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Step Over is selected
-     */
-    private onDebugStepOver(): void {
-        console.warn('Debug => Step Into not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Step Out is selected
-     */
-    private onDebugStepOut(): void {
-        console.warn('Debug => Step Out not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => New Breakpoint => Function Breakpoint is selected
-     */
-    private onDebugNewBreakpointFunction(): void {
-        console.warn('Debug => Break at Function not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => New Breakpoint => Data Breakpoint is selected
-     */
-    private onDebugNewBreakpointData(): void {
-        console.warn('Debug => New Data Breakpoint not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Toggle Breakpoint is selected
-     */
-    private onDebugToggleBreakpoint(): void {
-        console.warn('Debug => Toggle Breakpoint not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Delete All Breakpoints is selected
-     */
-    private onDebugDeleteAllBreakpoints(): void {
-        console.warn('Debug => Delete All Breakpoints not implemented');
-    }
-
-    /**
-     * Callback triggered when Debug => Disable All Breakpoints is selected
-     */
-    private onDebugDisableAllBreakpoints(): void {
-        console.warn('Debug => Disable All Breakpoints not implemented');
     }
 
     /**

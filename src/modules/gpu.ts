@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * GPU module
  */
 @Component
-class GpuModule implements Module {
+class GpuModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class GpuModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

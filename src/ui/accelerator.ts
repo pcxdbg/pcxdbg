@@ -78,17 +78,18 @@ const KEY_MAPPING: {[keyValue: number]: string} = {
 };
 
 /**
- * Shortcut handler
+ * Accelerator handler
+ * @param combination Combination that triggered the accelerator
  */
-type ShortcutHandler = (combination?: string) => void;
+type AcceleratorHandler = (combination?: string) => void;
 
 /**
- * Shortcut manager
+ * Accelerator manager
  */
 @Component
-class ShortcutManager {
-    private registeredShortcuts: {[combination: string]: ShortcutHandler} = {};
+class AcceleratorManager {
     private keydownListener: (keyboardEvent: KeyboardEvent) => any = keyboardEvent => this.onKeydown(keyboardEvent);
+    private accelerators: {[combination: string]: AcceleratorHandler} = {};
 
     /**
      * Class constructor
@@ -98,29 +99,29 @@ class ShortcutManager {
     }
 
     /**
-     * Register a shortcut
+     * Register an accelerator
      * @param combination Combination
-     * @param handler     Shortcut handler
+     * @param handler     Accelerator handler
      */
-    registerShortcut(combination: string, handler: ShortcutHandler) {
-      this.registeredShortcuts[combination] = handler;
+    registerAccelerator(combination: string, handler: AcceleratorHandler): void {
+      this.accelerators[combination] = handler;
     }
 
     /**
-     * Unregister a shortcut
+     * Unregister an accelerator
      * @param combination Combination
      */
-    unregisterShortcut(combination: string) {
-      delete this.registeredShortcuts;
+    unregisterAccelerator(combination: string): void {
+      delete this.accelerators[combination];
     }
 
     /**
      * Keyboard event handling
      * @param keyboardEvent Keyboard event
      */
-    onKeydown(keyboardEvent: KeyboardEvent) {
-        let combination: string[] = [];
+    onKeydown(keyboardEvent: KeyboardEvent): void {
         let combinationName: string = '';
+        let combination: string[] = [];
         let key: number = keyboardEvent.which;
 
         if (keyboardEvent.ctrlKey) {
@@ -144,8 +145,8 @@ class ShortcutManager {
         }
 
         combinationName = combination.join('+');
-        if (combinationName in this.registeredShortcuts) {
-            this.registeredShortcuts[combinationName](combinationName);
+        if (combinationName in this.accelerators) {
+            this.accelerators[combinationName](combinationName);
             keyboardEvent.preventDefault();
             keyboardEvent.stopPropagation();
             keyboardEvent.returnValue = false;
@@ -155,6 +156,6 @@ class ShortcutManager {
 }
 
 export {
-    ShortcutHandler,
-    ShortcutManager
+    AcceleratorHandler,
+    AcceleratorManager
 };

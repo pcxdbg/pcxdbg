@@ -1,3 +1,4 @@
+import {Menu} from '../ui/menu';
 
 /**
  * Module information
@@ -11,13 +12,21 @@ class ModuleInformation {
 /**
  * Module interface
  */
-interface Module {
+abstract class Module {
 
     /**
      * Get the module name
      * @return Module name
      */
-    getInformation(): Promise<ModuleInformation>;
+    abstract getInformation(): Promise<ModuleInformation>;
+
+    /**
+     * Build menu entries
+     * @param menu Menu
+     */
+    buidMenuEntries(menu: Menu): void {
+        // Default: no menu entries added
+    }
 
 }
 

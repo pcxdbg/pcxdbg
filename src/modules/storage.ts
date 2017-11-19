@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * Storage module
  */
 @Component
-class StorageModule implements Module {
+class StorageModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class StorageModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

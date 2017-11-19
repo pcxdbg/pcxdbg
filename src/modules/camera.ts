@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * Camera module
  */
 @Component
-class CameraModule implements Module {
+class CameraModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class CameraModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

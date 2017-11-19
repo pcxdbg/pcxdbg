@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * Input module
  */
 @Component
-class InputModule implements Module {
+class InputModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class InputModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

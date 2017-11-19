@@ -1,6 +1,6 @@
 import {UIElement} from '../ui/element';
 import {Component} from '../component';
-import {ShortcutManager} from '../ui/shortcut';
+import {AcceleratorManager} from '../ui/accelerator';
 
 /**
  * Quick launch
@@ -23,20 +23,23 @@ class QuickLaunch extends UIElement {
 
     /**
      * Class constructor
-     * @param shortcutManager Shortcut manager
+     * @param acceleratorManager Accelerator manager
      */
-    constructor(shortcutManager: ShortcutManager) {
+    constructor(acceleratorManager: AcceleratorManager) {
         super('quick-launch', QuickLaunch.HTML);
         let form: HTMLFormElement = this.selectNativeElement<HTMLFormElement>('form');
 
         form.addEventListener('submit', e => e.preventDefault() && this.launch());
 
-        this.inputField = this.selectNativeElement<HTMLInputElement>('form', 'input[type=text]');
+        this.inputField = this.selectNativeElement<HTMLInputElement>('form', 'input[type=text]'); // TODO: proper Input class
+        this.inputField.addEventListener('cut', (e) => {
+            console.log('cut event', e);
+        }, false);
         this.inputField.addEventListener('blur', () => this.onFocusLost(), false);
         this.inputField.addEventListener('focus', () => this.onFocus(), false);
         this.inputField.addEventListener('keyup', () => this.onInputChange(), false);
 
-        shortcutManager.registerShortcut('Ctrl+Q', () => this.inputField.focus());
+        acceleratorManager.registerAccelerator('Ctrl+Q', () => this.inputField.focus());
     }
 
     /**

@@ -6,7 +6,7 @@ import {WindowManager} from '../ui/window';
  * APU module
  */
 @Component
-class ApuModule implements Module {
+class ApuModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -14,6 +14,7 @@ class ApuModule implements Module {
      * @param windowManager Window manager
      */
     constructor(windowManager: WindowManager) {
+        super();
         this.windowManager = windowManager;
     }
 

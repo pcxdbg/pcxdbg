@@ -1,7 +1,6 @@
 import {UIElement} from './element';
 import {Component, componentManager} from '../component';
 import {Icon, IconManager} from './icon';
-import {ShortcutManager} from './shortcut';
 import {I18nManager} from '../lng/i18n';
 
 /**
@@ -34,16 +33,14 @@ class MenuItemData {
  */
 @Component
 class MenuManager {
-    private shortcutManager: ShortcutManager;
     private iconManager: IconManager;
 
     /**
      * Class constructor
-     * @param shortcutManager Shortcut manager
-     * @param iconManager     Icon manager
+     * @param acceleratorManager Accelerator manager
+     * @param iconManager        Icon manager
      */
-    constructor(shortcutManager: ShortcutManager, iconManager: IconManager) {
-        this.shortcutManager = shortcutManager;
+    constructor(iconManager: IconManager) {
         this.iconManager = iconManager;
     }
 
@@ -52,7 +49,7 @@ class MenuManager {
      * @return Menu
      */
     createMenu(): Menu {
-        return new Menu(this, this.shortcutManager, this.iconManager, false);
+        return new Menu(this, this.iconManager, false);
     }
 
     /**
@@ -60,7 +57,7 @@ class MenuManager {
      * @return Popup menu
      */
     createPopupMenu(parentMenu?: Menu): Menu {
-        return new Menu(this, this.shortcutManager, this.iconManager, true, parentMenu);
+        return new Menu(this, this.iconManager, true, parentMenu);
     }
 
 }
@@ -69,7 +66,6 @@ class MenuManager {
  * Menu
  */
 class Menu extends UIElement {
-    private shortcutManager: ShortcutManager;
     private iconManager: IconManager;
     private menuManager: MenuManager;
     private parentMenu: Menu;
@@ -78,16 +74,14 @@ class Menu extends UIElement {
 
     /**
      * Class constructor
-     * @param menuManager     Menu manager
-     * @param shortcutManager Shortcut manager
-     * @param iconManager     Icon manager
-     * @param popupMenu       true if the menu is a popup menu
-     * @param parentMenu      Parent menu
+     * @param menuManager Menu manager
+     * @param iconManager Icon manager
+     * @param popupMenu   true if the menu is a popup menu
+     * @param parentMenu  Parent menu
      */
-    constructor(menuManager: MenuManager, shortcutManager: ShortcutManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
+    constructor(menuManager: MenuManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
         super('menu');
         this.menuManager = menuManager;
-        this.shortcutManager = shortcutManager;
         this.iconManager = iconManager;
         this.parentMenu = parentMenu;
         this.popupMenu = popupMenu;
@@ -193,10 +187,6 @@ class Menu extends UIElement {
                 .text(itemDefinition.shortcut)
                 .attachTo(menuItem)
             ;
-
-            if (itemDefinition.handler) {
-                this.shortcutManager.registerShortcut(itemDefinition.shortcut, () => itemDefinition.handler(itemDefinition));
-            }
         }
 
         if (this.popup && itemDefinition.popupMenu) {

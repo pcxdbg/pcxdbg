@@ -7,6 +7,20 @@ import {Component} from '../../component';
 @Component
 class BreakpointManager {
 
+    /**
+     * Delete all breakpoints
+     */
+    deleteAll(): void {
+        console.warn('Deleting all breakpoints is not implemented');
+    }
+
+    /**
+     * Disable all breakpoints
+     */
+    disableAll(): void {
+        console.warn('Disabling all breakpoints is not implemented');
+    }
+
 }
 
 /**
