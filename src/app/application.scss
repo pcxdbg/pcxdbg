@@ -5,8 +5,8 @@
 @import "status-bar";
 @import "host-explorer";
 @import "network-explorer";
-@import "dialogs/about-dialog";
-@import "dialogs/open-connection";
+@import "dialogs/dialog-about";
+@import "dialogs/dialog-open-connection";
 
 application {
     position: absolute;
@@ -14,12 +14,19 @@ application {
     right: 0px;
     bottom: 0px;
     left: 0px;
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: #2d2d30;
     border: solid 1px #434346;
     box-sizing: border-box;
 
     &[has-focus] {
         border-color: $color-primary;
+    }
+
+    > application-client-area {
+        position: relative;
+        margin: 6px;
+        flex-grow: 1;
     }
 }

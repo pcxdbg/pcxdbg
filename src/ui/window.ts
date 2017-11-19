@@ -3,23 +3,12 @@ import {Component} from '../component';
 import {Icon, IconManager} from './icon';
 
 /**
- * Window rectangle
- */
-class WindowRectangle {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
-}
-
-/**
  * Window manager
  */
 @Component
 class WindowManager {
     private windowComponents: {[componentId: string]: Window} = {};
     private windowContainer: WindowContainer;
-    private areaPadding: WindowRectangle;
     private targetElement: UIElement = null;
     private focusWindow: Window = null;
 
@@ -28,18 +17,17 @@ class WindowManager {
      * @param targetElement Target element
      * @param areaPadding   Area padding
      */
-    setAvailableArea(targetElement: UIElement, areaPadding: WindowRectangle): void {
+    setAvailableArea(targetElement: UIElement): void {
         let windowContainerElement: HTMLElement;
 
         this.targetElement = targetElement;
-        this.areaPadding = areaPadding;
         this.windowContainer = new WindowContainer(this);
         windowContainerElement = this.windowContainer.getNativeElement();
         windowContainerElement.style.position = 'absolute';
-        windowContainerElement.style.top = areaPadding.top + 'px';
-        windowContainerElement.style.left = areaPadding.left + 'px';
-        windowContainerElement.style.right = areaPadding.right + 'px';
-        windowContainerElement.style.bottom = areaPadding.bottom + 'px';
+        windowContainerElement.style.top =
+        windowContainerElement.style.left =
+        windowContainerElement.style.right =
+        windowContainerElement.style.bottom = '0px'; // TODO: dynamic based on the window layout
 
         this.windowContainer.attachTo(targetElement);
     }
@@ -459,7 +447,6 @@ class WindowContainer extends UIElement {
 export {
     Window,
     WindowContainer,
-    WindowRectangle,
     WindowManager,
     WindowStyle
 };

@@ -7,12 +7,7 @@ $icon-hoverbackground: #3f3f41;
 
 title-bar {
     -webkit-app-region: drag;
-    position: absolute;
-    z-index: $titlebar-zindex;
-    top: 0px;
-    right: 0px;
     height: $titlebar-height;
-    left: 0px;
     display: flex;
     flex-direction: row;
     align-items: center;

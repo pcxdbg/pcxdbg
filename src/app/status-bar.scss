@@ -1,11 +1,7 @@
 
 status-bar {
-    position: absolute;
-    z-index: $statusbar-zindex;
+    position: relative;
     height: $statusbar-height;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
     /*  
     display: flex;
     flex-direction: row;

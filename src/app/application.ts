@@ -3,10 +3,12 @@ import {Window, WindowManager} from '../ui/window';
 import {ModalManager} from '../ui/modal';
 import {TitleBarView} from './title-bar';
 import {MainMenuView} from './main-menu';
+import {ToolbarContainerView} from './toolbar-container';
 import {StatusBarView} from './status-bar';
 import {HostExplorerView} from './host-explorer';
 import {NetworkExplorerView} from './network-explorer';
-import {AboutDialog} from './dialogs/about-dialog';
+import {AboutDialog, OpenConnectionDialog} from './dialogs/dialogs';
+import {StandardToolbar} from './toolbars/toolbars';
 import {ApuModule} from '../modules/apu';
 import {CameraModule} from '../modules/camera';
 import {CpuModule} from '../modules/cpu';
@@ -34,6 +36,7 @@ class ApplicationView extends UIElement {
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private application: Application;
+    private clientArea: UIElement;
 
     /**
      * Class constructor
@@ -43,14 +46,10 @@ class ApplicationView extends UIElement {
      */
     constructor(application: Application, windowManager: WindowManager, modalManager: ModalManager) {
         super('application');
+        this.clientArea = new UIElement('application-client-area');
         this.modalManager = modalManager;
         this.windowManager = windowManager;
-        this.windowManager.setAvailableArea(this, {
-            top: 88,
-            right: 6,
-            bottom: 29,
-            left: 6
-        });
+        this.windowManager.setAvailableArea(this.clientArea);
 
         window.addEventListener('focus', () => this.setFocus(true), false);
         window.addEventListener('blur', () => this.setFocus(false), false);
@@ -58,20 +57,26 @@ class ApplicationView extends UIElement {
             this.setFocus(true);
         }
 
-        document.body.appendChild(this.getNativeElement());
     }
 
     /**
      * Set the frame components
-     * @param titleBarView  Title bar view
-     * @param mainMenuView  Main menu view
-     * @param statusBarView Status bar view
+     * @param titleBarView         Title bar view
+     * @param mainMenuView         Main menu view
+     * @param toolbarContainerView Toolbar container view
+     * @param statusBarView        Status bar view
      */
     @Component
-    setFrameComponents(titleBarView: TitleBarView, mainMenuView: MainMenuView, statusBarView: StatusBarView): void {
-        titleBarView.attachTo(this);
-        mainMenuView.attachTo(this);
-        statusBarView.attachTo(this);
+    setFrameComponents(titleBarView: TitleBarView, mainMenuView: MainMenuView, toolbarContainerView: ToolbarContainerView, statusBarView: StatusBarView): void {
+        [
+            titleBarView,
+            mainMenuView,
+            toolbarContainerView,
+            this.clientArea,
+            statusBarView
+        ].forEach(view => view.attachTo(this));
+
+        document.body.appendChild(this.getNativeElement());
     }
 
     /**

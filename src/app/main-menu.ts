@@ -31,7 +31,7 @@ class MainMenuView extends UIElement {
      * @param moduleList       Module list
      */
     constructor(windowManager: WindowManager, modalManager: ModalManager, menuManager: MenuManager, commandManager: CommandManager, clipboardManager: ClipboardManager, moduleList: Module[]) {
-        super('main-menu');
+        super('application-main-menu');
         this.commandManager = commandManager;
         this.windowManager = windowManager;
         this.modalManager = modalManager;

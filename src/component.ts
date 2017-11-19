@@ -316,6 +316,7 @@ const Component: ClassOrMethodDecorator = (target, propertyKey) => {
 };
 
 export {
+    ClassConstructorTypeFromType,
     Component,
     ComponentManager,
     componentManager
