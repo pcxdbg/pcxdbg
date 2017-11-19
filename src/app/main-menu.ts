@@ -18,6 +18,7 @@ class MainMenuView extends UIElement {
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private menuManager: MenuManager;
+    private modules: Module[];
     private menu: Menu;
 
     /**
@@ -35,6 +36,7 @@ class MainMenuView extends UIElement {
         this.windowManager = windowManager;
         this.modalManager = modalManager;
         this.menuManager = menuManager;
+        this.modules = moduleList;
         this.menu = this.menuManager.createMenu();
         this.buildFileMenu();
         this.buildEditMenu();
@@ -142,7 +144,7 @@ class MainMenuView extends UIElement {
      * Build the module menus
      */
     private buildModuleMenus(): void {
-        // TODO
+        this.modules.forEach(module => module.buidMenuEntries(this.menu));
     }
 
     /**
