@@ -1,0 +1,15 @@
+environment:
+  nodejs_version: "8"
+install:
+  - ps: Install-Product node '' x64
+  - npm install
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run coverage
+build: off
+version: "0.3.0-build.{build}"
+branches:
+  only:
+    - master
