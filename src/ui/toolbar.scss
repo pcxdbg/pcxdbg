@@ -2,4 +2,32 @@
 toolbar {
     height: $toolbar-height;
     display: flex;
+
+    > toolbar-grip {
+        display: block;
+        width: $toolbargrip-width;
+        height: $toolbargrip-height;
+        margin: (($toolbaritem-height - $toolbargrip-height) / 2) $toolbargrip-margin 0px;
+        background-repeat: repeat;
+        background-image: url(images/window-grip-pattern-2.svg);
+    }
+
+    > toolbar-item {
+        display: flex;
+        width: $toolbaritem-height;
+        height: $toolbaritem-height;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background-color: $toolbaritem-backgroundcolorhover;
+        }
+    }
+
+    > toolbar-separator {
+        height: $toolbarseparator-height;
+        margin: (($toolbaritem-height - $toolbarseparator-height) / 2) $toolbarseparator-margin 0px;
+        border-left: solid 1px $toolbarseparator-color-left;
+        border-right: solid 1px $toolbarseparator-color-right;
+    }
 }

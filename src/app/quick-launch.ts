@@ -13,8 +13,8 @@ class QuickLaunch extends UIElement {
             <input type="submit" value="" i18n="[title]app:quick-launch.search"/>
             <menu popup class="right">
                 <menu-item>
-                <label>No search results available.</label>
-            </menu-item>
+                    <label>No search results available.</label>
+                </menu-item>
             </menu>
         </form>
     `;

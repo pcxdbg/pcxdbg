@@ -15,7 +15,6 @@ notifications:
   irc:
     channels:
       - "chat.freenode.net#pcxdbg"
-    nick: pcxdbg-ci
     template:
       - "#%{build_number} on %{branch}: %{message}"
       - "Commit by %{author}: %{commit_message}"

@@ -8,7 +8,6 @@ import {StatusBarView} from './status-bar';
 import {HostExplorerView} from './host-explorer';
 import {NetworkExplorerView} from './network-explorer';
 import {AboutDialog, OpenConnectionDialog} from './dialogs/dialogs';
-import {StandardToolbar} from './toolbars/toolbars';
 import {ApuModule} from '../modules/apu';
 import {CameraModule} from '../modules/camera';
 import {CpuModule} from '../modules/cpu';

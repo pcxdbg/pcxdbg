@@ -11,10 +11,12 @@ $menuitem-height: 22px;
 $menuitem-height-nopopup: 18px;
 
 $toolbar-height: 24px;
-/*
+$toolbaritem-backgroundcolorhover: $menuitem-backgroundcolorhover;
 $toolbaritem-height: $toolbar_height;
+/*
 $toolbaritemselectlabel-margin: 6px;
 $toolbariteminputlabel-margin: 6px;
+*/
 $toolbargrip-width: 5px;
 $toolbargrip-height: 18px;
 $toolbargrip-margin: 2px;
@@ -22,7 +24,6 @@ $toolbarseparator-height: 20px;
 $toolbarseparator-margin: 4px;
 $toolbarseparator-color-left: #222222;
 $toolbarseparator-color-right: #46464a;
-*/
 
 $windowtitle-height: 22px;
 $windowtitle-padding: 4px;

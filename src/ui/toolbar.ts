@@ -1,4 +1,5 @@
 import {UIElement} from './element';
+import {CommandManager} from './command';
 import {IconManager} from './icon';
 import {Component, componentManager, ClassConstructorTypeFromType} from '../component';
 
@@ -10,6 +11,8 @@ interface ToolbarItemDefinition {
     label?: string;
     labelParameters?: {[parameterName: string]: any};
     icon?: string;
+    command?: string;
+    commandParameters?: {[parameterName: string]: any};
 }
 
 /**
@@ -51,6 +54,15 @@ class Toolbar extends UIElement {
 
         this.attach(itemElement);
 
+        return this;
+    }
+
+    /**
+     * Add a separator
+     * @return this
+     */
+    separator(): Toolbar {
+        this.attach(new UIElement('toolbar-separator'));
         return this;
     }
 
