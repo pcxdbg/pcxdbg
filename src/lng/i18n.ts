@@ -1,7 +1,6 @@
 import {Component} from '../component';
 import * as moment from 'moment';
 import * as i18next from 'i18next';
-import * as i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import * as i18nextXHRBackend from 'i18next-xhr-backend';
 
 /**
@@ -20,8 +19,9 @@ class I18nManager {
         return new Promise((resolve, reject) => {
             let i18nextOptions: i18next.InitOptions = {
                 fallbackLng: 'en',
+                lng: 'en',
                 debug: false, // TODO: switch based on release/development environment
-                ns: ['ui', 'app', 'apu', 'cpu', 'gpu'],
+                ns: ['ui', 'app', 'apu', 'camera', 'cpu', 'gpu', 'input', 'network', 'online', 'storage', 'system'],
                 backend: {
                     loadPath: 'translations/{{lng}}-{{ns}}.json'
                 }
@@ -33,7 +33,6 @@ class I18nManager {
             i18next.on('missingKey', (language, namespace, key, result) => this.onMissingKey(<string> <any> language, namespace, key));
             i18next
                 .use(i18nextXHRBackend)
-                .use(i18nextBrowserLanguageDetector)
                 .init(i18nextOptions)
             ;
         });
