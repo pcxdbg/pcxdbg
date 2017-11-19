@@ -1,0 +1,4 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path class="outline" fill="#2d2d30" d="M0,4h1v-4h15v15h-11v1h-5z"/>
+<path class="content" fill="#c1c1c1" fill-rule="evenodd" d="M2,1h13v3h-13zm3,5h10v3h-10zm0,5h10v3h-10zm-1,4h-2c-1,0 -1,-1 -1,-1v-8c0,-1 1,-1 1,-1h2v3h-2v4h2z"/>
+</svg>

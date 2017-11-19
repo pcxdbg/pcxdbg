@@ -1,0 +1,6 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path class="outline" fill="#2d2d30" d="M5,0h11v15h-11z"/>
+<path class="content" fill="#c1c1c1" d="M6,1h6v1h-6zm0,3h6v1h-6zm0,3h6v1h-6zm0,3h6v1h-6zm0,3h6v1h-6zm7,-11h2v-1h-2zm0,3h2v-1h-2zm0,3h2v-1h-2zm0,3h2v-1h-2zm0,3h2v-1h-2z"/>
+<path class="outline" fill="#2d2d30" d="M0,2h6v4h-2v2h2.5l4,4l-4,4h-2.5v-2h-4z"/>
+<path class="content blue" fill="#7ac1ff" d="M1,3h4v2h-2v6h3l-1,-1v-1h1l3,3l-3,3h-1v-1l1,-1h-5z"/>
+</svg>

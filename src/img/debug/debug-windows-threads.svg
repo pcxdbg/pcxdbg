@@ -1,0 +1,12 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<g id="debug-windows-threads">
+<path class="outline" fill="#2d2d30" d="M0,3v2.5l4,6c1,1.5 3,1.5 3,1.5h1v-4h-1c-0.5,-0.25 -1,-1 -1,-1l-3.75,-5z"/>
+<path class="content" fill="#c1c1c1" d="M1,4v1l4,6c0.5,0.75 2,1 2,1h1v-2h-1c-1,-0.25 -1.5,-1 -1.5,-1l-3.75,-5z"/>
+</g>
+</defs>
+<use href="#debug-windows-threads"/>
+<use href="#debug-windows-threads" transform="translate(0,16) scale(1,-1)"/>
+<use href="#debug-windows-threads" transform="translate(16,16) scale(-1,-1)"/>
+<use href="#debug-windows-threads" transform="translate(16,0) scale(-1,1)"/>
+</svg>

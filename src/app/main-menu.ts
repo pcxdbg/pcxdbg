@@ -46,7 +46,6 @@ class MainMenuView extends UIElement {
         this.buildWindowMenu();
         this.buildHelpMenu();
         this.buildProfileMenu();
-        console.log('modules', moduleList);
         this.menu.attachTo(this);
     }
 
@@ -154,7 +153,7 @@ class MainMenuView extends UIElement {
         this.menu.popup('app:main-menu.tools.label')
             .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
             .separator()
-            .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize(), icon: 'tools-customize'})
+            .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize()})
             .item({label: 'app:main-menu.tools.options', handler: () => this.onToolsOptions(), icon: 'tools-options'})
         .popup();
     }
