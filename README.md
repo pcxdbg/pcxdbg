@@ -1,8 +1,9 @@
 # pcxdbg
 
-[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg?style=flat-square)](https://travis-ci.org/pcxdbg/pcxdbg)
-[![Known Vulnerabilities](https://snyk.io/test/github/pcxdbg/pcxdbg/badge.svg)](https://snyk.io/test/github/pcxdbg/pcxdbg)
+[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg?label=Travis%20CI&style=flat)](https://travis-ci.org/pcxdbg/pcxdbg)
+[![AppVeyor](https://img.shields.io/appveyor/ci/rraziel/pcxdbg.svg?label=AppVeyor&style=flat)](https://ci.appveyor.com/project/rraziel/pcxdbg)
 [![Greenkeeper](https://badges.greenkeeper.io/pcxdbg/pcxdbg.svg)](https://greenkeeper.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/pcxdbg/pcxdbg/badge.svg)](https://snyk.io/test/github/pcxdbg/pcxdbg)
 
 A cross-platform debugger front-end written in [TypeScript](https://www.typescriptlang.org/) and embedded within an [Electron](https://electron.atom.io/) host.
 
