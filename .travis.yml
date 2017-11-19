@@ -20,3 +20,5 @@ notifications:
       - "Commit by %{author}: %{commit_message}"
       - "Change: %{compare_url}"
       - "Build: %{build_url}"
+    on_success: change
+    on_failure: always
