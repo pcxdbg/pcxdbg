@@ -1,0 +1,4 @@
+﻿<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<circle class="outline" fill="#2d2d30" cx="8" cy="8" r="8"/>
+<path class="content" fill="#c1c1c1" fill-rule="evenodd" d="M1,8a7,7 0 0,1 14,0a7,7 0 0,1 -14,0m1,0a6,6 0 0,1 12,0a6,6 0 0,1 -12,0zm5,3h2v2h-2zm0,-1v-7h2v7z"/>
+</svg>
