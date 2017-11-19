@@ -13,7 +13,9 @@ script:
   - npm run coverage
 notifications:
   irc:
-    - "chat.freenode.net#pcxdbg"
+    channels:
+      - "chat.freenode.net#pcxdbg"
+    nick: pcxdbg-ci
     template:
       - "#%{build_number} on %{branch}: %{message}"
       - "Commit by %{author}: %{commit_message}"
