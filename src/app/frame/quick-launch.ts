@@ -1,6 +1,5 @@
-import {UIElement} from '../ui/element';
-import {Component} from '../component';
-import {AcceleratorManager} from '../ui/accelerator';
+import {AcceleratorManager, UIElement} from '../../ui';
+import {Component} from '../../component';
 
 /**
  * Quick launch
@@ -39,7 +38,7 @@ class QuickLaunch extends UIElement {
         this.inputField.addEventListener('focus', () => this.onFocus(), false);
         this.inputField.addEventListener('keyup', () => this.onInputChange(), false);
 
-        acceleratorManager.registerAccelerator('Ctrl+Q', () => this.inputField.focus());
+        // acceleratorManager.registerAccelerator('Ctrl+Q', () => this.inputField.focus());
     }
 
     /**

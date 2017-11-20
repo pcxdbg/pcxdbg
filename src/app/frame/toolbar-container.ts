@@ -1,7 +1,6 @@
-import {UIElement} from '../ui/element';
-import {Component} from '../component';
-import {Toolbar} from '../ui/toolbar';
-import {StandardToolbar} from './toolbars/toolbars';
+import {Toolbar, UIElement} from '../../ui';
+import {Component} from '../../component';
+import {StandardToolbar} from '../toolbars/toolbar-standard';
 
 /**
  * Toolbar container view

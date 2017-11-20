@@ -1,6 +1,5 @@
-import {UIElement} from '../ui/element';
-import {Component} from '../component';
-import {Icon, IconManager} from '../ui/icon';
+import {Icon, IconManager, UIElement} from '../../ui';
+import {Component} from '../../component';
 
 /**
  * Status bar view

@@ -1,5 +1,7 @@
 import {UIElement} from './element';
 import {Component, componentManager} from '../component';
+import {AcceleratorManager} from './accelerator';
+import {CommandManager} from './command';
 import {Icon, IconManager} from './icon';
 import {I18nManager} from '../lng/i18n';
 
@@ -16,6 +18,8 @@ interface MenuItemDefinition {
     tooltipText?: string;
     handler?: (itemDefinition: MenuItemDefinition) => void;
     icon?: string;
+    command?: string;
+    commandParameters?: {[parameterName: string]: any};
     shortcut?: string;
     popupMenu?: Menu;
 }
@@ -33,14 +37,19 @@ class MenuItemData {
  */
 @Component
 class MenuManager {
+    private acceleratorManager: AcceleratorManager;
+    private commandManager: CommandManager;
     private iconManager: IconManager;
 
     /**
      * Class constructor
      * @param acceleratorManager Accelerator manager
+     * @param commandManager     Command manager
      * @param iconManager        Icon manager
      */
-    constructor(iconManager: IconManager) {
+    constructor(acceleratorManager: AcceleratorManager, commandManager: CommandManager, iconManager: IconManager) {
+        this.acceleratorManager = acceleratorManager;
+        this.commandManager = commandManager;
         this.iconManager = iconManager;
     }
 
@@ -49,7 +58,7 @@ class MenuManager {
      * @return Menu
      */
     createMenu(): Menu {
-        return new Menu(this, this.iconManager, false);
+        return new Menu(this, this.acceleratorManager, this.commandManager, this.iconManager, false);
     }
 
     /**
@@ -57,7 +66,7 @@ class MenuManager {
      * @return Popup menu
      */
     createPopupMenu(parentMenu?: Menu): Menu {
-        return new Menu(this, this.iconManager, true, parentMenu);
+        return new Menu(this, this.acceleratorManager, this.commandManager, this.iconManager, true, parentMenu);
     }
 
 }
@@ -66,6 +75,8 @@ class MenuManager {
  * Menu
  */
 class Menu extends UIElement {
+    private acceleratorManager: AcceleratorManager;
+    private commandManager: CommandManager;
     private iconManager: IconManager;
     private menuManager: MenuManager;
     private parentMenu: Menu;
@@ -74,13 +85,17 @@ class Menu extends UIElement {
 
     /**
      * Class constructor
-     * @param menuManager Menu manager
-     * @param iconManager Icon manager
-     * @param popupMenu   true if the menu is a popup menu
-     * @param parentMenu  Parent menu
+     * @param menuManager        Menu manager
+     * @param acceleratorManager Accelerator manager
+     * @param commandManager     Command manager
+     * @param iconManager        Icon manager
+     * @param popupMenu          true if the menu is a popup menu
+     * @param parentMenu         Parent menu
      */
-    constructor(menuManager: MenuManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
+    constructor(menuManager: MenuManager, acceleratorManager: AcceleratorManager, commandManager: CommandManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
         super('menu');
+        this.acceleratorManager = acceleratorManager;
+        this.commandManager = commandManager;
         this.menuManager = menuManager;
         this.iconManager = iconManager;
         this.parentMenu = parentMenu;
@@ -180,13 +195,18 @@ class Menu extends UIElement {
             ;
         } else if (itemDefinition.handler) {
             menuItem.click(() => itemDefinition.handler(itemDefinition));
+        } else if (itemDefinition.command) {
+            menuItem.click(() => this.commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
         }
 
-        if (itemDefinition.shortcut) {
-            new UIElement('menu-item-shortcut')
-                .text(itemDefinition.shortcut)
-                .attachTo(menuItem)
-            ;
+        if (itemDefinition.shortcut || itemDefinition.command) {
+            let shortcut: string = itemDefinition.shortcut || this.acceleratorManager.getCommandAccelerator(itemDefinition.command);
+            if (shortcut) {
+                new UIElement('menu-item-shortcut')
+                    .text(itemDefinition.shortcut)
+                    .attachTo(menuItem)
+                ;
+            }
         }
 
         if (this.popup && itemDefinition.popupMenu) {
@@ -370,7 +390,6 @@ class Menu extends UIElement {
         let changed: boolean = !activeElement || activeElement.getNativeElement() !== menuItem.getNativeElement();
 
         if (changed) {
-            console.log('changed');
             if (activeElement) {
                 activeElement.removeAttribute('active');
             }
@@ -378,7 +397,6 @@ class Menu extends UIElement {
             menuItem.attribute('active', '');
             this.attribute('active', '');
         } else {
-            console.log('not changed');
             menuItem.removeAttribute('active');
             this.removeAttribute('active');
         }

@@ -1,12 +1,6 @@
-import {UIElement} from '../ui/element';
-import {ClipboardManager} from '../ui/clipboard';
-import {Menu, MenuManager} from '../ui/menu';
-import {CommandManager} from '../ui/command';
-import {DocumentManager} from '../ui/document';
-import {ModalManager} from '../ui/modal';
-import {WindowManager} from '../ui/window';
-import {Component} from '../component';
-import {Module} from '../modules/module';
+import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElement, WindowManager} from '../../ui';
+import {Component} from '../../component';
+import {Module} from '../../modules';
 import {remote, shell} from 'electron';
 
 /**
@@ -58,29 +52,29 @@ class MainMenuView extends UIElement {
 
         this.menu.popup('app:main-menu.file.label')
             .popup('app:main-menu.file.open.label')
-                .item({id: 'file-openconnection', label: 'app:main-menu.file.open.connection', handler: () => this.onFileOpenConnection(), icon: 'file-open-connection', shortcut: 'Ctrl+Shift+O'})
+                .item({label: 'app:main-menu.file.open.connection', command: 'connection.open', icon: 'file-open-connection'})
                 .separator()
-                .item({id: 'file-openfile', label: 'app:main-menu.file.open.file', handler: () => this.onFileOpenFile(), icon: 'file-open-file', shortcut: 'Ctrl+O'})
+                .item({label: 'app:main-menu.file.open.file', command: 'file.open', icon: 'file-open-file'})
             .popup()
             .separator()
-            .item({id: 'file-close', label: 'app:main-menu.file.close', handler: () => this.onFileClose(), shortcut: 'Ctrl+F4'})
-            .item({id: 'file-closeconnection', label: 'app:main-menu.file.close-connection', handler: () => this.onFileCloseConnection(), icon: 'file-close-connection', shortcut: 'Ctrl+Shift+F4'})
+            .item({label: 'app:main-menu.file.close', command: 'file.close'})
+            .item({label: 'app:main-menu.file.close-connection', command: 'connection.close', icon: 'file-close-connection'})
             .separator()
-            .item({id: 'file-save', label: 'app:main-menu.file.save', handler: () => this.onFileSave(), icon: 'file-save', shortcut: 'Ctrl+S'})
-            .item({id: 'file-saveas', label: 'app:main-menu.file.save-as', handler: () => this.onFileSaveAs()})
-            .item({id: 'file-saveall', label: 'app:main-menu.file.save-all', handler: () => this.onFileSaveAll(), icon: 'file-save-all', shortcut: 'Ctrl+Shift+S'})
+            .item({label: 'app:main-menu.file.save', command: 'file.save', icon: 'file-save'})
+            .item({label: 'app:main-menu.file.save-as', command: 'file.save.as'})
+            .item({label: 'app:main-menu.file.save-all', command: 'file.save.all', icon: 'file-save-all'})
             .separator()
             .popup('app:main-menu.file.source-control.label')
                 // TODO
             .popup()
             .separator()
-            .item({id: 'file-pagesetup', label: 'app:main-menu.file.page-setup', handler: () => this.onFilePageSetup(), icon: 'file-page-setup'})
-            .item({id: 'file-print', label: 'app:main-menu.file.print', handler: () => this.onFilePrint(), icon: 'file-print', shortcut: 'Ctrl+P'})
+            .item({label: 'app:main-menu.file.page-setup', command: 'file.print.setup', icon: 'file-page-setup'})
+            .item({label: 'app:main-menu.file.print', command: 'file.print', icon: 'file-print'})
             .separator()
             .popup('app:main-menu.file.recent-connections', fileRecentConnectionsMenu)
             .popup('app:main-menu.file.recent-files', fileRecentFilesMenu)
             .separator()
-            .item({id: 'file-exit', label: 'app:main-menu.file.exit', handler: () => this.onFileExit(), icon: 'file-exit', shortcut: 'Alt+F4'})
+            .item({label: 'app:main-menu.file.exit', command: 'exit', icon: 'file-exit'})
         .popup();
     }
 
@@ -215,76 +209,6 @@ class MainMenuView extends UIElement {
             .separator()
             .item({id: 'profile-logout', label: 'app:main-menu.profile.logout', handler: () => this.onProfileLogout()})
         .popup();
-    }
-
-    /**
-     * Callback triggered when File => Open => Connection is selected
-     */
-    private onFileOpenConnection(): void {
-        console.warn('File => Open => Connection not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Open => File is selected
-     */
-    private onFileOpenFile(): void {
-        console.warn('File => Open => File not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Close is selected
-     */
-    private onFileClose(): void {
-        console.warn('File => Close not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Close Connection is selected
-     */
-    private onFileCloseConnection(): void {
-        console.warn('File => Close Connection not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Save is selected
-     */
-    private onFileSave(): void {
-        console.warn('File => Save not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Save As is selected
-     */
-    private onFileSaveAs(): void {
-        console.warn('File => Save As not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Save All is selected
-     */
-    private onFileSaveAll(): void {
-        console.warn('File => Save All not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Page Setup is selected
-     */
-    private onFilePageSetup(): void {
-        console.warn('File => Page Setup not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Print is selected
-     */
-    private onFilePrint(): void {
-        console.warn('File => Print not implemented');
-    }
-
-    /**
-     * Callback triggered when File => Exit is selected
-     */
-    private onFileExit(): void {
-       remote.getCurrentWindow().close();
     }
 
     /**

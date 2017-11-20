@@ -13,6 +13,7 @@ interface ToolbarItemDefinition {
     icon?: string;
     command?: string;
     commandParameters?: {[parameterName: string]: any};
+    handler?: () => void;
 }
 
 /**
@@ -50,6 +51,12 @@ class Toolbar extends UIElement {
 
         if (itemDefinition.icon) {
             itemElement.attach(componentManager.getComponent(IconManager).createIcon(16, 16, itemDefinition.icon));
+        }
+
+        if (itemDefinition.command) {
+            itemElement.click(() => componentManager.getComponent(CommandManager).executeCommand(itemDefinition.command, itemDefinition.commandParameters));
+        } else if (itemDefinition.handler) {
+            itemElement.click(() => itemDefinition.handler());
         }
 
         this.attach(itemElement);
@@ -105,5 +112,6 @@ class ToolbarManager {
 
 export {
     Toolbar,
+    ToolbarItemDefinition,
     ToolbarManager
 };

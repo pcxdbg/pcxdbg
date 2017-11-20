@@ -1,7 +1,6 @@
-import {UIElement} from '../ui/element';
-import {Component} from '../component';
-import {Icon, IconManager} from '../ui/icon';
-import {I18nManager} from '../lng/i18n';
+import {Icon, IconManager, UIElement} from '../../ui';
+import {Component} from '../../component';
+import {I18nManager} from '../../lng';
 import {QuickLaunch} from './quick-launch';
 import {remote} from 'electron';
 

@@ -1,23 +1,12 @@
 import {UIElement} from '../ui/element';
+import {Component} from '../component';
 import {Window, WindowManager} from '../ui/window';
 import {ModalManager} from '../ui/modal';
-import {TitleBarView} from './title-bar';
-import {MainMenuView} from './main-menu';
-import {ToolbarContainerView} from './toolbar-container';
-import {StatusBarView} from './status-bar';
+import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
 import {HostExplorerView} from './host-explorer';
 import {NetworkExplorerView} from './network-explorer';
-import {AboutDialog, OpenConnectionDialog} from './dialogs/dialogs';
-import {ApuModule} from '../modules/apu';
-import {CameraModule} from '../modules/camera';
-import {CpuModule} from '../modules/cpu';
-import {GpuModule} from '../modules/gpu';
-import {InputModule} from '../modules/input';
-import {NetworkModule} from '../modules/network';
-import {OnlineModule} from '../modules/online';
-import {StorageModule} from '../modules/storage';
-import {SystemModule} from '../modules/system';
-import {Component} from '../component';
+import {AboutDialog, OpenConnectionDialog} from './dialogs';
+import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
 
 /**
  * Application
@@ -55,7 +44,6 @@ class ApplicationView extends UIElement {
         if (document.hasFocus()) {
             this.setFocus(true);
         }
-
     }
 
     /**

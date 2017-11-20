@@ -1,4 +1,5 @@
 import {Component} from '../component';
+import {CommandManager} from './command';
 
 const KEY_MAPPING: {[keyValue: number]: string} = {
     8: 'Backspace',
@@ -78,10 +79,12 @@ const KEY_MAPPING: {[keyValue: number]: string} = {
 };
 
 /**
- * Accelerator handler
- * @param combination Combination that triggered the accelerator
+ * Accelerator
  */
-type AcceleratorHandler = (combination?: string) => void;
+interface Accelerator {
+    commandId: string;
+    commandParameters?: {[parameterName: string]: any};
+}
 
 /**
  * Accelerator manager
@@ -89,30 +92,44 @@ type AcceleratorHandler = (combination?: string) => void;
 @Component
 class AcceleratorManager {
     private keydownListener: (keyboardEvent: KeyboardEvent) => any = keyboardEvent => this.onKeydown(keyboardEvent);
-    private accelerators: {[combination: string]: AcceleratorHandler} = {};
+    private commandManager: CommandManager;
+    private accelerators: {[combination: string]: Accelerator} = {};
+    private commands: {[commandId: string]: string} = {};
 
     /**
      * Class constructor
+     * @param commandManager Command manager
      */
-    constructor() {
-      document.addEventListener('keydown', this.keydownListener, false);
+    constructor(commandManager: CommandManager) {
+        document.addEventListener('keydown', this.keydownListener, false);
+    }
+
+    /**
+     * Get the registered accelerator for a command
+     * @param commandId Command identifier
+     * @return Registered accelerator, if any
+     */
+    getCommandAccelerator(commandId: string): string {
+        return this.commands[commandId];
     }
 
     /**
      * Register an accelerator
-     * @param combination Combination
-     * @param handler     Accelerator handler
+     * @param combination       Combination
+     * @param commandId         Command identifier
+     * @param commandParameters Command parameters
      */
-    registerAccelerator(combination: string, handler: AcceleratorHandler): void {
-      this.accelerators[combination] = handler;
-    }
+    registerAccelerator(combination: string, commandId: string, commandParameters?: {[parameterName: string]: any}): void {
+        if (commandId in this.commands) {
+            throw new Error('an accelerator is already registered for command ' + commandId + ': ' + this.commands[commandId]);
+        }
 
-    /**
-     * Unregister an accelerator
-     * @param combination Combination
-     */
-    unregisterAccelerator(combination: string): void {
-      delete this.accelerators[combination];
+        this.accelerators[combination] = {
+            commandId: commandId,
+            commandParameters: commandParameters
+        };
+
+        this.commands[commandId] = combination;
     }
 
     /**
@@ -146,16 +163,18 @@ class AcceleratorManager {
 
         combinationName = combination.join('+');
         if (combinationName in this.accelerators) {
-            this.accelerators[combinationName](combinationName);
+            let accelerator: Accelerator = this.accelerators[combinationName];
+
             keyboardEvent.preventDefault();
             keyboardEvent.stopPropagation();
             keyboardEvent.returnValue = false;
+
+            this.commandManager.executeCommand(accelerator.commandId, accelerator.commandParameters);
         }
     }
 
 }
 
 export {
-    AcceleratorHandler,
     AcceleratorManager
 };

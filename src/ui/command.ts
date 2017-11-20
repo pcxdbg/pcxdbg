@@ -1,43 +1,49 @@
 import {Component} from '../component';
-import {AcceleratorManager} from './accelerator';
 
 /**
  * Command handler
- * @param commandId Command identifier
+ * @param commandId         Command identifier
+ * @param commandParameters Command parameters
  */
-type CommandHandler = (commandId?: string) => void;
+type CommandHandler = (commandId?: string, commandParameters?: {[parameterName: string]: any}) => void;
 
 /**
  * Command manager
  */
 @Component
 class CommandManager {
-    private commandAccelerators: {[commandId: string]: string} = {};
-    private acceleratorManager: AcceleratorManager;
+    private commandHandlers: {[commandId: string]: CommandHandler} = {};
 
     /**
      * Class constructor
-     * @param acceleratorManager Accelerator manager
      */
-    constructor(acceleratorManager: AcceleratorManager) {
-        this.acceleratorManager = acceleratorManager;
+    constructor() {
+        window['__commandManager__'] = this;
     }
 
     /**
-     * Get the registered accelerator for a command, or register and get a default value to otherwise
-     * @param commandId          Command identifier
-     * @param defaultAccelerator Default accelerator
-     * @return Registered accelerator
+     * Execute a command
+     * @param commandId         Command identifier
+     * @param commandParameters Command
      */
-    getAccelerator(commandId: string, defaultAccelerator?: string, commandHandler?: CommandHandler): string {
-        if (commandId in this.commandAccelerators) {
-            return this.commandAccelerators[commandId];
-        } else if (defaultAccelerator) {
-            this.acceleratorManager.registerAccelerator(defaultAccelerator, () => commandHandler(commandId));
-            return this.commandAccelerators[commandId] = defaultAccelerator;
+    executeCommand(commandId: string, commandParameters?: {[parameterName: string]: any}): void {
+        if (!(commandId in this.commandHandlers)) {
+            console.warn('no registered handler for command ' + commandId);
+        }
+    }
+
+    /**
+     * Register a command handler
+     * @param commandId      Command identifier
+     * @param commandHandler Command handler
+     * @return this
+     */
+    on(commandId: string, commandHandler: CommandHandler): CommandManager {
+        if (commandId in this.commandHandlers) {
+            throw new Error('a command handler is already registered for command ' + commandId);
         }
 
-        return undefined;
+        return this;
     }
 
 }
