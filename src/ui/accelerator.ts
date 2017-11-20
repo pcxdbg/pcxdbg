@@ -129,40 +129,56 @@ class AcceleratorManager {
      * @param keyboardEvent Keyboard event
      */
     private onKeydown(keyboardEvent: KeyboardEvent): void {
-        let combinationName: string = '';
-        let combination: string[] = [];
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
+        keyboardEvent.returnValue = false;
+
+        let combination: string = this.buildCombinationFromKeyboardEvent(keyboardEvent);
+        this.onAccelerator(combination);
+    }
+
+    /**
+     * Accelerator handler
+     * @param combination Combination
+     */
+    private onAccelerator(combination: string): void {
+        let accelerator: Accelerator = this.accelerators[combination];
+
+        if (accelerator) {
+            componentManager.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
+        }
+    }
+
+    /**
+     * Build a combination from a keyboard event
+     * @param keyboardEvent Keyboard event
+     * @return Combination
+     */
+    private buildCombinationFromKeyboardEvent(keyboardEvent: KeyboardEvent): string {
+        let combinationParts: string[] = [];
         let key: number = keyboardEvent.which;
 
         if (keyboardEvent.ctrlKey) {
-            combination.push('Ctrl');
+            combinationParts.push('Ctrl');
         }
 
         if (keyboardEvent.altKey) {
-            combination.push('Alt');
+            combinationParts.push('Alt');
         }
 
         if (keyboardEvent.shiftKey) {
-            combination.push('Shift');
+            combinationParts.push('Shift');
         }
 
         if (16 <= key && key <= 18) {
-            // Ignore control, alt and shift
+            // Ignore control, alt and shift as they are already taken care of
         } else if (key in KEY_MAPPING) {
-            combination.push(KEY_MAPPING[key]);
+            combinationParts.push(KEY_MAPPING[key]);
         } else {
             console.warn('unmapped keyboard event: ' + key, keyboardEvent);
         }
 
-        combinationName = combination.join('+');
-        if (combinationName in this.accelerators) {
-            let accelerator: Accelerator = this.accelerators[combinationName];
-
-            keyboardEvent.preventDefault();
-            keyboardEvent.stopPropagation();
-            keyboardEvent.returnValue = false;
-
-            componentManager.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
-        }
+        return combinationParts.join('+');
     }
 
 }

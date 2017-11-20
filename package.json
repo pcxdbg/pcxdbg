@@ -24,9 +24,22 @@
     "electron:linux": "npm run build:release && node ./conf/package.js --asar --platform=linux --arch=x64",
     "electron:win32": "npm run build:release && node ./conf/package.js --asar --platform=win32 --arch=x64",
     "electron:macos": "npm run build:release && node ./conf/package.js --asar --platform=darwin --arch=x64",
-    "test": "./node_modules/.bin/jest --config=./conf/jest.json --no-cache --verbose",
-    "coverage": "./node_modules/.bin/jest --config=./conf/jest.json --no-cache --coverage",
+    "test": "./node_modules/.bin/jest --no-cache --verbose",
+    "coverage": "./node_modules/.bin/jest --no-cache --coverage",
     "tslint": "tslint --config ./conf/tslint.json '**/*.ts' --exclude '**/node_modules/**'"
+  },
+  "jest": {
+    "mapCoverage": true,
+    "moduleFileExtensions": [
+        "ts",
+        "js",
+        "json"
+    ],
+    "roots": ["<rootDir>/src"],
+    "testRegex": "\\.spec\\.ts",
+    "transform": {
+        "^.+\\.ts$": "ts-jest"
+    }
   },
   "dependencies": {
     "i18next": "10.0.7",
