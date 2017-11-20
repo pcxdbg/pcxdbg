@@ -1,12 +1,12 @@
-import {Module, ModuleInformation} from './module';
-import {Component} from '../component';
-import {WindowManager} from '../ui/window';
+import {Module, ModuleInformation} from '../module';
+import {Component} from '../../component';
+import {WindowManager} from '../../ui';
 
 /**
- * GPU module
+ * APU module
  */
 @Component
-class GpuModule extends Module {
+class ApuModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -24,8 +24,8 @@ class GpuModule extends Module {
      */
     async getInformation(): Promise<ModuleInformation> {
         return {
-            name: 'GPU',
-            description: 'GPU module',
+            name: 'APU',
+            description: 'APU module',
             version: null
         };
     }
@@ -33,5 +33,5 @@ class GpuModule extends Module {
 }
 
 export {
-    GpuModule
+    ApuModule
 };

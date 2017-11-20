@@ -1,6 +1,6 @@
-import {Module, ModuleInformation} from './module';
-import {Component} from '../component';
-import {WindowManager} from '../ui/window';
+import {Module, ModuleInformation} from '../module';
+import {Component} from '../../component';
+import {WindowManager} from '../../ui';
 
 /**
  * Network module

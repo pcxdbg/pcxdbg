@@ -1,12 +1,12 @@
-import {Module, ModuleInformation} from './module';
-import {Component} from '../component';
-import {WindowManager} from '../ui/window';
+import {Module, ModuleInformation} from '../module';
+import {Component} from '../../component';
+import {WindowManager} from '../../ui';
 
 /**
- * Camera module
+ * Input module
  */
 @Component
-class CameraModule extends Module {
+class InputModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -23,16 +23,15 @@ class CameraModule extends Module {
      * @return Module name
      */
     async getInformation(): Promise<ModuleInformation> {
-        let moduleInformation: ModuleInformation = {
-            name: 'Camera',
-            description: 'Camera module',
+        return {
+            name: 'Input',
+            description: 'Input module',
             version: null
         };
-        return moduleInformation;
     }
 
 }
 
 export {
-    CameraModule
+    InputModule
 };

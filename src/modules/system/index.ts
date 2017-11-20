@@ -1,12 +1,12 @@
-import {Module, ModuleInformation} from './module';
-import {Component} from '../component';
-import {WindowManager} from '../ui/window';
+import {Module, ModuleInformation} from '../module';
+import {Component} from '../../component';
+import {WindowManager} from '../../ui';
 
 /**
- * Input module
+ * System module
  */
 @Component
-class InputModule extends Module {
+class SystemModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -24,8 +24,8 @@ class InputModule extends Module {
      */
     async getInformation(): Promise<ModuleInformation> {
         return {
-            name: 'Input',
-            description: 'Input module',
+            name: 'System',
+            description: 'System module',
             version: null
         };
     }
@@ -33,5 +33,5 @@ class InputModule extends Module {
 }
 
 export {
-    InputModule
+    SystemModule
 };

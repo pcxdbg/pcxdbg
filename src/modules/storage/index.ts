@@ -1,12 +1,12 @@
-import {Module, ModuleInformation} from './module';
-import {Component} from '../component';
-import {WindowManager} from '../ui/window';
+import {Module, ModuleInformation} from '../module';
+import {Component} from '../../component';
+import {WindowManager} from '../../ui';
 
 /**
- * Online module
+ * Storage module
  */
 @Component
-class OnlineModule extends Module {
+class StorageModule extends Module {
     private windowManager: WindowManager;
 
     /**
@@ -24,8 +24,8 @@ class OnlineModule extends Module {
      */
     async getInformation(): Promise<ModuleInformation> {
         return {
-            name: 'Online',
-            description: 'Online module',
+            name: 'Storage',
+            description: 'Storage module',
             version: null
         };
     }
@@ -33,5 +33,5 @@ class OnlineModule extends Module {
 }
 
 export {
-    OnlineModule
+    StorageModule
 };
