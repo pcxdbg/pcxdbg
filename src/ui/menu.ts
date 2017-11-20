@@ -1,7 +1,7 @@
 import {UIElement} from './element';
 import {Component, componentManager} from '../component';
 import {AcceleratorManager} from './accelerator';
-import {CommandManager} from './command';
+import {CommandManager, CommandDefinition} from './command';
 import {Icon, IconManager} from './icon';
 import {I18nManager} from '../lng/i18n';
 
@@ -13,14 +13,10 @@ interface MenuItemDefinition {
     label?: string;
     labelParameters?: {[parameterName: string]: any};
     labelText?: string;
-    tooltip?: string;
-    tooltipParameters?: {[parameterName: string]: any};
-    tooltipText?: string;
     handler?: (itemDefinition: MenuItemDefinition) => void;
     icon?: string;
     command?: string;
     commandParameters?: {[parameterName: string]: any};
-    shortcut?: string;
     popupMenu?: Menu;
 }
 
@@ -196,14 +192,16 @@ class Menu extends UIElement {
         } else if (itemDefinition.handler) {
             menuItem.click(() => itemDefinition.handler(itemDefinition));
         } else if (itemDefinition.command) {
-            menuItem.click(() => this.commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
-        }
+            let commandDefinition: CommandDefinition = this.commandManager.getCommandDefinition(itemDefinition.command);
 
-        if (itemDefinition.shortcut || itemDefinition.command) {
-            let shortcut: string = itemDefinition.shortcut || this.acceleratorManager.getCommandAccelerator(itemDefinition.command);
-            if (shortcut) {
+            if (!commandDefinition) {
+                throw new Error('unknown command ' + itemDefinition.command + ' referenced in menu item');
+            }
+
+            menuItem.click(() => this.commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
+            if (commandDefinition.accelerator) {
                 new UIElement('menu-item-shortcut')
-                    .text(itemDefinition.shortcut)
+                    .text(commandDefinition.accelerator)
                     .attachTo(menuItem)
                 ;
             }

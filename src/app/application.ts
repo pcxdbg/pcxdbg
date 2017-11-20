@@ -1,18 +1,35 @@
-import {UIElement} from '../ui/element';
+import {CommandManager, ModalManager, UIElement, Window, WindowManager} from '../ui';
 import {Component} from '../component';
-import {Window, WindowManager} from '../ui/window';
-import {ModalManager} from '../ui/modal';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
+import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
+import {AboutDialog, OpenConnectionDialog} from './dialogs';
 import {HostExplorerView} from './host-explorer';
 import {NetworkExplorerView} from './network-explorer';
-import {AboutDialog, OpenConnectionDialog} from './dialogs';
-import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
+import {COMMANDS} from './application-commands';
+import {remote, shell} from 'electron';
 
 /**
  * Application
  */
 @Component
 class Application {
+
+    /**
+     * Set the modules
+     * @param apuModule     APU module
+     * @param cameraModule  Camera module
+     * @param cpuModule     CPU module
+     * @param gpuModule     GPU module
+     * @param inputModule   Input module
+     * @param networkModule Network module
+     * @param onlineModule  Online module
+     * @param storageModule Storage module
+     * @param systemModule  System module
+     */
+    @Component
+    setModules(apuModule: ApuModule, cameraModule: CameraModule, cpuModule: CpuModule, gpuModule: GpuModule, inputModule: InputModule, networkModule: NetworkModule, onlineModule: OnlineModule, storageModule: StorageModule, systemModule: SystemModule): void {
+        // Ensures injected modules are instantiated
+    }
 
 }
 
@@ -21,6 +38,7 @@ class Application {
  */
 @Component
 class ApplicationView extends UIElement {
+    private commandManager: CommandManager;
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private application: Application;
@@ -28,13 +46,15 @@ class ApplicationView extends UIElement {
 
     /**
      * Class constructor
-     * @param application   Application
-     * @param windowManager Window manager
-     * @param modalManager  Modal manager
+     * @param application    Application
+     * @param commandManager Command manager
+     * @param windowManager  Window manager
+     * @param modalManager   Modal manager
      */
-    constructor(application: Application, windowManager: WindowManager, modalManager: ModalManager) {
+    constructor(application: Application, commandManager: CommandManager, windowManager: WindowManager, modalManager: ModalManager) {
         super('application');
         this.clientArea = new UIElement('application-client-area');
+        this.commandManager = commandManager;
         this.modalManager = modalManager;
         this.windowManager = windowManager;
         this.windowManager.setAvailableArea(this.clientArea);
@@ -44,6 +64,8 @@ class ApplicationView extends UIElement {
         if (document.hasFocus()) {
             this.setFocus(true);
         }
+
+        this.registerCommands();
     }
 
     /**
@@ -91,19 +113,26 @@ class ApplicationView extends UIElement {
 
     /**
      * Set the modules
-     * @param apuModule     APU module
-     * @param cameraModule  Camera module
-     * @param cpuModule     CPU module
-     * @param gpuModule     GPU module
-     * @param inputModule   Input module
-     * @param networkModule Network module
-     * @param onlineModule  Online module
-     * @param storageModule Storage module
-     * @param systemModule  System module
+     * @param moduleList List of modules
      */
     @Component
-    setModules(apuModule: ApuModule, cameraModule: CameraModule, cpuModule: CpuModule, gpuModule: GpuModule, inputModule: InputModule, networkModule: NetworkModule, onlineModule: OnlineModule, storageModule: StorageModule, systemModule: SystemModule): void {
-        // Ensures injected modules are instantiated
+    setModules(moduleList: Module[]): void {
+        moduleList.forEach(module => {
+            module.registerCommands(this.commandManager);
+            module.registerWindows(this.windowManager);
+        });
+    }
+
+    /**
+     * Register commands
+     */
+    private registerCommands(): void {
+        COMMANDS.forEach(command => this.commandManager.registerCommand(command));
+
+        this.commandManager
+            .on('external.open', (command, parameters) => this.onExternalOpenCommand(parameters.externalId))
+            .on('view.fullscreen.toggle', () => this.onViewFullScreenToggleCommand())
+        ;
     }
 
     /**
@@ -116,6 +145,41 @@ class ApplicationView extends UIElement {
         } else {
             this.removeAttribute('has-focus');
         }
+    }
+
+    /**
+     * Handler for the external.open.* commands
+     * @param externalId External identifier
+     */
+    private onExternalOpenCommand(externalId: string): void {
+        let url: string;
+
+        switch (externalId) {
+        case 'report-bug':
+            url = 'https://github.com/pcxdbg/pcxdbg/issues/new';
+            break;
+        default:
+            console.error('Unknown external identifier "' + externalId + '"');
+            return;
+        }
+
+        shell.openExternal(url);
+    }
+
+    /**
+     * Handler for the view.fullscreen.toggle command
+     */
+    private onViewFullScreenToggleCommand(): void {
+        let browserWindow: Electron.BrowserWindow = remote.getCurrentWindow();
+        let fullScreen: boolean = !browserWindow.isFullScreen();
+
+        if (fullScreen) {
+            this.attribute('full-screen');
+        } else {
+            this.removeAttribute('full-screen');
+        }
+
+        browserWindow.setFullScreen(fullScreen);
     }
 
 }

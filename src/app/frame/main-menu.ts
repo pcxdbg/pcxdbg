@@ -1,7 +1,6 @@
 import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElement, WindowManager} from '../../ui';
 import {Component} from '../../component';
 import {Module} from '../../modules';
-import {remote, shell} from 'electron';
 
 /**
  * Main menu view
@@ -54,22 +53,22 @@ class MainMenuView extends UIElement {
             .popup('app:main-menu.file.open.label')
                 .item({label: 'app:main-menu.file.open.connection', command: 'connection.open', icon: 'file-open-connection'})
                 .separator()
-                .item({label: 'app:main-menu.file.open.file', command: 'file.open', icon: 'file-open-file'})
+                .item({label: 'app:main-menu.file.open.file', command: 'document.open', icon: 'file-open-file'})
             .popup()
             .separator()
-            .item({label: 'app:main-menu.file.close', command: 'file.close'})
+            .item({label: 'app:main-menu.file.close', command: 'document.close'})
             .item({label: 'app:main-menu.file.close-connection', command: 'connection.close', icon: 'file-close-connection'})
             .separator()
-            .item({label: 'app:main-menu.file.save', command: 'file.save', icon: 'file-save'})
-            .item({label: 'app:main-menu.file.save-as', command: 'file.save.as'})
-            .item({label: 'app:main-menu.file.save-all', command: 'file.save.all', icon: 'file-save-all'})
+            .item({label: 'app:main-menu.file.save', command: 'document.save', icon: 'file-save'})
+            .item({label: 'app:main-menu.file.save-as', command: 'document.save.as'})
+            .item({label: 'app:main-menu.file.save-all', command: 'document.save.all', icon: 'file-save-all'})
             .separator()
             .popup('app:main-menu.file.source-control.label')
                 // TODO
             .popup()
             .separator()
-            .item({label: 'app:main-menu.file.page-setup', command: 'file.print.setup', icon: 'file-page-setup'})
-            .item({label: 'app:main-menu.file.print', command: 'file.print', icon: 'file-print'})
+            .item({label: 'app:main-menu.file.page-setup', command: 'print.setup', icon: 'file-page-setup'})
+            .item({label: 'app:main-menu.file.print', command: 'print', icon: 'file-print'})
             .separator()
             .popup('app:main-menu.file.recent-connections', fileRecentConnectionsMenu)
             .popup('app:main-menu.file.recent-files', fileRecentFilesMenu)
@@ -84,22 +83,23 @@ class MainMenuView extends UIElement {
     private buildEditMenu(): void {
         this.menu.popup('app:main-menu.edit.label')
             .popup('app:main-menu.edit.goto.label')
-                .item({id: 'edit-gotoline', label: 'app:main-menu.edit.goto.line', handler: () => this.onEditGotoLine(), shortcut: 'Ctrl+G'})
-                .item({id: 'edit-gotofunction', label: 'app:main-menu.edit.goto.function', handler: () => this.onEditGotoFunction(), shortcut: 'Ctrl+Shift+G'})
-                .item({id: 'edit-gotofile', label: 'app:main-menu.edit.goto.file', handler: () => this.onEditGotoFile(), shortcut: 'Ctrl+Alt+Shift+G'})
+                .item({label: 'app:main-menu.edit.goto.line', command: 'goto.line'})
+                .item({label: 'app:main-menu.edit.goto.function', command: 'goto.function'})
+                .item({label: 'app:main-menu.edit.goto.file', command: 'goto.document'})
             .popup()
             .popup('app:main-menu.edit.find-replace.label')
+                // TODO
             .popup()
             .separator()
-            .item({id: 'edit-undo', label: 'app:main-menu.edit.undo', handler: () => this.onEditUndo(), icon: 'edit-undo', shortcut: 'Ctrl+Z'})
-            .item({id: 'edit-redo', label: 'app:main-menu.edit.redo', handler: () => this.onEditRedo(), icon: 'edit-redo', shortcut: 'Ctrl+Y'})
+            .item({label: 'app:main-menu.edit.undo', command: 'action.undo', icon: 'edit-undo'})
+            .item({label: 'app:main-menu.edit.redo', command: 'action.redo', icon: 'edit-redo'})
             .separator()
-            .item({id: 'edit-cut', label: 'app:main-menu.edit.cut', handler: () => this.onEditCut(), icon: 'edit-cut', shortcut: 'Ctrl+X'})
-            .item({id: 'edit-copy', label: 'app:main-menu.edit.copy', handler: () => this.onEditCopy(), icon: 'edit-copy', shortcut: 'Ctrl+C'})
-            .item({id: 'edit-paste', label: 'app:main-menu.edit.paste', handler: () => this.onEditPaste(), icon: 'edit-paste', shortcut: 'Ctrl+V'})
-            .item({id: 'edit-delete', label: 'app:main-menu.edit.delete', handler: () => this.onEditDelete(), icon: 'edit-delete', shortcut: 'Del'})
+            .item({label: 'app:main-menu.edit.cut', command: 'clipboard.cut', icon: 'edit-cut'})
+            .item({label: 'app:main-menu.edit.copy', command: 'clipboard.copy', icon: 'edit-copy'})
+            .item({label: 'app:main-menu.edit.paste', command: 'clipboard.paste', icon: 'edit-paste'})
+            .item({label: 'app:main-menu.edit.delete', command: 'edit.delete', icon: 'edit-delete'})
             .separator()
-            .item({id: 'edit-selectall', label: 'app:main-menu.edit.select-all', handler: () => this.onEditSelectAll(), icon: 'edit-select-all', shortcut: 'Ctrl+A'})
+            .item({label: 'app:main-menu.edit.select-all', command: 'edit.select-all', icon: 'edit-select-all'})
         .popup();
     }
 
@@ -108,28 +108,28 @@ class MainMenuView extends UIElement {
      */
     private buildViewMenu(): void {
         this.menu.popup('app:main-menu.view.label')
-            .item({label: 'app:main-menu.view.host-explorer', handler: () => this.onViewHostExplorer(), icon: 'view-host-explorer', shortcut: 'Ctrl+Alt+L'})
-            .item({label: 'app:main-menu.view.network-explorer', handler: () => this.onViewNetworkExplorer(), icon: 'view-network-explorer', shortcut: 'Ctrl+M'})
+            .item({label: 'app:main-menu.view.host-explorer', command: 'window.open.host-explorer', icon: 'view-host-explorer'})
+            .item({label: 'app:main-menu.view.network-explorer', command: 'window.open.network-explorer', icon: 'view-network-explorer'})
             .separator()
-            .item({label: 'app:main-menu.view.bookmark-window', handler: () => this.onViewBookmarkWindow(), icon: 'view-bookmark-window', shortcut: 'Ctrl+K'})
-            .item({label: 'app:main-menu.view.call-hierarchy', handler: () => this.onViewCallHierarchy(), icon: 'view-call-hierarchy', shortcut: 'Ctrl+Alt+K'})
-            .item({label: 'app:main-menu.view.object-browser', handler: () => this.onViewObjectBrowser(), icon: 'view-object-browser', shortcut: 'Ctrl+Alt+J'})
+            .item({label: 'app:main-menu.view.bookmark-window', command: 'window.open.bookmark-window', icon: 'view-bookmark-window'})
+            .item({label: 'app:main-menu.view.call-hierarchy', command: 'window.open.call-hierarchy', icon: 'view-call-hierarchy'})
+            .item({label: 'app:main-menu.view.object-browser', command: 'window.open.object-browser', icon: 'view-object-browser'})
             .separator()
-            .item({label: 'app:main-menu.view.command-window', handler: () => this.onViewCommandWindow(), icon: 'view-command-window', shortcut: 'Alt+0'})
-            .item({label: 'app:main-menu.view.error-list', handler: () => this.onViewErrorList(), icon: 'view-error-list', shortcut: 'Alt+1'})
-            .item({label: 'app:main-menu.view.output', handler: () => this.onViewOutput(), icon: 'view-output', shortcut: 'Alt+2'})
-            .item({label: 'app:main-menu.view.notifications', handler: () => this.onViewNotifications(), icon: 'view-notifications', shortcut: 'Alt+3'})
-            .item({label: 'app:main-menu.view.chat', handler: () => this.onViewChat(), icon: 'view-chat', shortcut: 'Alt+4'})
+            .item({label: 'app:main-menu.view.command-window', command: 'window.open.command-window', icon: 'view-command-window'})
+            .item({label: 'app:main-menu.view.error-list', command: 'window.open.error-list', icon: 'view-error-list'})
+            .item({label: 'app:main-menu.view.output', command: 'window.open.output', icon: 'view-output'})
+            .item({label: 'app:main-menu.view.notifications', command: 'window.open.notifications', icon: 'view-notifications'})
+            .item({label: 'app:main-menu.view.chat', command: 'window.open.chat', icon: 'view-chat'})
             .separator()
             .popup('app:main-menu.view.toolbars.label')
                 // TODO: retrieve available toolbars from modules
-                .item({id: 'view-toolbarsstandard', label: 'app:main-menu.view.toolbars.standard', handler: () => this.onViewToolbar('standard'), icon: 'menuitem-checked'})
+                .item({label: 'app:main-menu.view.toolbars.standard', command: 'toolbar.open.standard', icon: 'menuitem-checked'})
             .popup()
-            .item({id: 'view-fullscreen', label: 'app:main-menu.view.fullscreen', handler: () => this.onViewFullScreen(), icon: 'view-fullscreen', shortcut: 'Alt+Shift+Enter'})
-            .item({id: 'view-allwindows', label: 'app:main-menu.view.all-windows', handler: () => this.onViewAllWindows(), icon: 'view-all-windows', shortcut: 'Alt+Shift+M'})
+            .item({label: 'app:main-menu.view.fullscreen', command: 'view.fullscreen.toggle', icon: 'view-fullscreen'})
+            .item({label: 'app:main-menu.view.all-windows', command: 'document.list', icon: 'view-all-windows'})
             .separator()
-            .item({id: 'view-navigatebackward', label: 'app:main-menu.view.navigate-backward', handler: () => this.onViewNavigateBackward(), icon: 'view-navigate-backward', shortcut: 'Ctrl+-'})
-            .item({id: 'view-navigateforward', label: 'app:main-menu.view.navigate-forward', handler: () => this.onViewNavigateForward(), icon: 'view-navigate-forward', shortcut: 'Ctrl+Shift+-'})
+            .item({label: 'app:main-menu.view.navigate-backward', command: 'navigation.backward', icon: 'view-navigate-backward'})
+            .item({label: 'app:main-menu.view.navigate-forward', command: 'navigation.forward', icon: 'view-navigate-forward'})
         .popup();
     }
 
@@ -137,7 +137,7 @@ class MainMenuView extends UIElement {
      * Build the module menus
      */
     private buildModuleMenus(): void {
-        this.modules.forEach(module => module.buidMenuEntries(this.menu));
+        // this.modules.forEach(module => module.buidMenu(this.menu));
     }
 
     /**
@@ -145,10 +145,10 @@ class MainMenuView extends UIElement {
      */
     private buildToolsMenu(): void {
         this.menu.popup('app:main-menu.tools.label')
-            .item({label: 'app:main-menu.tools.extensions', handler: () => this.onToolsExtensions(), icon: 'tools-extensions'})
+            .item({label: 'app:main-menu.tools.extensions', command: 'modal.open.extensions', icon: 'tools-extensions'})
             .separator()
-            .item({label: 'app:main-menu.tools.customize', handler: () => this.onToolsCustomize()})
-            .item({label: 'app:main-menu.tools.options', handler: () => this.onToolsOptions(), icon: 'tools-options'})
+            .item({label: 'app:main-menu.tools.customize', command: 'modal.open.customize'})
+            .item({label: 'app:main-menu.tools.options', command: 'modal.open.options', icon: 'tools-options'})
         .popup();
     }
 
@@ -157,30 +157,30 @@ class MainMenuView extends UIElement {
      */
     private buildWindowMenu(): void {
         this.menu.popup('app:main-menu.window.label')
-            .item({id: 'window-newwindow', label: 'app:main-menu.window.new-window', handler: () => this.onWindowNewWindow(), icon: 'window-new-window'})
-            .item({id: 'window-split', label: 'app:main-menu.window.split', handler: () => this.onWindowSplit(), icon: 'window-split'})
+            .item({label: 'app:main-menu.window.new-window', command: 'window.new', icon: 'window-new-window'})
+            .item({label: 'app:main-menu.window.split', command: 'window.split', icon: 'window-split'})
             .separator()
-            .item({id: 'window-float', label: 'app:main-menu.window.float', handler: () => this.onWindowFloat()})
-            .item({id: 'window-dock', label: 'app:main-menu.window.dock', handler: () => this.onWindowDock()})
-            .item({id: 'window-autohide', label: 'app:main-menu.window.auto-hide', handler: () => this.onWindowAutoHide()})
-            .item({id: 'window-hide', label: 'app:main-menu.window.hide', handler: () => this.onWindowHide(), icon: 'window-hide'})
+            .item({label: 'app:main-menu.window.float', command: 'window.float'})
+            .item({label: 'app:main-menu.window.dock', command: 'window.dock'})
+            .item({label: 'app:main-menu.window.auto-hide', command: 'window.auto-hide.current'})
+            .item({label: 'app:main-menu.window.hide', command: 'window.hide', icon: 'window-hide'})
             .separator()
-            .item({label: 'app:main-menu.window.pin-tab', handler: () => this.onWindowPinTab(), icon: 'window-pin-tab'})
+            .item({label: 'app:main-menu.window.pin-tab', command: 'window.pin-tab', icon: 'window-pin-tab'})
             .separator()
-            .item({label: 'app:main-menu.window.save-window-layout', handler: () => this.onWindowSaveWindowLayout()})
+            .item({label: 'app:main-menu.window.save-window-layout', command: 'window.layout.save'})
             .popup('app:main-menu.window.apply-window-layout.label')
                 .item({label: 'app:main-menu.window.apply-window-layout.none-saved'})
             .popup()
-            .item({label: 'app:main-menu.window.manage-window-layouts', handler: () => this.onWindowManageWindowLayouts()})
-            .item({label: 'app:main-menu.window.reset-window-layout', handler: () => this.onWindowResetWindowLayout()})
+            .item({label: 'app:main-menu.window.manage-window-layouts', command: 'window.layout.list'})
+            .item({label: 'app:main-menu.window.reset-window-layout', command: 'window.layout.reset'})
             .separator()
-            .item({id: 'window-autohideall', label: 'app:main-menu.window.auto-hide-all', handler: () => this.onWindowAutoHideAll()})
-            .item({id: 'window-newhorizontaltabgroup', label: 'app:main-menu.window.new-horizontal-tab-group', handler: () => this.onWindowNewHorizontalTabGroup(), icon: 'window-new-horizontal-tab-group'})
-            .item({id: 'window-newverticaltabgroup', label: 'app:main-menu.window.new-vertical-tab-group', handler: () => this.onWindowNewVerticalTabGroup(), icon: 'window-new-vertical-tab-group'})
-            .item({id: 'window-closeall', label: 'app:main-menu.window.close-all-documents', handler: () => this.onWindowCloseAllDocuments(), icon: 'window-close-all-documents'})
+            .item({label: 'app:main-menu.window.auto-hide-all', command: 'window.auto-hide.all'})
+            .item({label: 'app:main-menu.window.new-horizontal-tab-group', command: 'window.tab-group.new.horizontal', icon: 'window-new-horizontal-tab-group'})
+            .item({label: 'app:main-menu.window.new-vertical-tab-group', command: 'window.tab-group.new.vertical', icon: 'window-new-vertical-tab-group'})
+            .item({label: 'app:main-menu.window.close-all-documents', command: 'document.close.all', icon: 'window-close-all-documents'})
             .separator()
             // TODO: list of documents opened
-            .item({label: 'app:main-menu.window.windows', handler: () => this.onWindowWindows()})
+            .item({label: 'app:main-menu.window.windows', command: 'document.list'})
         .popup();
     }
 
@@ -190,12 +190,12 @@ class MainMenuView extends UIElement {
     private buildHelpMenu(): void {
         this.menu.popup('app:main-menu.help.label')
             .popup('app:main-menu.help.feedback.label')
-                .item({label: 'app:main-menu.help.feedback.report-bug', handler: () => this.onHelpFeedbackReportBug(), icon: 'help-feedback-report-bug'})
+                .item({label: 'app:main-menu.help.feedback.report-bug', command: 'external.open.report-bug', icon: 'help-feedback-report-bug'})
             .popup()
             .separator()
-            .item({label: 'app:main-menu.help.view', handler: () => this.onHelpShow(), icon: 'help-view', shortcut: 'F1'})
+            .item({label: 'app:main-menu.help.view', command: 'document.open.help', icon: 'help-view'})
             .separator()
-            .item({label: 'app:main-menu.help.about', handler: () => this.onHelpAbout()})
+            .item({label: 'app:main-menu.help.about', command: 'modal.open.about'})
         .popup();
     }
 
@@ -204,366 +204,11 @@ class MainMenuView extends UIElement {
      */
     private buildProfileMenu(): void {
         this.menu.popupText('<username>')
-            .item({id: 'profile-preferences', label: 'app:main-menu.profile.preferences', handler: () => this.onProfilePreferences()})
-            .item({id: 'profile-rights', label: 'app:main-menu.profile.rights', handler: () => this.onProfileRights()})
+            .item({label: 'app:main-menu.profile.preferences', command: 'modal.open.profile.preferences'})
+            .item({label: 'app:main-menu.profile.rights', command: 'modal.open.profile.rights'})
             .separator()
-            .item({id: 'profile-logout', label: 'app:main-menu.profile.logout', handler: () => this.onProfileLogout()})
+            .item({label: 'app:main-menu.profile.logout', command: 'profile.signout'})
         .popup();
-    }
-
-    /**
-     * Callback triggered when Edit => Go To => Line is selected
-     */
-    private onEditGotoLine(): void {
-        console.warn('Edit => Go To => Line not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Go To => Function is selected
-     */
-    private onEditGotoFunction(): void {
-        console.warn('Edit => Go To => Function not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Go To => File is selected
-     */
-    private onEditGotoFile(): void {
-        console.warn('Edit => Go To => File not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Undo is selected
-     */
-    private onEditUndo(): void {
-        console.warn('Edit => Undo not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Redo is selected
-     */
-    private onEditRedo(): void {
-        console.warn('Edit => Redo not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Cut is selected
-     */
-    private onEditCut(): void {
-        console.warn('Edit => Cut not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Copy is selected
-     */
-    private onEditCopy(): void {
-        console.warn('Edit => Copy not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Paste is selected
-     */
-    private onEditPaste(): void {
-        console.warn('Edit => Paste not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Delete is selected
-     */
-    private onEditDelete(): void {
-        console.warn('Edit => Delete not implemented');
-    }
-
-    /**
-     * Callback triggered when Edit => Select All is selected
-     */
-    private onEditSelectAll(): void {
-        console.warn('Edit => Select All not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Host Explorer is selected
-     */
-    private onViewHostExplorer(): void {
-        this.windowManager.openWindow('host-explorer');
-    }
-
-    /**
-     * Callback triggered when View => Network Explorer is selected
-     */
-    private onViewNetworkExplorer(): void {
-        this.windowManager.openWindow('network-explorer');
-    }
-
-    /**
-     * Callback triggered when View =>    is selected
-     */
-    private onViewBookmarkWindow(): void {
-        console.warn('View => Bookmark Window not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Call Hierarchy is selected
-     */
-    private onViewCallHierarchy(): void {
-        console.warn('View => Call Hierarchy not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Object Browser is selected
-     */
-    private onViewObjectBrowser(): void {
-        console.warn('View => Object Browser not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Command Window is selected
-     */
-    private onViewCommandWindow(): void {
-        console.warn('View => Command Window not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Error List is selected
-     */
-    private onViewErrorList(): void {
-        this.windowManager.openWindow('error-list');
-        console.warn('View => Error List not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Output is selected
-     */
-    private onViewOutput(): void {
-        console.warn('View => Output not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Notifications is selected
-     */
-    private onViewNotifications(): void {
-        console.warn('View => Notifications not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Chat is selected
-     */
-    private onViewChat(): void {
-        console.warn('View => Chat not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Toolbars => ? is selected
-     * @param toolbarId Toolbar identifier
-     */
-    private onViewToolbar(toolbarId: string): void {
-        console.warn('View => Toolbar => ' + toolbarId.substr(0, 1).toUpperCase() + toolbarId.substr(1) + ' not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Full Screen is selected
-     */
-    private onViewFullScreen(): void {
-        let applicationElement: Element = <Element> document.body.querySelector('application');
-        let browserWindow: Electron.BrowserWindow = remote.getCurrentWindow();
-        let fullScreen: boolean = !browserWindow.isFullScreen();
-
-        if (fullScreen) {
-            applicationElement.setAttribute('full-screen', '');
-        } else {
-            applicationElement.removeAttribute('full-screen');
-        }
-
-        browserWindow.setFullScreen(fullScreen);
-    }
-
-    /**
-     * Callback triggered when View => All Windows is selected
-     */
-    private onViewAllWindows(): void {
-        console.warn('View => All Windows not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Navigate Backward is selected
-     */
-    private onViewNavigateBackward(): void {
-        console.warn('View => Navigate Backward not implemented');
-    }
-
-    /**
-     * Callback triggered when View => Navigte Forward is selected
-     */
-    private onViewNavigateForward(): void {
-        console.warn('View => Navigate Forward not implemented');
-    }
-
-    /**
-     * Callback triggered when Tools => Extensions is selected
-     */
-    private onToolsExtensions(): void {
-        console.warn('Tools => Extensions not implemented');
-    }
-
-    /**
-     * Callback triggered when Tools => Customize is selected
-     */
-    private onToolsCustomize(): void {
-        console.warn('Tools => Customize not implemented');
-    }
-
-    /**
-     * Callback triggered when Tools => Options is selected
-     */
-    private onToolsOptions(): void {
-        console.warn('Tools => Options not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => New Window is selected
-     */
-    private onWindowNewWindow(): void {
-        console.warn('Window => New Window not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Split is selected
-     */
-    private onWindowSplit(): void {
-        console.warn('Window => Split not implemented');
-    }
-
-    /**
-     * Callback triggered when Window =>  is selected
-     */
-    private onWindowFloat(): void {
-        console.warn('Window => Float not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Dock is selected
-     */
-    private onWindowDock(): void {
-        console.warn('Window => Dock not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Auto Hide is selected
-     */
-    private onWindowAutoHide(): void {
-        console.warn('Window => Auto Hide not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => New Horizontal Tab Group is selected
-     */
-    private onWindowNewHorizontalTabGroup(): void {
-        console.warn('Window => New Horizontal Tab Group not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => New Vertical Tab Group is selected
-     */
-    private onWindowNewVerticalTabGroup(): void {
-        console.warn('Window => New Vertical Tab Group not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Hide is selected
-     */
-    private onWindowHide(): void {
-        console.warn('Window => Hide not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Pin Tab is selected
-     */
-    private onWindowPinTab(): void {
-        console.warn('Window => Pin Tab not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Save Window Layout is selected
-     */
-    private onWindowSaveWindowLayout(): void {
-        console.warn('Window => Save Window Layout not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Manage Window Layouts is selected
-     */
-    private onWindowManageWindowLayouts(): void {
-        console.warn('Window => Manage Window Layouts not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Reset Window Layout is selected
-     */
-    private onWindowResetWindowLayout(): void {
-        console.warn('Window => Reset Window Layout not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Auto Hide All is selected
-     */
-    private onWindowAutoHideAll(): void {
-        console.warn('Window => Auto Hide All not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Close All Documents is selected
-     */
-    private onWindowCloseAllDocuments(): void {
-        console.warn('Window => Close All Documents not implemented');
-    }
-
-    /**
-     * Callback triggered when Window => Windows is selected
-     */
-    private onWindowWindows(): void {
-        console.warn('Window => Windows not implemented');
-    }
-
-    /**
-     * Callback triggered when Help => Feedback => Report Bug is selected
-     */
-    private onHelpFeedbackReportBug(): void {
-        shell.openExternal('https://github.com/pcxdbg/pcxdbg/issues/new');
-    }
-
-    /**
-     * Callback triggered when Help => Show is selected
-     */
-    private onHelpShow(): void {
-        console.warn('Help => Show not implemented');
-    }
-
-    /**
-     * Callback triggered when Help => About is selected
-     */
-    private onHelpAbout(): void {
-        this.modalManager.showModal('about');
-    }
-
-    /**
-     * Callback triggered when Profile => Preferences is selected
-     */
-    private onProfilePreferences(): void {
-        console.warn('Profile => Preferences not implemented');
-    }
-
-    /**
-     * Callback triggered when Profile => Rights is selected
-     */
-    private onProfileRights(): void {
-        console.warn('Profile => Rights not implemented');
-    }
-
-    /**
-     * Callback triggered when Profile => Logout is selected
-     */
-    private onProfileLogout(): void {
-        console.warn('Profile => Logout not implemented');
     }
 
 }

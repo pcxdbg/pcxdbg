@@ -98,7 +98,7 @@ class ComponentManager {
      * @return Component instance
      */
     getComponentById<T>(componentId: string): T {
-        let componentClassInfo: ComponentClassInfo = this.componentClasses[componentId];
+        let componentClassInfo: ComponentClassInfo = this.componentClasses[componentId.toLowerCase()];
         if (!componentClassInfo) {
             throw new Error('no component with id ' + componentId + ' registered');
         }

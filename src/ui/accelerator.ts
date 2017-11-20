@@ -1,5 +1,4 @@
-import {Component} from '../component';
-import {CommandManager} from './command';
+import {Component, componentManager} from '../component';
 
 const KEY_MAPPING: {[keyValue: number]: string} = {
     8: 'Backspace',
@@ -87,30 +86,25 @@ interface Accelerator {
 }
 
 /**
+ * Command manager forward declaration (avoids cyclic module dependency)
+ */
+class CommandManager {
+    executeCommand(commandId: string, commandParameters?: {[parameterName: string]: any}): void { /* unused */ }
+}
+
+/**
  * Accelerator manager
  */
 @Component
 class AcceleratorManager {
     private keydownListener: (keyboardEvent: KeyboardEvent) => any = keyboardEvent => this.onKeydown(keyboardEvent);
-    private commandManager: CommandManager;
     private accelerators: {[combination: string]: Accelerator} = {};
-    private commands: {[commandId: string]: string} = {};
 
     /**
      * Class constructor
-     * @param commandManager Command manager
      */
-    constructor(commandManager: CommandManager) {
+    constructor() {
         document.addEventListener('keydown', this.keydownListener, false);
-    }
-
-    /**
-     * Get the registered accelerator for a command
-     * @param commandId Command identifier
-     * @return Registered accelerator, if any
-     */
-    getCommandAccelerator(commandId: string): string {
-        return this.commands[commandId];
     }
 
     /**
@@ -120,23 +114,21 @@ class AcceleratorManager {
      * @param commandParameters Command parameters
      */
     registerAccelerator(combination: string, commandId: string, commandParameters?: {[parameterName: string]: any}): void {
-        if (commandId in this.commands) {
-            throw new Error('an accelerator is already registered for command ' + commandId + ': ' + this.commands[commandId]);
+        if (combination in this.accelerators) {
+            throw new Error('an accelerator is already registered for combination ' + combination + ': ' + this.accelerators[combination].commandId);
         }
 
         this.accelerators[combination] = {
             commandId: commandId,
             commandParameters: commandParameters
         };
-
-        this.commands[commandId] = combination;
     }
 
     /**
      * Keyboard event handling
      * @param keyboardEvent Keyboard event
      */
-    onKeydown(keyboardEvent: KeyboardEvent): void {
+    private onKeydown(keyboardEvent: KeyboardEvent): void {
         let combinationName: string = '';
         let combination: string[] = [];
         let key: number = keyboardEvent.which;
@@ -169,7 +161,7 @@ class AcceleratorManager {
             keyboardEvent.stopPropagation();
             keyboardEvent.returnValue = false;
 
-            this.commandManager.executeCommand(accelerator.commandId, accelerator.commandParameters);
+            componentManager.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
         }
     }
 

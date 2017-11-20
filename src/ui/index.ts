@@ -1,6 +1,6 @@
 export {AcceleratorManager} from './accelerator';
 export {ClipboardManager} from './clipboard';
-export {CommandManager, CommandHandler} from './command';
+export {CommandAliasDefinition, CommandDefinition, CommandHandler, CommandManager} from './command';
 export {Document, DocumentManager} from './document';
 export {UIElement} from './element';
 export {Icon, IconManager} from './icon';

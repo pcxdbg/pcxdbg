@@ -1,4 +1,4 @@
-import {Menu} from '../ui/menu';
+import {CommandManager, Menu, WindowManager} from '../ui';
 
 /**
  * Module information
@@ -22,10 +22,26 @@ abstract class Module {
 
     /**
      * Build menu entries
-     * @param menu Menu
+     * @param parentMenu Parent menu
      */
-    buidMenuEntries(menu: Menu): void {
+    buidMenu(parentMenu: Menu): void {
         // Default: no menu entries added
+    }
+
+    /**
+     * Register commands
+     * @param commandManager Command manager
+     */
+    registerCommands(commandManager: CommandManager): void {
+        // Default: no command registered
+    }
+
+    /**
+     * Register windows
+     * @param windowManager Window manager
+     */
+    registerWindows(windowManager: WindowManager): void {
+        // Default: no window registered
     }
 
 }
