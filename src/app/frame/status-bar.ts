@@ -1,5 +1,6 @@
 import {Icon, IconManager, UIElement} from '../../ui';
 import {Component} from '../../component';
+import {ConnectionManager} from '../../net';
 
 /**
  * Status bar view
@@ -22,11 +23,18 @@ class StatusBarView extends UIElement {
 
     /**
      * Class constructor
-     * @param iconManager Icon manager
      */
     constructor(iconManager: IconManager) {
         super('status-bar', StatusBarView.HTML);
+        this.applyTranslations();
+    }
 
+    /**
+     * Set the icon manager
+     * @param iconManager Icon manager
+     */
+    @Component
+    setIconManager(iconManager: IconManager): void {
         this.element('status-bar-backgroundtasks')
             .attach(iconManager.createIcon(16, 16, 'status-bar-background-tasks'))
             .click(() => this.onBackgroundTasks())
@@ -34,8 +42,15 @@ class StatusBarView extends UIElement {
         this.element('status-bar-resizer')
             .attach(iconManager.createIcon(16, 16, 'status-bar-grip'))
         ;
+    }
 
-        this.applyTranslations();
+    /**
+     * Set the connection manager
+     * @param connectionManager Connection manager
+     */
+    @Component
+    setConnectionManager(connectionManager: ConnectionManager): void {
+        // TODO: register event handlers
     }
 
     /**

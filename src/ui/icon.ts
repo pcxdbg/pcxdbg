@@ -1,6 +1,6 @@
 import {UIElement} from './element';
 import {Component} from '../component';
-import {HttpManager, HttpRequest, HttpResponse} from '../net/http';
+import {HttpManager, HttpRequest, HttpResponse} from '../net';
 
 type DataCache = {[url: string]: string};
 type LoadingCache = {[url: string]: Promise<string>};

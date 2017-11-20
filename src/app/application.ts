@@ -102,12 +102,14 @@ class ApplicationView extends UIElement {
 
     /**
      * Set the dialog components
-     * @param aboutDialog About dialog
+     * @param aboutDialog          About dialog
+     * @param openConnectionDialog Open connection dialog
      */
     @Component
-    setDialogComponents(aboutDialog: AboutDialog): void {
+    setDialogComponents(aboutDialog: AboutDialog, openConnectionDialog: OpenConnectionDialog): void {
         [
-            aboutDialog
+            aboutDialog,
+            openConnectionDialog
         ].forEach(dialog => this.modalManager.registerModal(dialog));
     }
 
