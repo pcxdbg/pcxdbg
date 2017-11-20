@@ -1,6 +1,7 @@
 import {UIElement} from './element';
 import {Component} from '../component';
 import {Icon, IconManager} from './icon';
+import {CommandManager} from './command';
 
 /**
  * Window manager
@@ -9,8 +10,18 @@ import {Icon, IconManager} from './icon';
 class WindowManager {
     private windowComponents: {[componentId: string]: Window} = {};
     private windowContainer: WindowContainer;
+    private commandManager: CommandManager;
     private targetElement: UIElement = null;
     private focusWindow: Window = null;
+
+    /**
+     * Set the command manager
+     * @param commandManager Command manager
+     */
+    @Component
+    setCommandManager(commandManager: CommandManager): void {
+        commandManager.on('window.open', parameters => this.openWindow(<string> parameters.windowId));
+    }
 
     /**
      * Set the available area

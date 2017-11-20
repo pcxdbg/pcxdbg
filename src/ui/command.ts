@@ -3,10 +3,10 @@ import {AcceleratorManager} from './accelerator';
 
 /**
  * Command handler
- * @param commandId         Command identifier
  * @param commandParameters Command parameters
+ * @param commandId         Command identifier
  */
-type CommandHandler = (commandId?: string, commandParameters?: {[parameterName: string]: any}) => void;
+type CommandHandler = (commandParameters?: {[parameterName: string]: any}, commandId?: string) => void;
 
 /**
  * Command alias definition
@@ -32,9 +32,9 @@ interface CommandDefinition {
 /**
  * Command
  */
-class Command {
-    definition: CommandDefinition;
-    handler: CommandHandler;
+interface Command {
+    definition?: CommandDefinition;
+    handler?: CommandHandler;
 }
 
 /**
@@ -59,14 +59,18 @@ class CommandManager {
      * @param commandDefinition Command definition
      */
     registerCommand(commandDefinition: CommandDefinition): void {
-        if (commandDefinition.id in this.commands) {
-            throw new Error('command ' + commandDefinition.id + ' is already registered');
+        let command: Command = this.commands[commandDefinition.id];
+        if (command) {
+            if (command.definition) {
+                throw new Error('command ' + commandDefinition.id + ' is already registered');
+            } else {
+                command.definition = commandDefinition;
+            }
+        } else if (!command) {
+            command = this.commands[commandDefinition.id] = {
+                definition: commandDefinition
+            };
         }
-
-        this.commands[commandDefinition.id] = {
-            definition: commandDefinition,
-            handler: null
-        };
 
         if (commandDefinition.accelerator) {
             this.acceleratorManager.registerAccelerator(commandDefinition.accelerator, commandDefinition.id);
@@ -86,7 +90,7 @@ class CommandManager {
         if (commandAlias) {
             this.executeCommand(commandAlias.command, commandAlias.parameters);
         } else if (command.handler) {
-            command.handler(commandId, commandParameters);
+            command.handler(commandParameters, commandId);
         } else {
             console.warn('no registered handler for command ' + commandId + ' with parameters:', commandParameters);
         }
@@ -109,8 +113,12 @@ class CommandManager {
      * @return this
      */
     on(commandId: string, commandHandler: CommandHandler): CommandManager {
-        let command: Command = this.getCommand(commandId);
-        if (command.handler) {
+        let command: Command = this.commands[commandId];
+        if (!command) {
+            this.commands[commandId] = command = {
+                handler: commandHandler
+            };
+        } else if (command.handler) {
             throw new Error('a command handler is already registered for command ' + commandId);
         }
 

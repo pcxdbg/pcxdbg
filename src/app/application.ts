@@ -130,7 +130,7 @@ class ApplicationView extends UIElement {
         COMMANDS.forEach(command => this.commandManager.registerCommand(command));
 
         this.commandManager
-            .on('external.open', (command, parameters) => this.onExternalOpenCommand(parameters.externalId))
+            .on('external.open', parameters => this.onExternalOpenCommand(parameters.externalId))
             .on('view.fullscreen.toggle', () => this.onViewFullScreenToggleCommand())
         ;
     }
