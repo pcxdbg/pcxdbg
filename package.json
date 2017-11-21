@@ -30,6 +30,9 @@
   },
   "jest": {
     "mapCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js",
