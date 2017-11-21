@@ -92,7 +92,6 @@ class CommandManager {
     executeCommand(commandId: string, commandParameters?: {[parameterName: string]: any}): void { /* unused */ }
 }
 
-let lala: number = 0;
 /**
  * Accelerator manager
  */
@@ -106,7 +105,6 @@ class AcceleratorManager {
      * Class constructor
      */
     constructor() {
-        this.x = ++lala;
         document.addEventListener('keydown', this.keydownListener, false);
     }
 

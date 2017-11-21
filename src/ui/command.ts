@@ -46,6 +46,13 @@ class CommandManager {
     private acceleratorManager: AcceleratorManager;
 
     /**
+     * Shut the manager down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
+
+    /**
      * Set the accelerator manager
      * @param acceleratorManager Accelerator manager
      */

@@ -49,6 +49,7 @@ describe('Accelerator manager', () => {
 
     it('cannot register the same accelerator more than once', () => {
         acceleratorManager.registerAccelerator('A', 'test');
+
         expect(() => acceleratorManager.registerAccelerator('A', 'test')).toThrowError(/already registered/);
     });
 
@@ -58,7 +59,7 @@ describe('Accelerator manager', () => {
         acceleratorManager.registerAccelerator('A', 'test');
         document.dispatchEvent(keyboardEvent);
 
-        expect(commandManager.executeCommand).toHaveBeenCalledTimes(0);
+        expect(commandManager.executeCommand).not.toHaveBeenCalled();
     });
 
     it('executes the registered command for a matching combination', () => {
@@ -87,8 +88,8 @@ describe('Accelerator manager', () => {
         acceleratorManager.registerAccelerator('A', 'test');
         document.dispatchEvent(keyboardEvent);
 
-        expect(keyboardEvent.preventDefault).toHaveBeenCalledTimes(0);
-        expect(keyboardEvent.stopPropagation).toHaveBeenCalledTimes(0);
+        expect(keyboardEvent.preventDefault).not.toHaveBeenCalled();
+        expect(keyboardEvent.stopPropagation).not.toHaveBeenCalled();
         expect(keyboardEvent.returnValue).toEqual(undefined);
     });
 
