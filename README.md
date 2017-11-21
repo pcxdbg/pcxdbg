@@ -1,7 +1,8 @@
 # pcxdbg
 
-[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg?label=Travis%20CI&style=flat)](https://travis-ci.org/pcxdbg/pcxdbg)
-[![AppVeyor](https://img.shields.io/appveyor/ci/rraziel/pcxdbg.svg?label=AppVeyor&style=flat)](https://ci.appveyor.com/project/rraziel/pcxdbg)
+[![AppVeyor](https://img.shields.io/appveyor/ci/rraziel/pcxdbg.svg?label=Win32&style=flat)](https://ci.appveyor.com/project/rraziel/pcxdbg)
+[![CircleCI](https://img.shields.io/circleci/project/github/pcxdbg/pcxdbg.svg?label=MacOS&style=flat)](https://circleci.com/gh/pcxdbg/pcxdbg)
+[![Travis CI](https://img.shields.io/travis/pcxdbg/pcxdbg.svg?label=Linux&style=flat)](https://travis-ci.org/pcxdbg/pcxdbg)
 [![AppVeyor tests](https://img.shields.io/appveyor/tests/rraziel/pcxdbg.svg?label=Tests&style=flat)](https://ci.appveyor.com/project/rraziel/pcxdbg/build/tests)
 [![Greenkeeper](https://badges.greenkeeper.io/pcxdbg/pcxdbg.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/pcxdbg/pcxdbg/badge.svg)](https://snyk.io/test/github/pcxdbg/pcxdbg)
