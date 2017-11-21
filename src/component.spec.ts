@@ -35,7 +35,7 @@ describe('Component manager', () => {
         componentManager.registerComponentClass(TestDerivedComponent);
         componentManager.registerComponentClass(TestDerivedComponent2);
 
-        expect(() => componentManager.getComponent(TestComponent)).toThrowError(/multiple instances/);
+        expect(() => componentManager.getComponent(TestComponent)).toThrowError(/multiple derived instances/);
     });
 
     it('can retrieve a component by identifier', () => {

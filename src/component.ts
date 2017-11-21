@@ -88,7 +88,15 @@ class ComponentManager {
      */
     getComponent<T>(componentClass: ClassConstructorTypeFromType<T>): T {
         let componentId: string = this.buildComponentIdFromClass(componentClass);
+        let componentClassInfo: ComponentClassInfo = this.componentClasses[componentId];
         let componentInstances: Object[];
+
+        if (!componentClassInfo) {
+            throw new Error('no component with type ' + componentClass.name + ' registered');
+        } else if (!componentClassInfo.isComponent && componentClassInfo.derivedComponents && componentClassInfo.derivedComponents.length > 1) {
+            throw new Error('unable to retrieve a component of type ' + componentClass.name + ': multiple derived instances are available');
+        }
+
         this.instantiateIfNecessary(componentClass);
         componentInstances = this.componentInstances[componentId];
         if (componentInstances.length > 1) {
