@@ -92,6 +92,7 @@ class CommandManager {
     executeCommand(commandId: string, commandParameters?: {[parameterName: string]: any}): void { /* unused */ }
 }
 
+let lala: number = 0;
 /**
  * Accelerator manager
  */
@@ -99,12 +100,21 @@ class CommandManager {
 class AcceleratorManager {
     private keydownListener: (keyboardEvent: KeyboardEvent) => any = keyboardEvent => this.onKeydown(keyboardEvent);
     private accelerators: {[combination: string]: Accelerator} = {};
+    x: number;
 
     /**
      * Class constructor
      */
     constructor() {
+        this.x = ++lala;
         document.addEventListener('keydown', this.keydownListener, false);
+    }
+
+    /**
+     * Shut the manager down
+     */
+    shutdown(): void {
+        document.removeEventListener('keydown', this.keydownListener);
     }
 
     /**
@@ -125,26 +135,25 @@ class AcceleratorManager {
     }
 
     /**
+     * Get the accelerator matching a combination
+     * @param combination Combination
+     * @return Accelerator
+     */
+    getAccelerator(combination: string): Accelerator {
+        return this.accelerators[combination];
+    }
+
+    /**
      * Keyboard event handling
      * @param keyboardEvent Keyboard event
      */
     private onKeydown(keyboardEvent: KeyboardEvent): void {
-        keyboardEvent.preventDefault();
-        keyboardEvent.stopPropagation();
-        keyboardEvent.returnValue = false;
-
         let combination: string = this.buildCombinationFromKeyboardEvent(keyboardEvent);
-        this.onAccelerator(combination);
-    }
-
-    /**
-     * Accelerator handler
-     * @param combination Combination
-     */
-    private onAccelerator(combination: string): void {
-        let accelerator: Accelerator = this.accelerators[combination];
-
+        let accelerator: Accelerator = this.getAccelerator(combination);
         if (accelerator) {
+            keyboardEvent.preventDefault();
+            keyboardEvent.stopPropagation();
+            keyboardEvent.returnValue = false;
             componentManager.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
         }
     }
