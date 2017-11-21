@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.0
+      - image: circleci/node:latest
     working_directory: ~/repo
     steps:
       - run:
@@ -11,19 +11,11 @@ jobs:
             node --version
             npm --version
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
       - run:
           name: 'Build'
           command: |
             npm install
             npm run build
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: 'Unit tests'
           command: npm run coverage
