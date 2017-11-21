@@ -40,6 +40,13 @@ class ComponentManager {
     }
 
     /**
+     * Shut the manager down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
+
+    /**
      * Register a component class
      * @param componentClass Component class
      * @param <T>            Component class type
@@ -98,7 +105,8 @@ class ComponentManager {
      * @return Component instance
      */
     getComponentById<T>(componentId: string): T {
-        let componentClassInfo: ComponentClassInfo = this.componentClasses[componentId.toLowerCase()];
+        let builtComponentId: string = this.buildComponentIdFromParameter(componentId);
+        let componentClassInfo: ComponentClassInfo = this.componentClasses[builtComponentId];
         if (!componentClassInfo) {
             throw new Error('no component with id ' + componentId + ' registered');
         }
@@ -246,6 +254,11 @@ class ComponentManager {
         return [];
     }
 
+    /**
+     * Get the list of argument names from a method
+     * @param method Method
+     * @return List of argument names
+     */
     private getMethodArgumentNames(method: Function): string[] {
         let matches: string[] = ComponentManager.REGEXP_METHODPARAMS.exec(method.toString());
         if (matches && matches[1]) {
@@ -266,7 +279,16 @@ class ComponentManager {
     }
 
     /**
-     * Build a component identifier from a constructor argument name
+     * Build a component identifier from a parameter name passed by callers
+     * @param parameterName Parameter name
+     * @return Component identifier
+     */
+    private buildComponentIdFromParameter(parameterName: string): string {
+        return parameterName.toLowerCase().replace(/-/g, '');
+    }
+
+    /**
+     * Build a component identifier from an argument name
      * @param argumentName Argument name
      * @return Component identifier
      */
