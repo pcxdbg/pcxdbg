@@ -10,6 +10,8 @@ test_script:
   - npm run coverage
 on_finish:
   - ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-report.xml))
+on_success:
+  - ./node_modules/.bin/codecov
 build: off
 version: "0.3.0-build.{build}"
 branches:
