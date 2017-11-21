@@ -8,6 +8,8 @@ test_script:
   - npm --version
   - npm run build
   - npm run coverage
+on_finish:
+  - ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-report.xml))
 build: off
 version: "0.3.0-build.{build}"
 branches:
