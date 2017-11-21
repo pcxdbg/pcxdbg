@@ -22,7 +22,7 @@ class ComponentManager {
 
     private componentClasses: {[componentId: string]: ComponentClassInfo} = {};
     private componentMethods: {[componentId: string]: string[]} = {};
-    private componentInstances: {[componentId: string]: Object[]} = {};
+    private componentInstances: {[componentId: string]: Object} = {};
 
     /**
      * Class constructor
@@ -89,7 +89,7 @@ class ComponentManager {
     getComponent<T>(componentClass: ClassConstructorTypeFromType<T>): T {
         let componentId: string = this.buildComponentIdFromClass(componentClass);
         let componentClassInfo: ComponentClassInfo = this.componentClasses[componentId];
-        let componentInstances: Object[];
+        let componentInstance: Object;
 
         if (!componentClassInfo) {
             throw new Error('no component with type ' + componentClass.name + ' registered');
@@ -98,12 +98,9 @@ class ComponentManager {
         }
 
         this.instantiateIfNecessary(componentClass);
-        componentInstances = this.componentInstances[componentId];
-        if (componentInstances.length > 1) {
-            throw new Error('unable to retrieve a component of type ' + componentClass.name + ': multiple instances are available');
-        }
+        componentInstance = this.componentInstances[componentId];
 
-        return <T> componentInstances[0];
+        return <T> componentInstance;
     }
 
     /**
@@ -136,7 +133,7 @@ class ComponentManager {
         componentId = this.buildComponentIdFromClass(componentClass);
         componentClassInfo = this.componentClasses[componentId];
         if (!componentClassInfo) {
-            throw new Error('no component of type ' + componentClass.name + ' registered');
+            throw new Error('no components with type ' + componentClass.name + ' registered');
         }
 
         if (componentClassInfo.isComponent) {
@@ -162,7 +159,6 @@ class ComponentManager {
         let constructorArguments: any[] = [];
         let constructor: new (...args: any[]) => T;
         let instance: T;
-        let instances: T[];
 
         if (componentId in this.componentInstances) {
             return;
@@ -175,8 +171,7 @@ class ComponentManager {
 
         constructor = <new (...args: any[]) => T> <any> componentClass;
         instance = new constructor(... constructorArguments);
-        instances = <T[]> (this.componentInstances[componentId] = this.componentInstances[componentId] || []);
-        instances.push(instance);
+        this.componentInstances[componentId] = instance;
 
         this.callInjectionMethods(componentClass, instance);
     }
