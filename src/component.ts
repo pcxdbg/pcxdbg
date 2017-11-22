@@ -337,7 +337,7 @@ const Component: ClassOrMethodDecorator = (target, propertyKey) => {
     if (propertyKey) {
         componentManager.registerComponentMethod(<Function> target, <string> propertyKey);
     } else {
-        componentManager.registerComponentClass(<Function> target);
+        componentManager.registerComponentClass(<ClassConstructorTypeFromType<Object>> target);
     }
 };
 
