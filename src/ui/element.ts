@@ -107,9 +107,11 @@ class UIElement {
     /**
      * Remove an attribute
      * @param attributeName Attribute name
+     * @return this
      */
-    removeAttribute(attributeName: string): void {
+    removeAttribute(attributeName: string): UIElement {
         this.nativeElement.removeAttribute(attributeName);
+        return this;
     }
 
     /**
@@ -253,6 +255,7 @@ class UIElement {
     /**
      * Attach the element to a target
      * @param targetElement Target element
+     * @return this
      */
     attachTo(targetElement: UIElement): UIElement {
         targetElement.getChildTarget().getNativeElement().appendChild(this.nativeElement);
@@ -261,11 +264,25 @@ class UIElement {
 
     /**
      * Detach the element from its parent container
+     * @return this
      */
-    detach(): void {
+    detach(): UIElement {
         if (this.nativeElement.parentNode) {
             this.nativeElement.parentNode.removeChild(this.nativeElement);
         }
+
+        return this;
+    }
+
+    /**
+     * Clear content, i.e. all child nodes
+     * @return this
+     */
+    clearContent(): UIElement {
+        let clone: HTMLElement = <HTMLElement> this.nativeElement.cloneNode(false);
+        this.nativeElement.parentNode.replaceChild(clone, this.nativeElement);
+        this.nativeElement = clone;
+        return this;
     }
 
     /**
@@ -280,7 +297,7 @@ class UIElement {
      * Get the child target
      * @return Child target
      */
-    getChildTarget(): UIElement {
+    protected getChildTarget(): UIElement {
         return this;
     }
 

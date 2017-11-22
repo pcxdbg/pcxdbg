@@ -1,6 +1,5 @@
-import {ModalManager, ModalView} from '../../ui/modal';
+import {ModalView, UIElement} from '../../ui';
 import {Component} from '../../component';
-import {UIElement} from '../../ui/element';
 
 /**
  * Open connection dialog box
@@ -8,24 +7,28 @@ import {UIElement} from '../../ui/element';
 @Component
 class OpenConnectionDialog extends ModalView {
     private static HTML: string = `
-        hello world
+        TODO:
+        <h3>New connection button leading to a second panel with inputs</h3>
+        <ul>
+            <li>Host and port</li>
+            <li>Protocol: protobuf+ws(s)</li>
+            <li>Authentication details</li>
+        </ul>
+        <h3>Merged list</h3>
+        <ul>
+            <li>Hosts saved (favorite connections)</li>
+            <li>Hosts discovered through multicast</li>
+            <li>Hosts recently connected to</li>
+        </ul>
     `;
 
     /**
-     * Class constructor
-     * @param modalManager Modal manager
+     * Build the modal content
      */
-    constructor(modalManager: ModalManager) {
-        super(modalManager);
-
-        this.buildDialog();
-    }
-
-    /**
-     * Build the dialog box
-     */
-    private buildDialog(): void {
+    protected buildModalContent(): void {
         let dialogElement: UIElement = new UIElement('open-connection-dialog', OpenConnectionDialog.HTML);
+
+        this.setTitle('app:dialog.options.title');
 
         this.attach(dialogElement);
     }

@@ -1,13 +1,56 @@
 import {Component} from '../component';
+import {PathUtils} from './path-utils';
 import * as fs from 'fs';
 
 const DEFAULT_CHARSET: string = 'utf-8';
+const FILENAME_PACKAGEJSON: string = 'package.json';
+
+/**
+ * Node package
+ */
+interface NodePackage {
+    name: string;
+    description?: string;
+    homepage?: string;
+    license: string;
+    version: string;
+    dependencies?: {[dependencyName: string]: string};
+}
 
 /**
  * File utility functions
  */
 @Component
 class FileUtils {
+    private pathUtils: PathUtils;
+
+    /**
+     * Set the path utility functions
+     * @param pathUtils Path utility functions
+     */
+    @Component
+    setPathUtils(pathUtils: PathUtils): void {
+        this.pathUtils = pathUtils;
+    }
+
+    /**
+     * Get the application package
+     * @return Application package
+     */
+    async getApplicationPackage(): Promise<NodePackage> {
+        let packagePath: string = this.pathUtils.getApplicationRelativePath(FILENAME_PACKAGEJSON);
+        return await this.getNodePackage(packagePath);
+    }
+
+    /**
+     * Get a module package
+     * @param moduleName Module name
+     * @return Module package
+     */
+    async getModulePackage(moduleName: string): Promise<NodePackage> {
+        let packagePath: string = this.pathUtils.getModulesRelativePath(moduleName, FILENAME_PACKAGEJSON);
+        return await this.getNodePackage(packagePath);
+    }
 
     /**
      * Read a file's content as JSON
@@ -38,8 +81,19 @@ class FileUtils {
         });
     }
 
+    /**
+     * Get a Node package
+     * @param packagePath Package path
+     * @return Package
+     */
+    private async getNodePackage(packagePath): Promise<NodePackage> {
+        let packageContent: string = await this.readFileContent(packagePath);
+        return <NodePackage> JSON.parse(packageContent);
+    }
+
 }
 
 export {
-    FileUtils
+    FileUtils,
+    NodePackage
 };

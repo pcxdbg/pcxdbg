@@ -2,7 +2,7 @@ import {UIElement} from './element';
 
 /**
  * List column definition
- * @param <T> Element type
+ * @param <T> Item data type
  */
 interface ListColumnDefinition<T> {
     id: string;
@@ -16,6 +16,7 @@ interface ListColumnDefinition<T> {
 
 /**
  * List item definition
+ * @param <T> Item data type
  */
 interface ListItemDefinition<T> {
     click?: {(item: T): void};
@@ -24,7 +25,7 @@ interface ListItemDefinition<T> {
 
 /**
  * List
- * @param <T> Element type
+ * @param <T> Item data type
  */
 class List<T> extends UIElement {
     private static HTML: string = `

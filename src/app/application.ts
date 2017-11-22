@@ -2,9 +2,8 @@ import {CommandManager, ModalManager, UIElement, Window, WindowManager} from '..
 import {Component} from '../component';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
-import {AboutDialog, OpenConnectionDialog} from './dialogs';
-import {HostExplorerView} from './host-explorer';
-import {NetworkExplorerView} from './network-explorer';
+import {AboutDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
+import {HostExplorerView, NetworkExplorerView} from './windows';
 import {COMMANDS} from './application-commands';
 import {remote, shell} from 'electron';
 
@@ -104,12 +103,14 @@ class ApplicationView extends UIElement {
      * Set the dialog components
      * @param aboutDialog          About dialog
      * @param openConnectionDialog Open connection dialog
+     * @param optionsDialog        Options dialog
      */
     @Component
-    setDialogComponents(aboutDialog: AboutDialog, openConnectionDialog: OpenConnectionDialog): void {
+    setDialogComponents(aboutDialog: AboutDialog, openConnectionDialog: OpenConnectionDialog, optionsDialog: OptionsDialog): void {
         [
             aboutDialog,
-            openConnectionDialog
+            openConnectionDialog,
+            optionsDialog
         ].forEach(dialog => this.modalManager.registerModal(dialog));
     }
 

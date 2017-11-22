@@ -28,10 +28,11 @@
                 }
             }
         },
-        "control": {
-            "cancel": "Cancel",
-            "close": "Close",
-            "save": "Save"
+        "open-connection": {
+            "title": "Open Connection"
+        },
+        "options": {
+            "title": "Options"
         }
     },
     "host-explorer": {

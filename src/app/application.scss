@@ -4,10 +4,11 @@
 @import "frame/main-menu";
 @import "frame/toolbar-container";
 @import "frame/status-bar";
-@import "host-explorer";
-@import "network-explorer";
 @import "dialogs/dialog-about";
 @import "dialogs/dialog-open-connection";
+@import "dialogs/dialog-options";
+@import "windows/host-explorer";
+@import "windows/network-explorer";
 
 application {
     position: absolute;

@@ -1,12 +1,13 @@
 import {UIElement} from './element';
-import {Component} from '../component';
+import {Component, componentManager} from '../component';
+import {CommandManager} from './command';
 
 const SUFFIX_DIALOG: string = 'dialog';
 
 /**
  * Modal view
  */
-class ModalView extends UIElement {
+abstract class ModalView extends UIElement {
     private static MODAL_HTML: string = `
         <modal-title></modal-title>
         <modal-content></modal-content>
@@ -14,17 +15,31 @@ class ModalView extends UIElement {
     `;
 
     private contentElement: UIElement;
-    private modalManager: ModalManager;
     private id: string;
 
     /**
      * Class constructor
-     * @param modalManager Modal manager
      */
-    constructor(modalManager: ModalManager) {
+    constructor() {
         super('modal', ModalView.MODAL_HTML);
-        this.modalManager = modalManager;
         this.id = this.buildModalId();
+    }
+
+    /**
+     * Set the title
+     * @param label           Label
+     * @param labelParameters Label parameters
+     */
+    setTitle(label: string, labelParameters?: {[parameterName: string]: any}): void {
+        this.element('modal-title').i18n(label, labelParameters).applyTranslations();
+    }
+
+    /**
+     * Se the title text
+     * @param labelText Label text
+     */
+    setTitleText(labelText: string): void {
+        this.element('modal-title').i18n().text(labelText);
     }
 
     /**
@@ -36,18 +51,41 @@ class ModalView extends UIElement {
     }
 
     /**
-     * Get the child target
-     * @return Child target
+     * Show the modal
      */
-    getChildTarget(): UIElement {
-        return this.element('modal-content');
+    show(): void {
+        this.buildModalContent();
+        this.attribute('active');
+    }
+
+    /**
+     * Hide the modal
+     */
+    hide(): void {
+        this
+            .removeAttribute('active')
+            .clearContent()
+        ;
     }
 
     /**
      * Close the modal
      */
     close(): void {
-        this.modalManager.hideModal(this.id);
+        componentManager.getComponent(ModalManager).hideModal(this.id);
+    }
+
+    /**
+     * Build the modal content
+     */
+    protected abstract buildModalContent(): void;
+
+    /**
+     * Get the child target
+     * @return Child target
+     */
+    protected getChildTarget(): UIElement {
+        return this.element('modal-content');
     }
 
     /**
@@ -83,6 +121,17 @@ class ModalManager {
     }
 
     /**
+     * Set the command manager
+     * @param commandManager Command manager
+     */
+    @Component
+    setCommandManager(commandManager: CommandManager): void {
+        commandManager
+            .on('modal.open', parameters => this.showModal(parameters.modalId))
+        ;
+    }
+
+    /**
      * Register a modal
      * @param modal Modal
      * @param <T>   Modal type
@@ -108,6 +157,7 @@ class ModalManager {
 
         this.showCover();
         this.activeModal = modal;
+        this.activeModal.show();
         this.activeModal.attribute('active', '');
     }
 
@@ -125,7 +175,7 @@ class ModalManager {
             throw new Error('the modal matching identifier "' + modalId + '" is not the active modal');
         }
 
-        this.activeModal.removeAttribute('active');
+        this.activeModal.hide();
         this.activeModal = null;
         this.hideCover();
     }
@@ -134,7 +184,7 @@ class ModalManager {
      * Show the cover
      */
     private showCover(): void {
-        this.cover.attribute('active', '');
+        this.cover.attribute('active');
     }
 
     /**

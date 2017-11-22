@@ -1,4 +1,11 @@
 {
+    "modal": {
+        "control": {
+            "cancel": "Cancel",
+            "close": "Close",
+            "save": "Save"
+        }
+    },
     "window": {
         "title-bar": {
             "auto-hide": {

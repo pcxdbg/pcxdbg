@@ -1,5 +1,5 @@
-import {Window, WindowManager} from '../ui/window';
-import {Component} from '../component';
+import {Window, WindowManager} from '../../ui';
+import {Component} from '../../component';
 
 /**
  * Network explorer

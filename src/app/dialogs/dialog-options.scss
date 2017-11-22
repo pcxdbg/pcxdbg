@@ -1,0 +1,27 @@
+
+options-dialog {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 800px;
+    height: 480px;
+
+    > options-dialog-navigation {
+        display: flex;
+        flex-direction: column;
+        width: 320px;
+
+        > options-dialog-navigation-filter {
+
+        }
+
+        > options-dialog-navigation-tree {
+            flex-grow: 1;
+            background-color: #3f0000;
+        }
+    }
+
+    > options-dialog-panels {
+        flex-grow: 1;
+    }
+}

@@ -1,17 +1,8 @@
+import {Button, Icon, IconManager, List, ListItemDefinition, ModalView, UIElement} from '../../ui';
 import {Component} from '../../component';
-import {Button} from '../../ui/button';
-import {Icon, IconManager} from '../../ui/icon';
-import {List, ListItemDefinition} from '../../ui/list';
-import {ModalManager, ModalView} from '../../ui/modal';
-import {I18nManager} from '../../lng/i18n';
-import {UIElement} from '../../ui/element';
-import {FileUtils} from '../../util/file-utils';
-import {remote, shell} from 'electron';
-import * as path from 'path';
-import * as fs from 'fs';
-
-const PATH_NODEMODULES: string = '/node_modules';
-const PATH_PACKAGEJSON: string = '/package.json';
+import {I18nManager} from '../../lng';
+import {FileUtils, NodePackage} from '../../util';
+import {remote} from 'electron';
 
 /**
  * Version information
@@ -31,18 +22,6 @@ class DependencyInformation {
     license: string;
     description: string;
     url: string;
-}
-
-/**
- * Node package
- */
-interface NodePackage {
-    name: string;
-    description?: string;
-    homepage?: string;
-    license: string;
-    version: string;
-    dependencies?: {[dependencyName: string]: string};
 }
 
 /**
@@ -76,16 +55,9 @@ class AboutDialog extends ModalView {
 
     /**
      * Class constructor
-     * @param modalManager Modal manager
-     * @param iconManager  Icon manager
-     * @param i18nManager  i18n manager
-     * @param fileUtils    File utility functions
      */
-    constructor(modalManager: ModalManager, iconManager: IconManager, i18nManager: I18nManager, fileUtils: FileUtils) {
-        super(modalManager);
-        this.i18nManager = i18nManager;
-        this.iconManager = iconManager;
-        this.fileUtils = fileUtils;
+    constructor() {
+        super();
         this.versionApplication = remote.app.getVersion();
         this.versionChrome = remote.process.versions.chrome;
         this.versionElectron = remote.process.versions.electron;
@@ -95,14 +67,39 @@ class AboutDialog extends ModalView {
         this.revisionId = process.env.REVISION_ID;
         this.revisionNumber = process.env.REVISION_NUMBER;
         this.buildDate = new Date(process.env.BUILD_TIME);
-
-        this.buildDialog();
     }
 
     /**
-     * Build the dialog box
+     * Set the i18n manager
+     * @param i18nManager i18n manager
      */
-    private async buildDialog(): Promise<void> {
+    @Component
+    setI18nManager(i18nManager: I18nManager): void {
+        this.i18nManager = i18nManager;
+    }
+
+    /**
+     * Set the icon manager
+     * @param iconManager Icon manager
+     */
+    @Component
+    setIconManager(iconManager: IconManager): void {
+        this.iconManager = iconManager;
+    }
+
+    /**
+     * Set the file utility functions
+     * @param fileUtils File utility functions
+     */
+    @Component
+    setFileUtils(fileUtils: FileUtils): void {
+        this.fileUtils = fileUtils;
+    }
+
+    /**
+     * Build the modal content
+     */
+    protected async buildModalContent(): Promise<void> {
         let dialogElement: UIElement = new UIElement('about-dialog', AboutDialog.HTML);
         let versionInfoBlock: UIElement = dialogElement.element('about-content', 'version-info-list');
         let versionInfoList: VersionInformation[] = this.prepareVersionInformationList();
@@ -112,7 +109,7 @@ class AboutDialog extends ModalView {
         versionInfoList.forEach(versionInfo => this.createVersionInformationElement(versionInfo).attachTo(versionInfoBlock));
 
         closeButton
-            .label('app:dialog.control.close')
+            .label('ui:modal.control.close')
             .click(() => this.close())
         ;
 
@@ -213,7 +210,6 @@ class AboutDialog extends ModalView {
      * @return Promise that resolves to the list of dependency information
      */
     private async buildDependenciesInformation(): Promise<DependencyInformation[]> {
-        let nodeModulesPath: string = path.join(remote.app.getAppPath(), PATH_NODEMODULES);
         let dependencyNames: string[] = await this.getDependencyNames();
         let dependencies: DependencyInformation[] = [];
 
@@ -231,10 +227,8 @@ class AboutDialog extends ModalView {
      * @return Dependency information
      */
     private async buildDependencyInformation(dependencyName: string): Promise<DependencyInformation> {
-        let packagePath: string = path.join(remote.app.getAppPath(), PATH_NODEMODULES, '/' + dependencyName, PATH_PACKAGEJSON);
-        let packageContent: string = await this.fileUtils.readFileContent(packagePath);
-        let packageData: NodePackage = JSON.parse(packageContent);
         let dependencyInformation: DependencyInformation = new DependencyInformation();
+        let packageData: NodePackage = await this.fileUtils.getModulePackage(dependencyName);
 
         dependencyInformation.name = packageData.name;
         dependencyInformation.version = packageData.version;
@@ -250,9 +244,7 @@ class AboutDialog extends ModalView {
      * @return List of dependencies
      */
     private async getDependencyNames(): Promise<string[]> {
-        let packagePath: string = path.join(remote.app.getAppPath(), PATH_PACKAGEJSON);
-        let packageContent: string = await this.fileUtils.readFileContent(packagePath);
-        let packageData: NodePackage = JSON.parse(packageContent);
+        let packageData: NodePackage = await this.fileUtils.getApplicationPackage();
         let dependencies: {[dependencyName: string]: string} = packageData.dependencies;
         let dependencyNames: string[] = [];
 
