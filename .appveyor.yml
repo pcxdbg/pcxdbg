@@ -6,6 +6,7 @@ install:
 test_script:
   - node --version
   - npm --version
+  - npm run tslint
   - npm run build
   - npm run coverage
 on_finish:

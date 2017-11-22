@@ -9,6 +9,7 @@ after_script:
   - greenkeeper-lockfile-upload
 script:
   - npm install
+  - npm run tslint
   - npm run build
   - npm run coverage
 notifications:
