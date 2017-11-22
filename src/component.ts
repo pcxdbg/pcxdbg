@@ -49,10 +49,10 @@ class ComponentManager {
     /**
      * Register a component class
      * @param componentClass Component class
-     * @param <T>            Component class type
+     * @param <T>            Component type
      */
-    registerComponentClass<T extends Function>(componentClass: T): void {
-        let componentClassIterator: Function;
+    registerComponentClass<T>(componentClass: ClassConstructorTypeFromType<T>): void {
+        let componentClassIterator: ClassConstructorTypeFromType<Object>;
         let componentId: string = this.buildComponentIdFromClass(componentClass);
 
         for (componentClassIterator = componentClass; componentClassIterator !== Object; componentClassIterator = Object.getPrototypeOf(componentClassIterator.prototype).constructor) {
@@ -73,9 +73,10 @@ class ComponentManager {
      * Register a component class method
      * @param componentClass Component class
      * @param methodName     Method name
+     * @param <T>            Component class type
      */
     registerComponentMethod<T extends Function>(componentClass: T, methodName: string): void {
-        let componentId: string = this.buildComponentIdFromClass(componentClass.constructor);
+        let componentId: string = this.buildComponentIdFromClass(<ClassConstructorTypeFromType<Object>> componentClass.constructor);
         let methodList: string[] = this.componentMethods[componentId] = this.componentMethods[componentId] || [];
         methodList.push(methodName);
     }
@@ -97,7 +98,7 @@ class ComponentManager {
             throw new Error('unable to retrieve a component of type ' + componentClass.name + ': multiple derived instances are available');
         }
 
-        this.instantiateIfNecessary(componentClass);
+        this.instantiateIfNecessary<T>(componentClassInfo);
         componentInstance = this.componentInstances[componentId];
 
         return <T> componentInstance;
@@ -137,7 +138,7 @@ class ComponentManager {
         }
 
         if (componentClassInfo.isComponent) {
-            this.instantiateIfNecessary(componentClass);
+            this.instantiateIfNecessary<T>(componentClassInfo);
         }
 
         for (let derivedComponentId of componentClassInfo.derivedComponents) {
@@ -150,11 +151,12 @@ class ComponentManager {
 
     /**
      * Instantiate a component if it has not been instantiated yet
-     * @param componentClass Component class
-     * @param <T>            Component class type
+     * @param componentClass Component class info
+     * @param <T>            Component type
      */
-    private instantiateIfNecessary<T extends Function>(componentClass: T): void {
-        let componentId: string = this.buildComponentIdFromClass(componentClass);
+    private instantiateIfNecessary<T>(componentClassInfo: ComponentClassInfo): void {
+        let componentClass: ClassConstructorTypeFromType<T> = <ClassConstructorTypeFromType<T>> componentClassInfo.componentClass;
+        let componentId: string = this.buildComponentIdFromClass<T>(componentClass);
         let constructorArgumentNames: string[];
         let constructorArguments: any[] = [];
         let constructor: new (...args: any[]) => T;
@@ -162,8 +164,6 @@ class ComponentManager {
 
         if (componentId in this.componentInstances) {
             return;
-        } else if (!(componentId in this.componentClasses)) {
-            throw new Error('no component of type ' + componentClass.name + ' registered');
         }
 
         constructorArgumentNames = this.getConstructorArgumentNames(componentClass);
@@ -180,16 +180,17 @@ class ComponentManager {
      * Call injection methods on a component instancce
      * @param componentClass Component class
      * @param instance       Instance
+     * @param <T>            Component type
      */
-    private callInjectionMethods<T extends Function>(componentClass: T, instance: T): void {
-        let componentId: string = this.buildComponentIdFromClass(componentClass);
+    private callInjectionMethods<T>(componentClass: ClassConstructorTypeFromType<T>, instance: T): void {
+        let componentId: string = this.buildComponentIdFromClass<T>(componentClass);
         let parentClass: Function = Object.getPrototypeOf(componentClass.prototype).constructor;
         let injectedMethods: string[] = this.componentMethods[componentId] || [];
 
         injectedMethods.forEach(methodName => this.callInjectionMethod(componentClass, instance, methodName));
 
         if (parentClass !== Object) {
-            this.callInjectionMethods(parentClass, instance);
+            this.callInjectionMethods<Object>(<ClassConstructorTypeFromType<Object>> parentClass, instance);
         }
     }
 
@@ -198,9 +199,9 @@ class ComponentManager {
      * @param componentClass Component class
      * @param instance       Instance
      * @param methodName     Method name
-     * @param <T>            Component class type
+     * @param <T>            Component type
      */
-    private callInjectionMethod<T extends Function>(componentClass: T, instance: T, methodName: string): void {
+    private callInjectionMethod<T>(componentClass: ClassConstructorTypeFromType<T>, instance: T, methodName: string): void {
         let method: Function = componentClass.prototype[methodName];
         let methodArgumentNames: string[] = this.getMethodArgumentNames(method);
         let methodArguments: any[] = this.buildInjectedArguments(methodArgumentNames, componentClass.name, methodName);
@@ -244,10 +245,10 @@ class ComponentManager {
     /**
      * Get the list of argument names for a class' constructor
      * @param componentClass Component class
-     * @param <T>            Component class type
+     * @param <T>            Component type
      * @return List of argument names
      */
-    private getConstructorArgumentNames<T extends Function>(componentClass: T): string[] {
+    private getConstructorArgumentNames<T>(componentClass: ClassConstructorTypeFromType<T>): string[] {
         let classCode: string = componentClass.toString();
         let matches: string[] = ComponentManager.REGEXP_CONSTRUCTORPARAMS.exec(classCode);
         if (matches && matches[1]) {
@@ -274,10 +275,10 @@ class ComponentManager {
     /**
      * Build a component identifier from a component class
      * @param componentClass Component class
-     * @param <T>            Component class type
+     * @param <T>            Component type
      * @return Component identifier
      */
-    private buildComponentIdFromClass<T extends Function>(componentClass: T): string {
+    private buildComponentIdFromClass<T>(componentClass: ClassConstructorTypeFromType<T>): string {
         return componentClass.name.toLowerCase();
     }
 
