@@ -71,12 +71,12 @@ class ComponentManager {
 
     /**
      * Register a component class method
-     * @param componentClass Component class
-     * @param methodName     Method name
-     * @param <T>            Component class type
+     * @param componentPrototype Component prototype
+     * @param methodName         Method name
+     * @param <T>                Component type
      */
-    registerComponentMethod<T extends Function>(componentClass: T, methodName: string): void {
-        let componentId: string = this.buildComponentIdFromClass(<ClassConstructorTypeFromType<Object>> componentClass.constructor);
+    registerComponentMethod<T extends Function>(componentPrototype: T, methodName: string): void {
+        let componentId: string = this.buildComponentIdFromClass(<ClassConstructorTypeFromType<Object>> componentPrototype.constructor);
         let methodList: string[] = this.componentMethods[componentId] = this.componentMethods[componentId] || [];
         methodList.push(methodName);
     }
@@ -139,6 +139,8 @@ class ComponentManager {
 
         if (componentClassInfo.isComponent) {
             this.instantiateIfNecessary<T>(componentClassInfo);
+            componentInstance = this.getComponent<T>(componentClass);
+            componentInstances.push(componentInstance);
         }
 
         for (let derivedComponentId of componentClassInfo.derivedComponents) {

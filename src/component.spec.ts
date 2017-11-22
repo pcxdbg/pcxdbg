@@ -87,12 +87,64 @@ describe('Component manager', () => {
         expect(Object.getPrototypeOf(instances[1]).constructor).toEqual(TestDerivedComponent2);
     });
 
-    it('throws an exception when retrieving components with a class that is not registered', () => {
-        componentManager.registerComponentClass(TestComponent2);
+    it('can retrieve multiple instances including a base component type', () => {
+        let instances: TestComponent[];
+        
+        componentManager.registerComponentClass(TestComponent);
+        componentManager.registerComponentClass(TestDerivedComponent);
 
-        expect(() => componentManager.getComponents<TestComponent>(TestComponent)).toThrowError(/no components with type/);
+        instances = componentManager.getComponents<TestComponent>(TestComponent);
+
+        expect(instances).not.toBeNull();
+        expect(instances.length).toEqual(2);
+        expect(instances[0]).not.toBeNull();
+        expect(Object.getPrototypeOf(instances[0]).constructor).toEqual(TestComponent);
+        expect(instances[1]).not.toBeNull();
+        expect(Object.getPrototypeOf(instances[1]).constructor).toEqual(TestDerivedComponent);
     });
 
+    it('throws an exception when retrieving components with a class that is not registered', () => {
+        componentManager.registerComponentClass(TestComponent);
+
+        expect(() => componentManager.getComponents<TestComponent>(TestComponent2)).toThrowError(/no components with type/);
+    });
+
+    it('can instantiate a component with constructor injection', () => {
+        class MockComponent {
+            testComponent: TestComponent;
+            constructor(testComponent: TestComponent) { this.testComponent = testComponent; }
+        }
+
+        let testComponent: TestComponent;
+        let mockComponent: MockComponent;
+
+        componentManager.registerComponentClass(TestComponent);
+        componentManager.registerComponentClass(MockComponent);
+        mockComponent = componentManager.getComponent(MockComponent);
+        testComponent = componentManager.getComponent(TestComponent);
+
+        expect(mockComponent).not.toBeNull();
+        expect(mockComponent.testComponent).toEqual(testComponent);
+    });
+
+    it('can instantiate a component with a registered injection method', () => {
+        class MockComponent {
+            testComponent: TestComponent;
+            injectedMethod(testComponent: TestComponent): void { this.testComponent = testComponent; }
+        }
+
+        let testComponent: TestComponent;
+        let mockComponent: MockComponent;
+
+        componentManager.registerComponentClass(TestComponent);
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+        mockComponent = componentManager.getComponent(MockComponent);
+        testComponent = componentManager.getComponent(TestComponent);
+
+        expect(mockComponent).not.toBeNull();
+        expect(mockComponent.testComponent).toEqual(testComponent);
+    })
 });
 
 class TestComponent {
@@ -100,7 +152,7 @@ class TestComponent {
 }
 
 class TestComponent2 {
-    injectedMethod(testComponent: TestComponent): void { /* Empty */ }
+
 }
 
 class TestDerivedComponent extends TestComponent {
