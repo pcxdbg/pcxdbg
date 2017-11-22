@@ -1,14 +1,31 @@
 import {Component} from '../component';
-import {remote} from 'electron';
+import {Host} from '../host';
 import * as path from 'path';
-
-const PATH_NODEMODULES: string = '/node_modules';
 
 /**
  * Path utility functions
  */
 @Component
 class PathUtils {
+    private static PATH_NODEMODULES: string = '/node_modules';
+
+    private host: Host;
+
+    /**
+     * Set the host
+     * @param host Host
+     */
+    @Component
+    setHost(host: Host): void {
+        this.host = host;
+    }
+
+    /**
+     * Shut the utility functions down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
 
     /**
      * Get a path relative to the application path
@@ -16,7 +33,7 @@ class PathUtils {
      * @return Relative path
      */
     getApplicationRelativePath(...subPaths: string[]): string {
-        return path.join(remote.app.getAppPath(), ...subPaths);
+        return path.join(this.host.getApplicationPath(), ...subPaths);
     }
 
     /**
@@ -25,7 +42,7 @@ class PathUtils {
      * @return Relative path
      */
     getModulesRelativePath(...subPaths: string[]): string {
-        return this.getApplicationRelativePath(PATH_NODEMODULES, ...subPaths);
+        return this.getApplicationRelativePath(PathUtils.PATH_NODEMODULES, ...subPaths);
     }
 
 }

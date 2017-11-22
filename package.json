@@ -42,6 +42,7 @@
     "roots": [
       "<rootDir>/src"
     ],
+    "setupTestFrameworkScriptFile": "<rootDir>/conf/jest-plugins.js",
     "testResultsProcessor": "<rootDir>/node_modules/jest-junit-reporter",
     "testRegex": "\\.spec\\.ts",
     "transform": {
@@ -76,6 +77,8 @@
     "jest": "21.2.1",
     "jest-create-mock-instance": "1.0.2",
     "jest-junit-reporter": "1.1.0",
+    "jest-plugin-fs": "2.6.0",
+    "jest-plugins": "2.6.0",
     "json-loader": "0.5.7",
     "minimist": "1.2.0",
     "mkdirp": "0.5.1",

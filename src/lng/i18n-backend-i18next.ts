@@ -8,7 +8,7 @@ import * as moment from 'moment';
  * i18next i18n backend
  */
 @Component
-class I18nI18nextBackend extends I18nBackend {
+class I18nextI18nBackend extends I18nBackend {
     private languageChangeHandler: LanguageChangeHandler;
 
     /**
@@ -108,5 +108,5 @@ class I18nI18nextBackend extends I18nBackend {
 }
 
 export {
-    I18nI18nextBackend
+    I18nextI18nBackend
 };

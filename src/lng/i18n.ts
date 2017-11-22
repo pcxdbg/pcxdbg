@@ -67,19 +67,19 @@ class I18nManager {
     private backend: I18nBackend;
 
     /**
-     * Shuts the manager down
-     */
-    shutdown(): void {
-        // Nothing to do
-    }
-
-    /**
      * Set the backend
      * @param i18nBackend Backend
      */
     @Component
     setBackend(i18nBackend: I18nBackend): void {
         this.backend = i18nBackend;
+    }
+
+    /**
+     * Shuts the manager down
+     */
+    shutdown(): void {
+        // Nothing to do
     }
 
     /**

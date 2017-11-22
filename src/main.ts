@@ -1,8 +1,10 @@
 import {ApplicationView} from './app';
-import {I18nI18nextBackend} from './lng';
+import {I18nextI18nBackend} from './lng/i18n-backend-i18next';
+import {ElectronHostBackend} from './host/host-backend-electron';
 import {componentManager} from './component';
 
 window.addEventListener('load', async () => {
-    await componentManager.getComponent(I18nI18nextBackend).initialize();
+    componentManager.getComponent(ElectronHostBackend);
+    await componentManager.getComponent(I18nextI18nBackend).initialize();
     componentManager.getComponent(ApplicationView);
 }, false);

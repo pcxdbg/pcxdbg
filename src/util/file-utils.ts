@@ -2,9 +2,6 @@ import {Component} from '../component';
 import {PathUtils} from './path-utils';
 import * as fs from 'fs';
 
-const DEFAULT_CHARSET: string = 'utf-8';
-const FILENAME_PACKAGEJSON: string = 'package.json';
-
 /**
  * Node package
  */
@@ -22,6 +19,9 @@ interface NodePackage {
  */
 @Component
 class FileUtils {
+    private static DEFAULT_CHARSET: string = 'utf-8';
+    private static FILENAME_PACKAGEJSON: string = 'package.json';
+
     private pathUtils: PathUtils;
 
     /**
@@ -34,11 +34,18 @@ class FileUtils {
     }
 
     /**
+     * Shut the file utilities down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
+
+    /**
      * Get the application package
      * @return Application package
      */
     async getApplicationPackage(): Promise<NodePackage> {
-        let packagePath: string = this.pathUtils.getApplicationRelativePath(FILENAME_PACKAGEJSON);
+        let packagePath: string = this.pathUtils.getApplicationRelativePath(FileUtils.FILENAME_PACKAGEJSON);
         return await this.getNodePackage(packagePath);
     }
 
@@ -48,7 +55,7 @@ class FileUtils {
      * @return Module package
      */
     async getModulePackage(moduleName: string): Promise<NodePackage> {
-        let packagePath: string = this.pathUtils.getModulesRelativePath(moduleName, FILENAME_PACKAGEJSON);
+        let packagePath: string = this.pathUtils.getModulesRelativePath(moduleName, FileUtils.FILENAME_PACKAGEJSON);
         return await this.getNodePackage(packagePath);
     }
 
@@ -71,7 +78,7 @@ class FileUtils {
      */
     readFileContent(fileName: string, charset?: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            fs.readFile(fileName, charset || DEFAULT_CHARSET, (err, data) => {
+            fs.readFile(fileName, charset || FileUtils.DEFAULT_CHARSET, (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
