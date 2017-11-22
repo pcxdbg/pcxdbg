@@ -1,7 +1,60 @@
 import {Component} from '../component';
-import * as moment from 'moment';
-import * as i18next from 'i18next';
-import * as i18nextXHRBackend from 'i18next-xhr-backend';
+
+/**
+ * Language change handler
+ */
+type LanguageChangeHandler = (languageId: string) => void;
+
+/**
+ * i18n backend interface
+ */
+class I18nBackend {
+
+    /**
+     * Initialize the backend
+     * @return Promise that resolves once the manager is initialized
+     */
+    initialize(): Promise<void> {
+        throw new Error('I18nBackend.initialize must be overriden');
+    }
+
+    /**
+     * Register a language change handler
+     * @param handler Handler
+     * @return this
+     */
+    onLanguageChange(handler: LanguageChangeHandler): I18nBackend {
+        throw new Error('I18nBackend.onLanguageChange must be overriden');
+    }
+
+    /**
+     * Set the language
+     * @param language Language
+     */
+    setLanguage(language: string): Promise<void> {
+        throw new Error('I18nBackend.setLanguage must be overriden');
+    }
+
+    /**
+     * Translate a key
+     * @param key        Translation key
+     * @param parameters Translation parameters
+     * @return Translated key
+     */
+    translateKey(key: string, parameters?: {[parameterName: string]: any}): string {
+        throw new Error('I18nBackend.translateKey must be overriden');
+    }
+
+    /**
+     * Format a date
+     * @param date          Date
+     * @param formatPattern Format pattern
+     */
+    formatDate(date: Date, formatPattern: string): string {
+        throw new Error('I18nBackend.formatDate must be overriden');
+    }
+
+}
 
 /**
  * i18n manager
@@ -11,39 +64,30 @@ class I18nManager {
     private static REGEXP_INSTRUCTION: RegExp = /(\[[^\]]+\])?(\([^\)]+\))?(.+)/;
     private static OPTION_HTML: string = 'html';
 
-    /**
-     * Initialize the manager
-     * @return Promise that resolves once the manager is initialized
-     */
-    initialize(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            let i18nextOptions: i18next.InitOptions = {
-                fallbackLng: 'en',
-                lng: 'en',
-                debug: false, // TODO: switch based on release/development environment
-                ns: ['ui', 'app', 'apu', 'camera', 'cpu', 'gpu', 'input', 'network', 'online', 'storage', 'system'],
-                backend: {
-                    loadPath: 'translations/{{lng}}-{{ns}}.json'
-                }
-            };
+    private backend: I18nBackend;
 
-            i18next.on('failedLoading', (language, namespace, message) => this.onFailedLoading(language, namespace, message));
-            i18next.on('initialized', () => resolve());
-            i18next.on('languageChanged', language => this.onLanguageChange(language));
-            i18next.on('missingKey', (language, namespace, key, result) => this.onMissingKey(<string> <any> language, namespace, key));
-            i18next
-                .use(i18nextXHRBackend)
-                .init(i18nextOptions)
-            ;
-        });
+    /**
+     * Shuts the manager down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
+
+    /**
+     * Set the backend
+     * @param i18nBackend Backend
+     */
+    @Component
+    setBackend(i18nBackend: I18nBackend): void {
+        this.backend = i18nBackend;
     }
 
     /**
      * Set the language
      * @param language Language
      */
-    setLanguage(language: string): Promise<void> {
-        return new Promise(resolve => i18next.changeLanguage(language, () => resolve()));
+    async setLanguage(language: string): Promise<void> {
+        await this.backend.setLanguage(language);
     }
 
     /**
@@ -52,18 +96,19 @@ class I18nManager {
      * @param formatPattern Format pattern
      */
     formatDate(date: Date, formatPattern: string): string {
-        return moment(date).format(formatPattern);
+        return this.backend.formatDate(date, formatPattern);
     }
 
     /**
      * Translate a key
-     * @param id Key identifier
-     * @return Translation
+     * @param key        Translation key
+     * @param parameters Translation parameters
+     * @return Translated key
      */
-    translateKey(id: string, options?: {[key: string]: any}): string {
-        let translation: string = i18next.t(id, options);
+    translateKey(key: string, parameters?: {[parameterName: string]: any}): string {
+        let translation: string = this.backend.translateKey(key, parameters);
         if (translation === undefined) {
-            return '???' + id + '???';
+            return '???' + key + '???';
         }
 
         return translation;
@@ -128,38 +173,15 @@ class I18nManager {
      * Event triggered upon language change
      * @param language Language
      */
-    private onLanguageChange(language: string): void {
-        let languageId: string = language.substr(0, 2).toLowerCase();
+    private onLanguageChange(languageId: string): void {
         console.log('Language changed to ' + languageId);
         this.translateElement(document.body, true);
-    }
-
-    /**
-     * Event triggered when a language resource file cannot be loaded
-     * @param language  Language
-     * @param namespace Namespace
-     * @param message   Message
-     */
-    private onFailedLoading(language: string, namespace: string, message: string): void {
-        if (language.length > 2) {
-            return;
-        }
-
-        console.error('unable to load i18n namespace "' + namespace + '" for language "' + language + '": ' + message);
-    }
-
-    /**
-     * Event triggered when a key is missing from resources
-     * @param language  Language
-     * @param namespace Namespace
-     * @param key       Key
-     */
-    private onMissingKey(language: string, namespace: string, key: string): void {
-        console.warn('namespace "' + namespace + '" does not have key "' + key + '" for language "' + language + '"');
     }
 
 }
 
 export {
-    I18nManager
+    I18nBackend,
+    I18nManager,
+    LanguageChangeHandler
 };

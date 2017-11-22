@@ -1,11 +1,7 @@
 import {ComponentManager} from './component';
 
-describe('Component decorator', () => {
-    // TODO
-});
-
 describe('Component manager', () => {
-    let componentManager: ComponentManager = new ComponentManager();
+    let componentManager: ComponentManager;
 
     beforeEach(() => {
         componentManager = new ComponentManager();
