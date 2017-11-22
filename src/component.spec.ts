@@ -251,7 +251,6 @@ describe('Component manager', () => {
             injectedMethod(testComponent: TestComponent): void { /* Empty */ }
         }
 
-
         componentManager.registerComponentClass(TestDerivedComponent);
         componentManager.registerComponentClass(TestDerivedComponent2);
         componentManager.registerComponentClass(MockComponent);

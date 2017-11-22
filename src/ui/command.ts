@@ -73,7 +73,7 @@ class CommandManager {
             } else {
                 command.definition = commandDefinition;
             }
-        } else if (!command) {
+        } else {
             command = this.commands[commandDefinition.id] = {
                 definition: commandDefinition
             };
