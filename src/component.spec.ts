@@ -199,6 +199,67 @@ describe('Component manager', () => {
         expect(mockComponent.testComponentList[1]).toEqual(testDerivedComponent2);
     });
 
+    it('can instantiate a component with an empty injected list', () => {
+        class MockComponent {
+            called: boolean;
+            injectedMethod(): void { this.called = true; }
+        }
+
+        let mockComponent: MockComponent;
+
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+        mockComponent = componentManager.getComponent(MockComponent);
+
+        expect(mockComponent).not.toBeNull();
+        expect(mockComponent.called).toEqual(true);
+    });
+
+    it('can instantiate a component with an injected base component class', () => {
+        class MockComponent {
+            testComponent: TestComponent;
+            injectedMethod(testComponent: TestComponent): void { this.testComponent = testComponent; }
+        }
+
+        let testDerivedComponent: TestDerivedComponent;
+        let mockComponent: MockComponent;
+
+        componentManager.registerComponentClass(TestDerivedComponent);
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+        mockComponent = componentManager.getComponent(MockComponent);
+        testDerivedComponent = componentManager.getComponent(TestDerivedComponent);
+
+        expect(mockComponent).not.toBeNull();
+        expect(mockComponent.testComponent).not.toBeNull();
+        expect(mockComponent.testComponent).toEqual(testDerivedComponent);
+    });
+
+    it('throws an exception when injecting an unknown component into a method', () => {
+        class MockComponent {
+            injectedMethod(testComponent: TestComponent): void { /* Empty */ }
+        }
+
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+
+        expect(() => componentManager.getComponent(MockComponent)).toThrowError(/no matching component found/);
+    });
+
+    it('throws an exception when injection a base component class with multiple derived instances', () => {
+        class MockComponent {
+            injectedMethod(testComponent: TestComponent): void { /* Empty */ }
+        }
+
+
+        componentManager.registerComponentClass(TestDerivedComponent);
+        componentManager.registerComponentClass(TestDerivedComponent2);
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+
+        expect(() => componentManager.getComponent(MockComponent)).toThrowError(/cannot be injected directly as multiple instances are available/);
+    });
+
 });
 
 class TestComponent {

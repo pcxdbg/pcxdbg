@@ -233,7 +233,11 @@ class ComponentManager {
             if (isList) {
                 injectedArgument = this.getComponents(<any> injectedComponentClassInfo.componentClass);
             } else if (!injectedComponentClassInfo.isComponent) {
-                throw new Error('base component class ' + injectedComponentClassInfo.componentClass.name + ' cannot be injected directly');
+                if (injectedComponentClassInfo.derivedComponents.length > 1) {
+                    throw new Error('base component class ' + injectedComponentClassInfo.componentClass.name + ' cannot be injected directly as multiple instances are available');
+                } else {
+                    injectedArgument = this.getComponentById(injectedComponentClassInfo.derivedComponents[0]);
+                }
             } else {
                 injectedArgument = this.getComponent(<any> injectedComponentClassInfo.componentClass);
             }
