@@ -279,9 +279,9 @@ class UIElement {
      * @return this
      */
     clearContent(): UIElement {
-        let clone: HTMLElement = <HTMLElement> this.nativeElement.cloneNode(false);
-        this.nativeElement.parentNode.replaceChild(clone, this.nativeElement);
-        this.nativeElement = clone;
+        let childTarget: HTMLElement = this.getChildTarget().getNativeElement();
+        let clone: HTMLElement = <HTMLElement> childTarget.cloneNode(false);
+        childTarget.parentNode.replaceChild(clone, childTarget);
         return this;
     }
 
