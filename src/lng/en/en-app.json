@@ -28,7 +28,13 @@
                 }
             }
         },
+        "extensions": {
+            "title": "Extensions and Updates"
+        },
         "open-connection": {
+            "control": {
+                "new": "New Connection"
+            },
             "title": "Open Connection"
         },
         "options": {

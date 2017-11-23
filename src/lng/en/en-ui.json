@@ -3,6 +3,7 @@
         "control": {
             "cancel": "Cancel",
             "close": "Close",
+            "next": "Next",
             "save": "Save"
         }
     },

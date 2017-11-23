@@ -2,7 +2,7 @@ import {CommandManager, ModalManager, UIElement, Window, WindowManager} from '..
 import {Component} from '../component';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
-import {AboutDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
+import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
 import {HostExplorerView, NetworkExplorerView} from './windows';
 import {COMMANDS} from './application-commands';
 import {remote, shell} from 'electron';
@@ -68,6 +68,13 @@ class ApplicationView extends UIElement {
     }
 
     /**
+     * Shut the application down
+     */
+    shutdown(): void {
+        // Nothing to do
+    }
+
+    /**
      * Set the frame components
      * @param titleBarView         Title bar view
      * @param mainMenuView         Main menu view
@@ -102,13 +109,15 @@ class ApplicationView extends UIElement {
     /**
      * Set the dialog components
      * @param aboutDialog          About dialog
+     * @param extensionsDialog     Extensions dialog
      * @param openConnectionDialog Open connection dialog
      * @param optionsDialog        Options dialog
      */
     @Component
-    setDialogComponents(aboutDialog: AboutDialog, openConnectionDialog: OpenConnectionDialog, optionsDialog: OptionsDialog): void {
+    setDialogComponents(aboutDialog: AboutDialog, extensionsDialog: ExtensionsDialog, openConnectionDialog: OpenConnectionDialog, optionsDialog: OptionsDialog): void {
         [
             aboutDialog,
+            extensionsDialog,
             openConnectionDialog,
             optionsDialog
         ].forEach(dialog => this.modalManager.registerModal(dialog));
@@ -119,7 +128,7 @@ class ApplicationView extends UIElement {
      * @param moduleList List of modules
      */
     @Component
-    setModules(moduleList: Module[]): void {
+    setModules(...moduleList: Module[]): void {
         moduleList.forEach(module => {
             module.registerCommands(this.commandManager);
             module.registerWindows(this.windowManager);

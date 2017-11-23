@@ -1,5 +1,6 @@
 import {UIElement} from './element';
 import {Component, componentManager} from '../component';
+import {Button} from './button';
 import {CommandManager} from './command';
 
 const SUFFIX_DIALOG: string = 'dialog';
@@ -40,6 +41,33 @@ abstract class ModalView extends UIElement {
      */
     setTitleText(labelText: string): void {
         this.element('modal-title').i18n().text(labelText);
+    }
+
+    /**
+     * Add a button
+     * @param button Button
+     * @return this
+     */
+    addButton(button: Button): ModalView {
+        this.element('modal-controls').attach(button);
+        return this;
+    }
+
+    /**
+     * Add a cancel button
+     * @return this
+     */
+    addCancelButton(): ModalView {
+        let button: Button = new Button();
+
+        button
+            .label('ui:modal.control.cancel')
+            .click(() => this.close())
+        ;
+
+        this.addButton(button);
+
+        return this;
     }
 
     /**

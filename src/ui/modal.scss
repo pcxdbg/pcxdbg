@@ -54,5 +54,15 @@ modal {
     > modal-controls {
         display: flex;
         flex-direction: row;
+        justify-content: flex-end;
+        padding: 4px;
+
+        > button {
+            min-width: 120px;
+
+            &:not(:last-child) {
+                margin-right: 4px;
+            }
+        }
     }
 }
