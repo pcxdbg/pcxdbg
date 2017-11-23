@@ -17,8 +17,9 @@ class ComponentManager {
     private static REGEXP_CONSTRUCTORPARAMS: RegExp = /constructor\(\s*([^)]+?)\s*\)/;
     private static REGEXP_METHODPARAMS: RegExp = /\(\s*([^)]+?)\s*\)/;
     private static REGEXP_PARAMETERSLIST: RegExp = /\s*,\s*/;
-    private static REGEXP_LISTPARAMETER: RegExp = /.+List$/;
-    private static SUFFIX_LISTPARAMETER: string = 'list';
+    private static REGEXP_LISTPARAMETER: RegExp = /(.+List)$|(\.\.\..+s?)$/;
+    private static REGEXP_LISTPARAMETER_PREFIX: RegExp = /^\.\.\.[\s]*(.+)$/;
+    private static REGEXP_LISTPARAMETER_SUFFIX: RegExp = /^(.+)list$/;
 
     private componentClasses: {[componentId: string]: ComponentClassInfo} = {};
     private componentMethods: {[componentId: string]: string[]} = {};
@@ -225,13 +226,14 @@ class ComponentManager {
             let injectedComponentClassInfo: ComponentClassInfo = this.componentClasses[injectedComponentId];
             let isList: boolean = this.isListArgument(argumentName);
             let injectedArgument: any;
+            let injectedArgumentList: Object[];
 
             if (!injectedComponentClassInfo) {
                 throw new Error('no matching component found for ' + className + '.' + methodName + ' argument ' + argumentName + ' (component id: ' + injectedComponentId + ')');
             }
 
             if (isList) {
-                injectedArgument = this.getComponents(<any> injectedComponentClassInfo.componentClass);
+                injectedArgument = injectedArgumentList = this.getComponents(<any> injectedComponentClassInfo.componentClass);
             } else if (!injectedComponentClassInfo.isComponent) {
                 if (injectedComponentClassInfo.derivedComponents.length > 1) {
                     throw new Error('base component class ' + injectedComponentClassInfo.componentClass.name + ' cannot be injected directly as multiple instances are available');
@@ -242,7 +244,13 @@ class ComponentManager {
                 injectedArgument = this.getComponent(<any> injectedComponentClassInfo.componentClass);
             }
 
-            injectedArguments.push(injectedArgument);
+            if (isList && this.isSpreadListArgument(argumentName)) {
+                for (let spreadElement of injectedArgumentList) {
+                    injectedArguments.push(spreadElement);
+                }
+            } else {
+                injectedArguments.push(injectedArgument);
+            }
         });
 
         return injectedArguments;
@@ -316,7 +324,23 @@ class ComponentManager {
      * @return Component identifier
      */
     private buildComponentIdFromListArgument(argumentName: string): string {
-        return argumentName.toLowerCase().substring(0, argumentName.length - ComponentManager.SUFFIX_LISTPARAMETER.length);
+        let componentId = argumentName.toLowerCase();
+        let matches: string[];
+
+        matches = componentId.match(ComponentManager.REGEXP_LISTPARAMETER_PREFIX);
+        if (matches) {
+            componentId = matches[1];
+            if (componentId.charAt(componentId.length - 1) === 's') {
+                componentId = componentId.substr(0, componentId.length - 1);
+            }
+        }
+
+        matches = componentId.match(ComponentManager.REGEXP_LISTPARAMETER_SUFFIX);
+        if (matches) {
+            componentId = matches[1];
+        }
+
+        return componentId;
     }
 
     /**
@@ -326,6 +350,14 @@ class ComponentManager {
      */
     private isListArgument(argumentName: string): boolean {
         return ComponentManager.REGEXP_LISTPARAMETER.test(argumentName);
+    }
+
+    /**
+     * Test whether an argument name appears to refer to a list using the spread operator
+     * @param argumentName Argument name
+     */
+    private isSpreadListArgument(argumentName: string): boolean {
+        return ComponentManager.REGEXP_LISTPARAMETER_PREFIX.test(argumentName);
     }
 
 }

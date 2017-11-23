@@ -211,6 +211,33 @@ describe('Component manager', () => {
         expect(mockComponent.called).toEqual(true);
     });
 
+    it('can instantiate a component with an injected list using the spread operator', () => {
+        class MockComponent {
+            testComponents: TestComponent[];
+            injectedMethod(...testComponents: TestComponent[]): void { console.log('COMON', testComponents); this.testComponents = testComponents; }
+        }
+
+        let testDerivedComponent: TestDerivedComponent;
+        let testDerivedComponent2: TestDerivedComponent2;
+        let mockComponent: MockComponent;
+
+        componentManager.registerComponentClass(TestDerivedComponent);
+        componentManager.registerComponentClass(TestDerivedComponent2);
+        componentManager.registerComponentClass(MockComponent);
+        componentManager.registerComponentMethod(Object.getPrototypeOf(new MockComponent()), 'injectedMethod');
+        mockComponent = componentManager.getComponent(MockComponent);
+        testDerivedComponent = componentManager.getComponent(TestDerivedComponent);
+        testDerivedComponent2 = componentManager.getComponent(TestDerivedComponent2);
+
+        expect(mockComponent).not.toBeNull();
+        expect(mockComponent.testComponents).not.toBeNull();
+        expect(mockComponent.testComponents.length).toEqual(2);
+        expect(mockComponent.testComponents[0]).not.toBeNull();
+        expect(mockComponent.testComponents[0]).toEqual(testDerivedComponent);
+        expect(mockComponent.testComponents[1]).not.toBeNull();
+        expect(mockComponent.testComponents[1]).toEqual(testDerivedComponent2);
+    });
+
     it('can instantiate a component with an injected base component class', () => {
         class MockComponent {
             testComponent: TestComponent;
