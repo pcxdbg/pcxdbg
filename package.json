@@ -57,7 +57,7 @@
   "devDependencies": {
     "@types/i18next": "8.4.2",
     "@types/i18next-xhr-backend": "1.4.1",
-    "@types/jest": "21.1.7",
+    "@types/jest": "21.1.8",
     "@types/node": "8.0.53",
     "autoprefixer": "7.1.6",
     "codecov": "3.0.0",
