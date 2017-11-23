@@ -2,7 +2,7 @@ version: 2
 engines:
   tslint:
     enabled: true
-    channel: beta
+    config: "./conf/tslint.json"
 checks:
   argument-count:
     config:
