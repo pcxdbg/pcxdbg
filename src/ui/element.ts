@@ -180,6 +180,32 @@ class UIElement {
     }
 
     /**
+     * Give focus to the element
+     * @return this
+     */
+    focus(): UIElement {
+        this.nativeElement.focus();
+        return this;
+    }
+
+    /**
+     * Register an even handler
+     * @param eventType Event type
+     * @param handler   Handler
+     * @return this
+     */
+    on(eventType: string, handler: (element: UIElement) => void): UIElement {
+        this.nativeElement.addEventListener(eventType, e => {
+            e.stopPropagation();
+            e.preventDefault();
+            e.returnValue = false;
+            handler(this);
+        }, false);
+
+        return this;
+    }
+
+    /**
      * Select an element
      * @param selector Selector
      * @return Element
@@ -291,6 +317,14 @@ class UIElement {
      */
     getNativeElement(): HTMLElement {
         return this.nativeElement;
+    }
+
+    /**
+     * Emit an event
+     * @param eventType Event type
+     */
+    protected emitEvent(eventType: string): void {
+        this.nativeElement.dispatchEvent(new Event(eventType));
     }
 
     /**

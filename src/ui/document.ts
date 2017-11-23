@@ -1,10 +1,35 @@
+import {UIElement} from './element';
+import {WindowManager} from './window';
 import {Component} from '../component';
+import {CommandManager} from './command';
 
 /**
  * Document manager
  */
 @Component
 class DocumentManager {
+    private windowManager: WindowManager;
+
+    /**
+     * Set the command manager
+     * @param commandManager Command manager
+     */
+    @Component
+    setCommandManager(commandManager: CommandManager): void {
+        commandManager
+            .on('document.open', parameters => this.openDocument(parameters.type, parameters.parameters))
+            .on('document.close', () => this.closeDocument())
+        ;
+    }
+
+    /**
+     * Set the window manager
+     * @param windowManager Window manager
+     */
+    @Component
+    setWindowManager(windowManager: WindowManager): void {
+        this.windowManager = windowManager;
+    }
 
     /**
      * Register a document class
@@ -24,25 +49,24 @@ class DocumentManager {
         console.warn('open document not implemented', documentType, documentParameters);
     }
 
+    /**
+     * Close a document
+     * @param documentId Document identifier
+     */
+    closeDocument(documentId?: string): void {
+        // TODO
+    }
+
 }
 
 /**
- * Document
+ * Document view
  */
-class Document {
-
-}
-
-/**
- * Document container
- */
-@Component
-class DocumentContainer {
+class DocumentView extends UIElement {
 
 }
 
 export {
-    Document,
-    DocumentContainer,
+    DocumentView,
     DocumentManager
 };

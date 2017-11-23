@@ -3,27 +3,54 @@ import {Component, componentManager} from '../component';
 import {Button} from './button';
 import {CommandManager} from './command';
 
-const SUFFIX_DIALOG: string = 'dialog';
+/**
+ * Modal style
+ */
+const enum ModalStyle {
+    NO_BORDER,
+    NO_CONTROLS,
+    NO_TITLE
+}
 
 /**
  * Modal view
  */
 abstract class ModalView extends UIElement {
+    private static SUFFIX_DIALOG: string = 'dialog';
     private static MODAL_HTML: string = `
-        <modal-title></modal-title>
+        <modal-title>
+            <modal-title-text></modal-title-text>
+            <modal-title-controls></modal-title-controls>
+        </modal-title>
         <modal-content></modal-content>
         <modal-controls></modal-controls>
     `;
 
-    private contentElement: UIElement;
     private id: string;
 
     /**
      * Class constructor
+     * @param modalStyles Modal styles
      */
-    constructor() {
+    constructor(...modalStyles: ModalStyle[]) {
         super('modal', ModalView.MODAL_HTML);
         this.id = this.buildModalId();
+
+        for (let modalStyle of modalStyles) {
+            switch (modalStyle) {
+            case ModalStyle.NO_BORDER:
+                this.attribute('no-border');
+                break;
+            case ModalStyle.NO_CONTROLS:
+                this.attribute('no-controls');
+                break;
+            case ModalStyle.NO_TITLE:
+                this.attribute('no-title');
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     /**
@@ -32,7 +59,7 @@ abstract class ModalView extends UIElement {
      * @param labelParameters Label parameters
      */
     setTitle(label: string, labelParameters?: {[parameterName: string]: any}): void {
-        this.element('modal-title').i18n(label, labelParameters).applyTranslations();
+        this.element('modal-title', 'modal-title-text').i18n(label, labelParameters).applyTranslations();
     }
 
     /**
@@ -40,7 +67,7 @@ abstract class ModalView extends UIElement {
      * @param labelText Label text
      */
     setTitleText(labelText: string): void {
-        this.element('modal-title').i18n().text(labelText);
+        this.element('modal-title', 'modal-title-text').i18n().text(labelText);
     }
 
     /**
@@ -104,6 +131,16 @@ abstract class ModalView extends UIElement {
     }
 
     /**
+     * Clear content, i.e. all child nodes
+     * @return this
+     */
+    clearContent(): UIElement {
+        super.clearContent();
+        this.element('modal-controls').clearContent();
+        return this;
+    }
+
+    /**
      * Build the modal content
      */
     protected abstract buildModalContent(): void;
@@ -122,7 +159,7 @@ abstract class ModalView extends UIElement {
      */
     private buildModalId(): string {
         let modalId: string = this.constructor.name.toLowerCase();
-        if (modalId.substr(-6) === SUFFIX_DIALOG) {
+        if (modalId.substr(-6) === ModalView.SUFFIX_DIALOG) {
             modalId = modalId.substr(0, modalId.length - 6);
         }
 
@@ -235,5 +272,6 @@ class ModalManager {
 
 export {
     ModalManager,
+    ModalStyle,
     ModalView
 };

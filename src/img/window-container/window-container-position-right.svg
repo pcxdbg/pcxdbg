@@ -1,0 +1,7 @@
+<svg viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<path fill="#252526" d="M0,2c0,-2 2,-2 2,-2h28c2,0 2,2 2,2v28c0,2 -2,2 -2,2h-28c-2,0 -2,-2 -2,-2z"/>
+<g transform="translate(32,0) scale(-1,1)">
+<path fill="#007acc" fill-rule="evenodd" d="M4,4h12v24h-12zm1,3h10v20h-10z"/>
+<path fill="#f1f1f1" d="M22,16l4,-4v8z"/>
+</g>
+</svg>

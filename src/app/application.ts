@@ -1,4 +1,4 @@
-import {CommandManager, ModalManager, UIElement, Window, WindowManager} from '../ui';
+import {CommandManager, DocumentManager, ModalManager, UIElement, Window, WindowManager} from '../ui';
 import {Component} from '../component';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
@@ -45,12 +45,13 @@ class ApplicationView extends UIElement {
 
     /**
      * Class constructor
-     * @param application    Application
-     * @param commandManager Command manager
-     * @param windowManager  Window manager
-     * @param modalManager   Modal manager
+     * @param application       Application
+     * @param commandManager    Command manager
+     * @param documentManager   Document manager
+     * @param modalManager      Modal manager
+     * @param windowManager     Window manager
      */
-    constructor(application: Application, commandManager: CommandManager, windowManager: WindowManager, modalManager: ModalManager) {
+    constructor(application: Application, commandManager: CommandManager, documentManager: DocumentManager, modalManager: ModalManager, windowManager: WindowManager) {
         super('application');
         this.clientArea = new UIElement('application-client-area');
         this.commandManager = commandManager;

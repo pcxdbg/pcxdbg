@@ -1,6 +1,6 @@
 import {Application, ApplicationView} from './application';
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
-import {CommandManager, ModalManager, WindowManager} from '../ui';
+import {CommandManager, DocumentManager, ModalManager, WindowManager} from '../ui';
 import {Module} from '../modules';
 import {createMockInstance} from 'jest-create-mock-instance';
 
@@ -8,16 +8,20 @@ describe('Application view', () => {
     let applicationView: ApplicationView;
     let application: jest.Mocked<Application>;
     let commandManager: jest.Mocked<CommandManager>;
-    let windowManager: jest.Mocked<WindowManager>;
+    let documentManager: jest.Mocked<DocumentManager>;
     let modalManager: jest.Mocked<ModalManager>;
+    let windowManager: jest.Mocked<WindowManager>;
 
     beforeEach(() => {
         application = createMockInstance(Application);
         commandManager = createMockInstance(CommandManager);
-        commandManager.on.mockReturnThis();
-        windowManager = createMockInstance(WindowManager);
+        documentManager = createMockInstance(DocumentManager);
         modalManager = createMockInstance(ModalManager);
-        applicationView = new ApplicationView(application, commandManager, windowManager, modalManager);
+        windowManager = createMockInstance(WindowManager);
+
+        commandManager.on.mockReturnThis();
+
+        applicationView = new ApplicationView(application, commandManager, documentManager, modalManager, windowManager);
     });
 
     afterEach(() => applicationView.shutdown());

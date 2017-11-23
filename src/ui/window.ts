@@ -11,6 +11,7 @@ class WindowManager {
     private windowComponents: {[componentId: string]: Window} = {};
     private windowContainer: WindowContainer;
     private commandManager: CommandManager;
+    private iconManager: IconManager;
     private targetElement: UIElement = null;
     private focusWindow: Window = null;
 
@@ -24,23 +25,43 @@ class WindowManager {
     }
 
     /**
+     * Set the icon manager
+     * @param iconManager Icon manager
+     */
+    @Component
+    setIconManager(iconManager: IconManager): void {
+        this.iconManager = iconManager;
+    }
+
+    /**
      * Set the available area
      * @param targetElement Target element
-     * @param areaPadding   Area padding
      */
     setAvailableArea(targetElement: UIElement): void {
-        let windowContainerElement: HTMLElement;
+        let nativeElement: HTMLElement;
 
         this.targetElement = targetElement;
-        this.windowContainer = new WindowContainer(this);
-        windowContainerElement = this.windowContainer.getNativeElement();
-        windowContainerElement.style.position = 'absolute';
-        windowContainerElement.style.top =
-        windowContainerElement.style.left =
-        windowContainerElement.style.right =
-        windowContainerElement.style.bottom = '0px'; // TODO: dynamic based on the window layout
+        this.windowContainer = new WindowContainer(this, this.iconManager);
 
-        this.windowContainer.attachTo(targetElement);
+        // TODO: dynamic based on the window layout
+        nativeElement = this.windowContainer.getNativeElement();
+        nativeElement.style.position = 'absolute';
+        nativeElement.style.top = '0px';
+        nativeElement.style.left = '0px';
+        nativeElement.style.bottom = '0px';
+        nativeElement.style.width = '320px';
+        let winCnt2 = new WindowContainer(this, this.iconManager);
+        nativeElement = winCnt2.getNativeElement();
+        nativeElement.style.position = 'absolute';
+        nativeElement.style.top = '0px';
+        nativeElement.style.left = '326px';
+        nativeElement.style.bottom = '0px';
+        nativeElement.style.right = '0px';
+
+        targetElement
+            .attach(this.windowContainer)
+            .attach(winCnt2)
+        ;
     }
 
     /**
@@ -124,9 +145,11 @@ class WindowManager {
  */
 const enum WindowStyle {
     NO_AUTOHIDE,
+    NO_BACKGROUND,
     NO_CLOSE,
     NO_MOVE,
-    NO_POSITION
+    NO_POSITION,
+    NO_TITLE
 }
 
 /**
@@ -152,7 +175,7 @@ class WindowControlProperties {
  * Window
  */
 class Window extends UIElement { // TODO: window-* tags
-    private static HTML: string = `
+    private static HTML_WINDOW: string = `
         <window-titlebar>
             <window-titlebar-text></window-titlebar-text>
             <window-titlebar-controls></window-titlebar-controls>
@@ -169,14 +192,34 @@ class Window extends UIElement { // TODO: window-* tags
      * @param styles Window styles
      */
     constructor(windowProperties?: WindowProperties) {
-        super('window', Window.HTML);
+        super('window', Window.HTML_WINDOW);
         this.properties = windowProperties;
 
         this.clickListener = e => { this.setFocus(true); e.stopPropagation(); };
         this.mouseDown(this.clickListener);
 
-        if (!this.hasStyle(WindowStyle.NO_MOVE)) {
-            this.attribute('can-move');
+        if (this.hasStyle(WindowStyle.NO_AUTOHIDE)) {
+            this.attribute('no-auto-hide');
+        }
+
+        if (this.hasStyle(WindowStyle.NO_BACKGROUND)) {
+            this.attribute('no-background');
+        }
+
+        if (this.hasStyle(WindowStyle.NO_CLOSE)) {
+            this.attribute('no-close');
+        }
+
+        if (this.hasStyle(WindowStyle.NO_MOVE)) {
+            this.attribute('no-move');
+        }
+
+        if (this.hasStyle(WindowStyle.NO_POSITION)) {
+            this.attribute('no-position');
+        }
+
+        if (this.hasStyle(WindowStyle.NO_TITLE)) {
+            this.attribute('no-title');
         }
 
         if (windowProperties && windowProperties.title) {
@@ -217,11 +260,6 @@ class Window extends UIElement { // TODO: window-* tags
             icon: 'window-close',
             handler: () => this.close()
         }];
-
-/*
-    <icon src="ui/window/auto-hide-on.svg" title="Enable Auto Hide" (click)="setAutoHide(true)" [hidden]="autoHide || noAutoHide"></icon>
-    <icon src="ui/window/auto-hide-off.svg" title="Disable Auto Hide" (click)="setAutoHide(false)" [hidden]="!autoHide || noAutoHide"></icon>
-*/
 
         for (let controlProperty of controlProperties) {
             iconManager.createIcon(16, 16, controlProperty.icon)
@@ -340,6 +378,8 @@ class Window extends UIElement { // TODO: window-* tags
         element.removeEventListener('click', this.clickListener);
         element.parentNode.removeChild(element);
         element.remove();
+
+        this.emitEvent('close');
     }
 
     /**
@@ -357,6 +397,13 @@ class Window extends UIElement { // TODO: window-* tags
  */
 class WindowContainer extends UIElement {
     private static HTML: string = `
+        <window-container-position-overlay>
+            <window-container-position class="top"></window-container-position>
+            <window-container-position class="right"></window-container-position>
+            <window-container-position class="bottom"></window-container-position>
+            <window-container-position class="left"></window-container-position>
+            <window-container-position class="center"></window-container-position>
+        </window-container-position-overlay>
         <window-container-headers>
             <window-container-headers-tabs></window-container-headers-tabs>
         </window-container-headers>
@@ -369,13 +416,20 @@ class WindowContainer extends UIElement {
 
     /**
      * Class constructor
+     * @param iconManager Icon manager
      * @param windowManager Window manager
      */
-    constructor(windowManager: WindowManager) {
+    constructor(windowManager: WindowManager, iconManager: IconManager) {
         super('window-container', WindowContainer.HTML);
         this.windowManager = windowManager;
         this.windows = [];
         this.selectedIndex = -1;
+
+        ['top', 'right', 'bottom', 'left', 'center'].forEach(side => {
+            let container: UIElement = this.element('window-container-position-overlay', 'window-container-position.' + side);
+            let icon: Icon = iconManager.createIcon(32, 32, 'window-container-position-' + side);
+            container.attach(icon);
+        });
     }
 
     /**
@@ -401,14 +455,11 @@ class WindowContainer extends UIElement {
         if (this.selectedIndex === -1) {
             this.select(window);
         }
-    }
 
-    /**
-     * Remove a window
-     * @param window Window
-     */
-    removeWindow(window: Window): void {
-        console.warn('Removing a window from a window container is not implemented');
+        window
+            .on('close', () => this.onWindowClosed(window))
+            .on('title-change', () => this.onWindowTitleChange(window))
+        ;
     }
 
     /**
@@ -416,8 +467,7 @@ class WindowContainer extends UIElement {
      * @param window Window
      */
     select(window: Window): void {
-        let windowIndex: number = this.windows.indexOf(window);
-        this.selectIndex(windowIndex);
+        this.selectIndex(this.getWindowIndex(window));
     }
 
     /**
@@ -434,14 +484,53 @@ class WindowContainer extends UIElement {
             this.windows[this.selectedIndex].hide();
         }
 
-        let selectedWindow: Window;
+        if (windowIndex !== -1) {
+            let selectedWindow: Window;
 
-        selectedWindow = this.windows[windowIndex];
-        selectedWindow.show();
-        selectedWindow.setFocus(true);
+            selectedWindow = this.windows[windowIndex];
+            selectedWindow.show();
+            selectedWindow.setFocus(true);
+
+            this.getTab(windowIndex).attribute('selected');
+        }
 
         this.selectedIndex = windowIndex;
-        this.getTab(windowIndex).attribute('selected');
+    }
+
+    /**
+     * Event triggered when a window is closed
+     * @param window Window
+     */
+    private onWindowClosed(window: Window): void {
+        let windowIndex: number = this.getWindowIndex(window);
+        let tabElement: UIElement = this.getTab(windowIndex);
+
+        if (windowIndex === this.selectedIndex) {
+            if ((this.selectedIndex + 1) < this.windows.length) {
+                this.selectIndex(this.selectedIndex + 1);
+                --this.selectedIndex;
+            } else if (this.selectedIndex > 0) {
+                this.selectIndex(this.selectedIndex - 1);
+            }
+        }
+
+        tabElement.detach();
+        this.windows.splice(windowIndex, 1);
+    }
+
+    /**
+     * Event triggered when a window title changes
+     * @param window Window
+     */
+    private onWindowTitleChange(window: Window): void {
+        let windowIndex: number = this.getWindowIndex(window);
+        let windowTitle: string = window.getTitle();
+        let tabElement: UIElement = this.getTab(windowIndex);
+
+        tabElement
+            .attribute('title', windowTitle)
+            .text(windowTitle)
+        ;
     }
 
     /**
@@ -451,6 +540,15 @@ class WindowContainer extends UIElement {
      */
     private getTab(windowIndex: number): UIElement {
         return this.element('window-container-headers', 'window-container-headers-tabs', 'window-container-tab:nth-of-type(' + (windowIndex + 1) + ')');
+    }
+
+    /**
+     * Get a window's index
+     * @param window Window
+     * @return window index
+     */
+    private getWindowIndex(window: Window): number {
+        return this.windows.indexOf(window);
     }
 
 }

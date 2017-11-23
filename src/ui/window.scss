@@ -2,7 +2,6 @@
 $title-height: $windowtitle-height;
 $title-backgroundcolor: $windowtitle-backgroundcolor;
 $title-backgroundcolor-focus: $windowtitle-backgroundcolor-focus;
-$content-backgroundcolor: $window-content-backgroundcolor;
 $label-padding: $windowtitlelabel-padding;
 $controls-minwidth: $windowtitlecontrols-minwidth;
 $controls-padding: $windowtitlecontrols-padding;
@@ -56,9 +55,12 @@ window {
     }
 
     > window-content {
-        background-color: $content-backgroundcolor;
         flex-grow: 1;
         overflow: auto;
+    }
+
+    &:not([no-background]) > window-content {
+        background: $windowcontent-background;
     }
 
     &[has-focus] {
@@ -76,22 +78,131 @@ window {
         }
     }
 
-    &[can-move] {
-        > window-titlebar {
-            background-image: url(images/window-grip-pattern-3d.svg);
+    &[auto-hide], &[no-auto-hide] {
+        > window-titlebar > window-titlebar-controls > icon:nth-child(2) {
+            display: none;
         }
     }
 
-    &[can-move][has-focus] {
-        > window-titlebar {
-            background-image: url(images/window-grip-pattern-3l.svg);
+    &:not([auto-hide]), &[no-auto-hide] {
+        > window-titlebar > window-titlebar-controls > icon:nth-child(3) {
+            display: none;
         }
     }
+
+    &[no-close] > window-titlebar > window-titlebar-controls > icon:nth-child(4) {
+        display: none;
+    }
+
+    &:not([no-move]) > window-titlebar {
+        background-image: url(images/window-grip-pattern-3d.svg);
+    }
+
+    &:not([no-move])[has-focus] > window-titlebar {
+        background-image: url(images/window-grip-pattern-3l.svg);
+    }
+
+    &[no-position] > window-titlebar > window-titlebar-controls > icon:nth-child(1) {
+        display: none;
+    }
+
+    &[no-title] > window-titlebar {
+        display: none;
+    }
+
 }
 
 window-container {
+    position: relative;
     display: flex;
     flex-direction: column;
+
+    > window-container-position-overlay {
+        position: absolute;
+        z-index: 1000;
+        display: grid;
+        grid-template-columns: auto 40px auto;
+        grid-template-rows: auto 40px auto;
+        grid-template-areas:
+            ". t . "
+            "l c r"
+            ". b .";
+        width: 184px;
+        height: 184px;
+        left: calc(50% - 92px);
+        top: calc(50% - 92px);
+
+        > window-container-position {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0,0,0,0.25);
+            box-sizing: border-box;
+            border: solid 1px #333337;
+
+            &.top {
+                grid-area: t;
+                justify-content: flex-start;
+                border-bottom-style: none;
+
+                > icon {
+                    margin-top: 3px;
+                }
+            }
+
+            &.left {
+                grid-area: l;
+                justify-content: flex-start;
+                border-right-style: none;
+
+                > icon {
+                    margin-left: 3px;
+                }
+            }
+
+            &.center {
+                grid-area: c;
+                border-style: none;
+            }
+
+            &.right {
+                grid-area: r;
+                justify-content: flex-end;
+                border-left-style: none;
+
+                > icon {
+                    margin-right: 3px;
+                }
+            }
+
+            &.bottom {
+                grid-area: b;
+                justify-content: flex-end;
+                border-top-style: none;
+
+                > icon {
+                    margin-bottom: 3px;
+                }
+            }
+
+            &.top, &.center, &.bottom {
+                flex-direction: column;
+                width: 40px;
+            }
+
+            &.left, &.center, &.right {
+                height: 40px;
+            }
+
+            > icon {
+                opacity: 0.875;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
 
     > window-container-headers {
         order: 2;

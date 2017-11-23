@@ -1,4 +1,4 @@
-import {Button, Icon, IconManager, List, ListItemDefinition, ModalView, UIElement} from '../../ui';
+import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement} from '../../ui';
 import {Component} from '../../component';
 import {I18nManager} from '../../lng';
 import {FileUtils, NodePackage} from '../../util';
@@ -57,7 +57,7 @@ class AboutDialog extends ModalView {
      * Class constructor
      */
     constructor() {
-        super();
+        super(ModalStyle.NO_BORDER, ModalStyle.NO_CONTROLS, ModalStyle.NO_TITLE);
         this.versionApplication = remote.app.getVersion();
         this.versionChrome = remote.process.versions.chrome;
         this.versionElectron = remote.process.versions.electron;
@@ -113,13 +113,11 @@ class AboutDialog extends ModalView {
             .click(() => this.close())
         ;
 
-        dialogElement.element('about-logo').attach(this.iconManager.createIcon(64, 64, 'title-bar-logo'));
+        dialogElement.element('about-logo').applyTranslations().attach(this.iconManager.createIcon(64, 64, 'title-bar-logo'));
         dialogElement.element('about-content', 'dependency-list').attach(dependencyList);
         dialogElement.element('about-content', 'about-close').attach(closeButton);
 
         this.attach(dialogElement);
-
-        dialogElement.applyTranslations();
     }
 
     /**
@@ -129,7 +127,7 @@ class AboutDialog extends ModalView {
      */
     private createVersionInformationElement(versionInfo: VersionInformation): UIElement {
         let versionInfoElement: UIElement = new UIElement('version-info');
-        versionInfoElement.i18n(versionInfo.value, versionInfo.parameters);
+        versionInfoElement.i18n(versionInfo.value, versionInfo.parameters).applyTranslations();
         versionInfoElement.class(versionInfo.name);
         return versionInfoElement;
     }
@@ -139,33 +137,79 @@ class AboutDialog extends ModalView {
      * @return List of version information
      */
     private prepareVersionInformationList(): VersionInformation[] {
-        return [{
+        return [
+            this.prepareApplicationVersionInformation(),
+            this.prepareRevisionVersionInformation(),
+            this.prepareBuildVersionInformation(),
+            this.prepareElectronVersionInformation(),
+            this.prepareNodeVersionInformation()
+        ];
+    }
+
+    /**
+     * Prepare application version information for display
+     * @return Application version information
+     */
+    private prepareApplicationVersionInformation(): VersionInformation {
+        return {
             name: 'app',
             value: 'app:dialog.about.version.application.label',
             parameters: {
                 'version': this.versionApplication
             }
-        }, {
+        };
+    }
+
+    /**
+     * Prepare revision version information for display
+     * @return Revision version information
+     */
+    private prepareRevisionVersionInformation(): VersionInformation {
+        return {
             name: 'revision',
             value: 'app:dialog.about.version.revision.label',
             parameters: {
                 'revisionId': this.revisionId,
                 'revisionNumber': this.revisionNumber
             }
-        }, {
+        };
+    }
+
+    /**
+     * Prepare build version information for display
+     * @return Build version information
+     */
+    private prepareBuildVersionInformation(): VersionInformation {
+        return {
             name: 'build',
             value: 'app:dialog.about.version.build.label',
             parameters: {
                 'buildDate': this.i18nManager.formatDate(this.buildDate, 'LL')
             }
-        }, {
+        };
+    }
+
+    /**
+     * Prepare Electron version information for display
+     * @return Electron version information
+     */
+    private prepareElectronVersionInformation(): VersionInformation {
+        return {
             name: 'electron',
             value: 'app:dialog.about.version.electron.label',
             parameters: {
                 'versionElectron': this.versionElectron,
                 'versionChrome': this.versionChrome
             }
-        }, {
+        };
+    }
+
+    /**
+     * Prepare Node version information for display
+     * @return Node version information
+     */
+    private prepareNodeVersionInformation(): VersionInformation {
+        return {
             name: 'node',
             value: 'app:dialog.about.version.node.label',
             parameters: {
@@ -173,7 +217,7 @@ class AboutDialog extends ModalView {
                 'versionV8': this.versionV8,
                 'versionOpenSSL': this.versionOpenSSL
             }
-        }];
+        };
     }
 
     /**
