@@ -1,4 +1,8 @@
 version: 2
+engines:
+  tslint:
+    enabled: true
+    channel: beta
 checks:
   argument-count:
     config:

@@ -53,7 +53,7 @@ class UIElement {
      * @return this
      */
     mouseDown(handler: (e?: MouseEvent) => void): UIElement {
-        this.nativeElement.addEventListener('mouseDown', handler, false);
+        this.nativeElement.addEventListener('mousedown', handler, false);
         return this;
     }
 

@@ -224,36 +224,48 @@ class ComponentManager {
         argumentNames.forEach(argumentName => {
             let injectedComponentId: string = this.buildComponentIdFromArgument(argumentName);
             let injectedComponentClassInfo: ComponentClassInfo = this.componentClasses[injectedComponentId];
-            let isList: boolean = this.isListArgument(argumentName);
-            let injectedArgument: any;
-            let injectedArgumentList: Object[];
 
             if (!injectedComponentClassInfo) {
                 throw new Error('no matching component found for ' + className + '.' + methodName + ' argument ' + argumentName + ' (component id: ' + injectedComponentId + ')');
             }
 
-            if (isList) {
-                injectedArgument = injectedArgumentList = this.getComponents(<any> injectedComponentClassInfo.componentClass);
-            } else if (!injectedComponentClassInfo.isComponent) {
-                if (injectedComponentClassInfo.derivedComponents.length > 1) {
-                    throw new Error('base component class ' + injectedComponentClassInfo.componentClass.name + ' cannot be injected directly as multiple instances are available');
-                } else {
-                    injectedArgument = this.getComponentById(injectedComponentClassInfo.derivedComponents[0]);
-                }
-            } else {
-                injectedArgument = this.getComponent(<any> injectedComponentClassInfo.componentClass);
-            }
-
-            if (isList && this.isSpreadListArgument(argumentName)) {
-                for (let spreadElement of injectedArgumentList) {
-                    injectedArguments.push(spreadElement);
-                }
-            } else {
-                injectedArguments.push(injectedArgument);
-            }
+            this.addInjectedArgument(injectedArguments, argumentName, injectedComponentId, injectedComponentClassInfo);
         });
 
         return injectedArguments;
+    }
+
+    /**
+     * Add an injected argument in preparation for a method call
+     * @param injectedArguments          Injected argument list
+     * @param argumentName               Argument name
+     * @param injectedComponentId        Injected component identifier
+     * @param injectedComponentClassInfo Injected component class information
+     */
+    private addInjectedArgument(injectedArguments: any[], argumentName: string, injectedComponentId: string, injectedComponentClassInfo: ComponentClassInfo): void {
+        let isList: boolean = this.isListArgument(argumentName);
+        let injectedArgument: any;
+        let injectedArgumentList: Object[];
+
+        if (isList) {
+            injectedArgument = injectedArgumentList = this.getComponents(<any> injectedComponentClassInfo.componentClass);
+        } else if (!injectedComponentClassInfo.isComponent) {
+            if (injectedComponentClassInfo.derivedComponents.length > 1) {
+                throw new Error('base component class ' + injectedComponentClassInfo.componentClass.name + ' cannot be injected directly as multiple instances are available');
+            } else {
+                injectedArgument = this.getComponentById(injectedComponentClassInfo.derivedComponents[0]);
+            }
+        } else {
+            injectedArgument = this.getComponent(<any> injectedComponentClassInfo.componentClass);
+        }
+
+        if (isList && this.isSpreadListArgument(argumentName)) {
+            for (let spreadElement of injectedArgumentList) {
+                injectedArguments.push(spreadElement);
+            }
+        } else {
+            injectedArguments.push(injectedArgument);
+        }
     }
 
     /**
