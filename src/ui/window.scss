@@ -365,6 +365,7 @@ window-container {
         > window-container-windows {
             order: 2;
             position: absolute;
+            z-index: 100;
             top: 0px;
             right: 25px;
             width: 320px;

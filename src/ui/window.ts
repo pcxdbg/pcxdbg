@@ -21,7 +21,9 @@ class WindowManager {
      */
     @Component
     setCommandManager(commandManager: CommandManager): void {
-        commandManager.on('window.open', parameters => this.openWindow(<string> parameters.windowId));
+        commandManager
+            .on('window.open', parameters => this.openWindow(<string> parameters.windowId))
+        ;
     }
 
     /**
@@ -187,7 +189,7 @@ class WindowControlProperties {
 /**
  * Window
  */
-class Window extends UIElement { // TODO: window-* tags
+class Window extends UIElement {
     private static HTML_WINDOW: string = `
         <window-titlebar>
             <window-titlebar-text></window-titlebar-text>

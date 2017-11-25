@@ -143,7 +143,6 @@ class HttpRequestInstance<RQ, RS> {
  */
 @Component
 class HttpManager {
-    private requestsInProgress: number = 0;
 
     /**
      * Execute an HTTP request

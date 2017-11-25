@@ -239,11 +239,12 @@ class UIElement {
 
     /**
      * Select a native element
-     * @param selector Selector
+     * @param selectorParts Selector parts
      * @return Native element
      */
-    selectNativeElement<E extends Element>(...selector: string[]): E {
-        let element: E = <E> this.nativeElement.querySelector(':scope>' + selector.join('>'));
+    selectNativeElement<E extends Element>(...selectorParts: string[]): E {
+        let selectorString: string = this.buildQuerySelector(...selectorParts);
+        let element: E = <E> this.nativeElement.querySelector(selectorString);
         return element;
     }
 
@@ -260,11 +261,12 @@ class UIElement {
 
     /**
      * Select multiple native elements
-     * @param selector Selector
+     * @param selectorParts Selector parts
      * @return Native elements
      */
-    selectNativeElements<E extends Element>(...selector: string[]): NodeListOf<E> {
-        let elements: NodeListOf<E> = <NodeListOf<E>> this.nativeElement.querySelectorAll(':scope>' + selector.join('>'));
+    selectNativeElements<E extends Element>(...selectorParts: string[]): NodeListOf<E> {
+        let selectorString: string = this.buildQuerySelector(...selectorParts);
+        let elements: NodeListOf<E> = <NodeListOf<E>> this.nativeElement.querySelectorAll(selectorString);
         return elements;
     }
 
@@ -392,6 +394,15 @@ class UIElement {
      */
     getNativeElement(): HTMLElement {
         return this.nativeElement;
+    }
+
+    /**
+     * Build a query selector string
+     * @param selectorParts Selector parts
+     * @return Query selector string
+     */
+    private buildQuerySelector(...selectorParts: string[]): string {
+        return ':scope>' + selectorParts.join('>');
     }
 
     /**
