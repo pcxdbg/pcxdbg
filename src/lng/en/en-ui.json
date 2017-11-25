@@ -16,5 +16,14 @@
             "close": "Close",
             "position": "Window Position"
         }
+    },
+    "window-container": {
+        "tab": {
+            "control": {
+                "close": "Close (Ctrl+F4)",
+                "pin": "Toggle pin status",
+                "unpin": "Toggle pin status"
+            }
+        }
     }
 }

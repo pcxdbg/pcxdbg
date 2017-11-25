@@ -205,41 +205,27 @@ window-container {
     }
 
     > window-container-headers {
-        order: 2;
         position: relative;
-        height: 20px;
-        border-top: solid $header-borderwidth $header-bordercolor;
+        height: 21px;
+        box-sizing: border-box;
 
         > window-container-headers-tabs {
-            position: absolute;
-            left: 0px;
-            right: 0px;
-            top: -1px;
-            bottom: 0px;
             display: flex;
             flex-direction: row;
 
             > window-container-tab {
-                border: solid $header-borderwidth transparent;
-                color: $header-textcolor;
+                color: #d0d0d0; // $header-textcolor;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                padding: 0px 5px;
-                text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
 
                 &[selected] {
-                    border: solid $header-borderwidth $header-bordercolor;
-                    border-top-color: $header-backgroundcolorselected;
-                    background-color: $header-backgroundcolorselected;
-                    color: #0e97dd;
                 }
             }
         }
     }
 
     > window-container-windows {
-        order: 1;
         border: solid $content-borderwidth $content-bordercolor;
         border-bottom-style: none;
         flex-grow: 1;
@@ -250,4 +236,101 @@ window-container {
             flex-grow: 1;
         }
     }
+
+    &[mode=docked], &[mode=auto-hide] {
+        > window-container-headers {
+            order: 2;
+            border-top: solid $header-borderwidth $header-bordercolor;
+
+            > window-container-headers-tabs {
+                position: absolute;
+                left: 0px;
+                right: 0px;
+                top: -1px;
+                bottom: 0px;
+
+                > window-container-tab {
+                    border: solid $header-borderwidth transparent;
+                    text-shadow: 0px 1px 0px rgba(0,0,0,0.25);
+                    padding: 0px 5px;
+
+                    &[selected] {
+                        border: solid $header-borderwidth $header-bordercolor;
+                        border-top-color: $header-backgroundcolorselected;
+                        background-color: $header-backgroundcolorselected;
+                        color: #0097fb;
+                    }
+
+                    > icon {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        > window-container-windows {
+            order: 1;
+        }
+    }
+
+    &[mode=docked-document] {
+        > window-container-headers {
+            order: 1;
+            border-bottom: solid 2px #007acc;
+
+            > window-container-headers-tabs {
+                height: 100%;
+
+                > window-container-tab {
+                    display: flex;
+                    align-items: center;
+                    color: #f1f1f1;
+                    text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+                    padding: 0px 3px 0px 5px;
+
+                    &[selected] {
+                        background-color: #007acc;
+                        color: #ffffff;
+                    }
+
+                    &:not([selected]):hover {
+                        background-color: #1c97ea;
+                    }
+
+                    > icon {
+                        margin-left: 7px;
+                        background-color: #ff0000;
+                    }
+
+                    &[pinned] > icon:nth-of-type(1) {
+                        display: none;
+                    }
+
+                    &:not([pinned]) > icon:nth-of-type(2) {
+                        display: none;
+                    }
+
+                    > icon:nth-of-type(3) {
+                        margin-left: 2px;
+                        background-coloR: #af0000;
+                    }
+                }
+            }
+        }
+
+        > window-container-windows {
+            order: 2;
+
+            > window {
+                > window-titlebar {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &[mode=auto-hide] {
+
+    }
+
 }

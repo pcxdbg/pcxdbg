@@ -2,6 +2,24 @@ import {I18nManager} from '../lng/i18n';
 import {componentManager} from '../component';
 
 /**
+ * User interface drag action type
+ */
+const enum UIDragActionType {
+    COPY,
+    LINK,
+    MOVE
+}
+
+/**
+ * User interface drag action
+ */
+interface UIDragAction<T> {
+    type: UIDragActionType;
+    data?: T;
+    completion?: (type: UIDragActionType) => void;
+}
+
+/**
  * User interface element
  */
 class UIElement {
@@ -296,6 +314,63 @@ class UIElement {
         if (this.nativeElement.parentNode) {
             this.nativeElement.parentNode.removeChild(this.nativeElement);
         }
+
+        return this;
+    }
+
+    /**
+     * Make the element draggable
+     * @param handler Handler
+     * @param <T>     Drag action data type
+     * @return this
+     */
+    draggable<T>(handler: (dragAction: UIDragAction<T>) => void): UIElement {
+        this.nativeElement.setAttribute('draggable', 'true');
+        this.nativeElement.addEventListener('dragstart', e => {
+            let dragAction: UIDragAction<T> = {
+                type: UIDragActionType.MOVE
+            };
+
+            handler(dragAction);
+
+            switch (dragAction.type) {
+            case UIDragActionType.COPY:
+                e.dataTransfer.dropEffect = 'copy';
+                break;
+            case UIDragActionType.LINK:
+                e.dataTransfer.dropEffect = 'link';
+                break;
+            case UIDragActionType.MOVE:
+                e.dataTransfer.dropEffect = 'move';
+                break;
+            default:
+                throw new Error('unknown drag action type ' + dragAction.type);
+            }
+
+            console.log('drag start', e);
+        });
+        this.nativeElement.addEventListener('dragend', e => {
+            let transferId: string = e.dataTransfer.getData('plain/text');
+            //let dragData: DragData = UIElement.getAndRemoveDragData(transferId);
+
+            console.log('dragging ended');
+        });
+
+        return this;
+    }
+
+    /**
+     * Make the element a drop target
+     */
+    dropTarget(): UIElement {
+        this.nativeElement.addEventListener('dragover', e => {
+            e.preventDefault();
+            console.log('drag over', e);
+        }, false);
+
+        this.nativeElement.addEventListener('drop', e => {
+            console.log('dropped', e);
+        }, false);
 
         return this;
     }

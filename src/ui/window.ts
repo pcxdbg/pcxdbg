@@ -9,7 +9,7 @@ import {CommandManager} from './command';
 @Component
 class WindowManager {
     private windowComponents: {[componentId: string]: Window} = {};
-    private windowContainer: WindowContainer;
+    private windowContainers: WindowContainer[];
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private targetElement: UIElement = null;
@@ -41,27 +41,40 @@ class WindowManager {
         let nativeElement: HTMLElement;
 
         this.targetElement = targetElement;
-        this.windowContainer = new WindowContainer(this, this.iconManager);
+        this.windowContainers = [
+            new WindowContainer(this, this.iconManager),
+            new WindowContainer(this, this.iconManager),
+            new WindowContainer(this, this.iconManager),
+            new WindowContainer(this, this.iconManager)
+        ];
 
         // TODO: dynamic based on the window layout
-        nativeElement = this.windowContainer.getNativeElement();
+        nativeElement = this.windowContainers[0].attribute('mode', 'docked').attribute('anchor', 'left').getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '0px';
         nativeElement.style.left = '0px';
         nativeElement.style.bottom = '0px';
         nativeElement.style.width = '320px';
-        let winCnt2 = new WindowContainer(this, this.iconManager);
-        nativeElement = winCnt2.getNativeElement();
+        nativeElement = this.windowContainers[1].attribute('mode', 'docked-document').attribute('anchor', 'center').getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '0px';
         nativeElement.style.left = '326px';
+        nativeElement.style.bottom = '326px';
+        nativeElement.style.right = '31px';
+        nativeElement = this.windowContainers[2].attribute('mode', 'auto-hide').attribute('anchor', 'right').getNativeElement();
+        nativeElement.style.position = 'absolute';
+        nativeElement.style.top = '0px';
+        nativeElement.style.width = '25px';
         nativeElement.style.bottom = '0px';
         nativeElement.style.right = '0px';
+        nativeElement = this.windowContainers[3].attribute('mode', 'docked').attribute('anchor', 'bottom').getNativeElement();
+        nativeElement.style.position = 'absolute';
+        nativeElement.style.height = '320px';
+        nativeElement.style.left = '326px';
+        nativeElement.style.bottom = '0px';
+        nativeElement.style.right = '31px';
 
-        targetElement
-            .attach(this.windowContainer)
-            .attach(winCnt2)
-        ;
+        this.windowContainers.forEach(windowContainer => targetElement.attach(windowContainer));
     }
 
     /**
@@ -87,7 +100,7 @@ class WindowManager {
         }
 
         windowComponent = this.windowComponents[strippedComponentId];
-        this.windowContainer.addWindow(windowComponent);
+        this.windowContainers[Math.floor(Math.random() * 100) % 4].addWindow(windowComponent);
     }
 
     /**
@@ -212,6 +225,10 @@ class Window extends UIElement { // TODO: window-* tags
 
         if (this.hasStyle(WindowStyle.NO_MOVE)) {
             this.attribute('no-move');
+        } else {
+            this.element('window-titlebar').draggable(() => {
+                console.log('wee');
+            });
         }
 
         if (this.hasStyle(WindowStyle.NO_POSITION)) {
@@ -411,24 +428,28 @@ class WindowContainer extends UIElement {
     `;
 
     private windowManager: WindowManager;
+    private iconManager: IconManager;
     private selectedIndex: number;
     private windows: Window[];
 
     /**
      * Class constructor
-     * @param iconManager Icon manager
      * @param windowManager Window manager
+     * @param iconManager   Icon manager
      */
     constructor(windowManager: WindowManager, iconManager: IconManager) {
         super('window-container', WindowContainer.HTML);
         this.windowManager = windowManager;
+        this.iconManager = iconManager;
         this.windows = [];
         this.selectedIndex = -1;
 
         ['top', 'right', 'bottom', 'left', 'center'].forEach(side => {
             let container: UIElement = this.element('window-container-position-overlay', 'window-container-position.' + side);
             let icon: Icon = iconManager.createIcon(32, 32, 'window-container-position-' + side);
+
             container.attach(icon);
+            container.dropTarget();
         });
     }
 
@@ -442,6 +463,10 @@ class WindowContainer extends UIElement {
             .click(() => this.select(window))
             .attribute('title', windowTitle)
             .text(windowTitle)
+            .attach(this.iconManager.createIcon(16, 16, 'window-unpinned').i18n('[title]ui:window-container.tab.control.pin'))
+            .attach(this.iconManager.createIcon(16, 16, 'window-pinned').i18n('[title]ui:window-container.tab.control.unpin'))
+            .attach(this.iconManager.createIcon(16, 16, 'window-close').i18n('[title]ui:window-container.tab.control.close'))
+            .applyTranslations()
             .attachTo(this.element('window-container-headers', 'window-container-headers-tabs'))
         ;
 
