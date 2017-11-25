@@ -165,6 +165,25 @@ class AcceleratorManager {
         let combinationParts: string[] = [];
         let key: number = keyboardEvent.which;
 
+        this.addKeyboardEventModifiers(combinationParts, keyboardEvent);
+
+        if (16 <= key && key <= 18) {
+            // Ignore control, alt and shift as they are already taken care of
+        } else if (key in KEY_MAPPING) {
+            combinationParts.push(KEY_MAPPING[key]);
+        } else {
+            console.warn('unmapped keyboard event: ' + key, keyboardEvent);
+        }
+
+        return combinationParts.join('+');
+    }
+
+    /**
+     * Add the keyboard modifiers to the list of combination parts
+     * @param combinationParts Combination parts
+     * @param keyboardEvent    Keyboard event
+     */
+    private addKeyboardEventModifiers(combinationParts: string[], keyboardEvent: KeyboardEvent): void {
         if (keyboardEvent.ctrlKey) {
             combinationParts.push('Ctrl');
         }
@@ -176,16 +195,6 @@ class AcceleratorManager {
         if (keyboardEvent.shiftKey) {
             combinationParts.push('Shift');
         }
-
-        if (16 <= key && key <= 18) {
-            // Ignore control, alt and shift as they are already taken care of
-        } else if (key in KEY_MAPPING) {
-            combinationParts.push(KEY_MAPPING[key]);
-        } else {
-            console.warn('unmapped keyboard event: ' + key, keyboardEvent);
-        }
-
-        return combinationParts.join('+');
     }
 
 }

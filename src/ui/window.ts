@@ -51,28 +51,28 @@ class WindowManager {
         // TODO: dynamic based on the window layout
         nativeElement = this.windowContainers[0].attribute('mode', 'docked').attribute('anchor', 'left').getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.top = '0px';
-        nativeElement.style.left = '0px';
-        nativeElement.style.bottom = '0px';
+        nativeElement.style.top = '6px';
+        nativeElement.style.left = '6px';
+        nativeElement.style.bottom = '6px';
         nativeElement.style.width = '320px';
         nativeElement = this.windowContainers[1].attribute('mode', 'docked-document').attribute('anchor', 'center').getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.top = '0px';
-        nativeElement.style.left = '326px';
-        nativeElement.style.bottom = '326px';
-        nativeElement.style.right = '31px';
+        nativeElement.style.top = '6px';
+        nativeElement.style.left = '332px';
+        nativeElement.style.bottom = '332px';
+        nativeElement.style.right = '25px';
         nativeElement = this.windowContainers[2].attribute('mode', 'auto-hide').attribute('anchor', 'right').getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.top = '0px';
+        nativeElement.style.top = '6px';
         nativeElement.style.width = '25px';
-        nativeElement.style.bottom = '0px';
+        nativeElement.style.bottom = '6px';
         nativeElement.style.right = '0px';
         nativeElement = this.windowContainers[3].attribute('mode', 'docked').attribute('anchor', 'bottom').getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.height = '320px';
-        nativeElement.style.left = '326px';
-        nativeElement.style.bottom = '0px';
-        nativeElement.style.right = '31px';
+        nativeElement.style.left = '332px';
+        nativeElement.style.bottom = '6px';
+        nativeElement.style.right = '25px';
 
         this.windowContainers.forEach(windowContainer => targetElement.attach(windowContainer));
     }
@@ -320,17 +320,17 @@ class Window extends UIElement { // TODO: window-* tags
      * @return true if the window has all the specified styles
      */
     hasStyle(...styles: WindowStyle[]): boolean {
-        if (this.properties && this.properties.styles) {
-            for (let style of styles) {
-                if (this.properties.styles.indexOf(style) === -1) {
-                    return false;
-                }
-            }
-
-            return true;
+        if (!this.properties || !this.properties.styles) {
+            return false;
         }
 
-        return false;
+        for (let style of styles) {
+            if (this.properties.styles.indexOf(style) === -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

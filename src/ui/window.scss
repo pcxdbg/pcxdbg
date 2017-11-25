@@ -214,10 +214,7 @@ window-container {
             flex-direction: row;
 
             > window-container-tab {
-                color: #d0d0d0; // $header-textcolor;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
+                color: #d0d0d0;
 
                 &[selected] {
                 }
@@ -227,7 +224,6 @@ window-container {
 
     > window-container-windows {
         border: solid $content-borderwidth $content-bordercolor;
-        border-bottom-style: none;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -237,7 +233,7 @@ window-container {
         }
     }
 
-    &[mode=docked], &[mode=auto-hide] {
+    &[mode=docked] {
         > window-container-headers {
             order: 2;
             border-top: solid $header-borderwidth $header-bordercolor;
@@ -253,7 +249,10 @@ window-container {
                     border: solid $header-borderwidth transparent;
                     text-shadow: 0px 1px 0px rgba(0,0,0,0.25);
                     padding: 0px 5px;
-
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+    
                     &[selected] {
                         border: solid $header-borderwidth $header-bordercolor;
                         border-top-color: $header-backgroundcolorselected;
@@ -270,6 +269,7 @@ window-container {
 
         > window-container-windows {
             order: 1;
+            border-bottom-style: none;
         }
     }
 
@@ -320,6 +320,7 @@ window-container {
 
         > window-container-windows {
             order: 2;
+            border-top-style: none;
 
             > window {
                 > window-titlebar {
@@ -330,7 +331,50 @@ window-container {
     }
 
     &[mode=auto-hide] {
+        > window-container-headers {
+            order: 1;
+            flex-grow: 1;
 
+            > window-container-headers-tabs {
+                transform: rotate(90deg) translate(-25px);
+                transform-origin: 0px 25px;
+
+                > window-container-tab {
+                    height: 20px;
+                    border-top: solid 5px #3f3f46;
+                    color: #d0d0d0;
+                    text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
+                    white-space: nowrap;
+
+                    &:hover {
+                        color: #0097FB;
+                        border-color: #007acc;
+                    }
+
+                    &:not(:nth-of-type(1)) {
+                        margin-left: 12px;
+                    }
+
+                    > icon {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        > window-container-windows {
+            order: 2;
+            position: absolute;
+            top: 0px;
+            right: 25px;
+            width: 320px;
+            height: 200px;
+            box-shadow: -1px 0px 0px $color-background, -2px 0px 0px $color-background, -3px 0px 0px $color-background;
+        }
     }
 
+}
+
+body:not([dragging]) window-container > window-container-position-overlay {
+    display: none;
 }
