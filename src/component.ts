@@ -74,9 +74,9 @@ class ComponentManager {
      * Register a component class method
      * @param componentPrototype Component prototype
      * @param methodName         Method name
-     * @param <T>                Component type
+     * @param <T>                Component prototype type
      */
-    registerComponentMethod<T extends Function>(componentPrototype: T, methodName: string): void {
+    registerComponentMethod<T extends Object>(componentPrototype: T, methodName: string): void {
         let componentId: string = this.buildComponentIdFromClass(<ClassConstructorTypeFromType<Object>> componentPrototype.constructor);
         let methodList: string[] = this.componentMethods[componentId] = this.componentMethods[componentId] || [];
         methodList.push(methodName);

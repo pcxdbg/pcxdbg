@@ -57,12 +57,58 @@ $listcell-border: $listheader-border;
     background-color: $scrollbar-color;
     background-clip: padding-box;
     border: solid 4px $scrollbar-background;
+
+    &:hover {
+        background-color: #9e9e9e;
+    }
 }
 
 ::-webkit-scrollbar-button {
-    width: 17px;
-    height: 13px;
+    width: 13px;
+    height: 17px;
     background-color: $scrollbar-background;
+    background-size: 15px 15px;
+
+    &:increment {
+        background-image: url(images/window-scrollbar-button-right.svg);
+        background-position: -3px 1px;
+
+        &:hover {
+            background-image: url(images/window-scrollbar-button-right-hover.svg);
+        }
+    }
+
+    &:decrement {
+        background-image: url(images/window-scrollbar-button-left.svg);
+        background-position: 1px 1px;
+
+        &:hover {
+            background-image: url(images/window-scrollbar-button-left-hover.svg);
+        }
+    }
+
+    &:vertical {
+        width: 17px;
+        height: 13px;
+
+        &:increment {
+            background-image: url(images/window-scrollbar-button-down.svg);
+            background-position: 1px -3px;
+
+            &:hover {
+                background-image: url(images/window-scrollbar-button-down-hover.svg);
+            }
+        }
+
+        &:decrement {
+            background-image: url(images/window-scrollbar-button-up.svg);
+            background-position: 1px 1px;
+
+            &:hover {
+                background-image: url(images/window-scrollbar-button-up-hover.svg);
+            }
+        }
+    }
 }
   
 ::-webkit-scrollbar-track {
