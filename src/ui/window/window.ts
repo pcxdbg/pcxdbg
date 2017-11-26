@@ -1,13 +1,34 @@
 import {Icon, IconManager, UIElement} from '../element';
+import {WindowContainer} from './window-container';
 import {Component} from '../../component';
 import {CommandManager} from '../command';
 import {WindowStyle} from './window-style';
+
+/**
+ * Window layout orientation
+ */
+enum WindowLayoutOrientation {
+    HORIZONTAL,
+    VERTICAL
+}
+
+/**
+ * Window layout for containers
+ */
+interface WindowLayout {
+    orientation: WindowLayoutOrientation;
+    thickness: number;
+    windows: Window[];
+    windowsThickness: number[];
+}
 
 /**
  * Window manager
  */
 @Component
 class WindowManager {
+    private static PADDING_WINDOW: number = 6;
+
     private windowComponents: {[componentId: string]: Window} = {};
     private windowContainers: WindowContainer[];
     private commandManager: CommandManager;
@@ -44,10 +65,10 @@ class WindowManager {
 
         this.targetElement = targetElement;
         this.windowContainers = [
-            new WindowContainer(this, this.iconManager),
-            new WindowContainer(this, this.iconManager),
-            new WindowContainer(this, this.iconManager),
-            new WindowContainer(this, this.iconManager)
+            new WindowContainer(this.iconManager),
+            new WindowContainer(this.iconManager),
+            new WindowContainer(this.iconManager),
+            new WindowContainer(this.iconManager)
         ];
 
         // TODO: dynamic based on the window layout
@@ -399,177 +420,7 @@ class Window extends UIElement {
 
 }
 
-/**
- * Window container
- */
-class WindowContainer extends UIElement {
-    private static HTML: string = `
-        <window-container-position-overlay>
-            <window-container-position class="top"></window-container-position>
-            <window-container-position class="right"></window-container-position>
-            <window-container-position class="bottom"></window-container-position>
-            <window-container-position class="left"></window-container-position>
-            <window-container-position class="center"></window-container-position>
-        </window-container-position-overlay>
-        <window-container-headers>
-            <window-container-headers-tabs></window-container-headers-tabs>
-        </window-container-headers>
-        <window-container-windows></window-container-windows>
-    `;
-
-    private windowManager: WindowManager;
-    private iconManager: IconManager;
-    private selectedIndex: number;
-    private windows: Window[];
-
-    /**
-     * Class constructor
-     * @param windowManager Window manager
-     * @param iconManager   Icon manager
-     */
-    constructor(windowManager: WindowManager, iconManager: IconManager) {
-        super('window-container', WindowContainer.HTML);
-        this.windowManager = windowManager;
-        this.iconManager = iconManager;
-        this.windows = [];
-        this.selectedIndex = -1;
-
-        ['top', 'right', 'bottom', 'left', 'center'].forEach(side => {
-            let container: UIElement = this.element('window-container-position-overlay', 'window-container-position.' + side);
-            let icon: Icon = iconManager.createIcon(32, 32, 'window-container-position-' + side);
-
-            container.attach(icon);
-            container.dropTarget();
-        });
-    }
-
-    /**
-     * Add a window
-     * @param window Window
-     */
-    addWindow(window: Window): void {
-        let windowTitle: string = window.getTitle(); // TODO: register for title changes
-        let tabElement: UIElement = new UIElement('window-container-tab')
-            .click(() => this.select(window))
-            .attribute('title', windowTitle)
-            .text(windowTitle)
-            .attach(this.iconManager.createIcon(16, 16, 'window-unpinned').i18n('[title]ui:window-container.tab.control.pin'))
-            .attach(this.iconManager.createIcon(16, 16, 'window-pinned').i18n('[title]ui:window-container.tab.control.unpin'))
-            .attach(this.iconManager.createIcon(16, 16, 'window-close').i18n('[title]ui:window-container.tab.control.close'))
-            .applyTranslations()
-            .attachTo(this.element('window-container-headers', 'window-container-headers-tabs'))
-        ;
-
-        this.windows.push(window);
-        if (this.selectedIndex !== -1) {
-            window.hide();
-        }
-
-        window.attachTo(this.element('window-container-windows'));
-
-        if (this.selectedIndex === -1) {
-            this.select(window);
-        }
-
-        window
-            .on('close', () => this.onWindowClosed(window))
-            .on('title-change', () => this.onWindowTitleChange(window))
-        ;
-    }
-
-    /**
-     * Select a window
-     * @param window Window
-     */
-    select(window: Window): void {
-        this.selectIndex(this.getWindowIndex(window));
-    }
-
-    /**
-     * Select a window
-     * @param windowIndex Window index
-     */
-    selectIndex(windowIndex: number): void {
-        if (this.selectedIndex === windowIndex) {
-            return;
-        }
-
-        if (this.selectedIndex !== -1) {
-            this.getTab(this.selectedIndex).removeAttribute('selected');
-            this.windows[this.selectedIndex].hide();
-        }
-
-        if (windowIndex !== -1) {
-            let selectedWindow: Window;
-
-            selectedWindow = this.windows[windowIndex];
-            selectedWindow.show();
-            selectedWindow.setFocus(true);
-
-            this.getTab(windowIndex).attribute('selected');
-        }
-
-        this.selectedIndex = windowIndex;
-    }
-
-    /**
-     * Event triggered when a window is closed
-     * @param window Window
-     */
-    private onWindowClosed(window: Window): void {
-        let windowIndex: number = this.getWindowIndex(window);
-        let tabElement: UIElement = this.getTab(windowIndex);
-
-        if (windowIndex === this.selectedIndex) {
-            if ((this.selectedIndex + 1) < this.windows.length) {
-                this.selectIndex(this.selectedIndex + 1);
-                --this.selectedIndex;
-            } else if (this.selectedIndex > 0) {
-                this.selectIndex(this.selectedIndex - 1);
-            }
-        }
-
-        tabElement.detach();
-        this.windows.splice(windowIndex, 1);
-    }
-
-    /**
-     * Event triggered when a window title changes
-     * @param window Window
-     */
-    private onWindowTitleChange(window: Window): void {
-        let windowIndex: number = this.getWindowIndex(window);
-        let windowTitle: string = window.getTitle();
-        let tabElement: UIElement = this.getTab(windowIndex);
-
-        tabElement
-            .attribute('title', windowTitle)
-            .text(windowTitle)
-        ;
-    }
-
-    /**
-     * Get a tab element
-     * @param windowIndex Window index
-     * @return Tab element
-     */
-    private getTab(windowIndex: number): UIElement {
-        return this.element('window-container-headers', 'window-container-headers-tabs', 'window-container-tab:nth-of-type(' + (windowIndex + 1) + ')');
-    }
-
-    /**
-     * Get a window's index
-     * @param window Window
-     * @return window index
-     */
-    private getWindowIndex(window: Window): number {
-        return this.windows.indexOf(window);
-    }
-
-}
-
 export {
     Window,
-    WindowContainer,
     WindowManager
 };

@@ -1,4 +1,4 @@
-import {Window, WindowContainer, WindowManager} from './window';
+import {Window, WindowManager} from './window';
 import {CommandManager} from '../command';
 import {IconManager} from '../element';
 import {createMockInstance} from 'jest-create-mock-instance';
@@ -6,35 +6,24 @@ import {createMockInstance} from 'jest-create-mock-instance';
 describe('Window', () => {
     let window: Window;
 
-    // TODO: start testing once nwmatcher/nwsapi gets updated within jsdom - https://github.com/tmpvar/jsdom/issues/2028
-    /*it('can hide a window', () => {
+    it('can hide a window', () => {
+        // given
         window = new Window();
-
+        // when
         window.show();
         window.hide();
-
+        // then
         expect(window.hasAttribute('hidden')).toEqual(true);
     });
 
     it('can show a window', () => {
+        // given
         window = new Window();
-
+        // when
         window.hide();
         window.show();
-
+        // then
         expect(window.hasAttribute('hidden')).toEqual(false);
-    });*/
-});
-
-describe('Window container', () => {
-    let windowContainer: WindowContainer;
-    let windowManager: jest.Mocked<WindowManager>;
-    let iconManager: jest.Mocked<IconManager>;
-
-    beforeEach(() => {
-        windowManager = createMockInstance(WindowManager);
-        iconManager = createMockInstance(IconManager);
-        windowContainer = new WindowContainer(windowManager, iconManager);
     });
 
 });
@@ -50,10 +39,11 @@ describe('Window manager', () => {
     });
 
     it('registers for the set of commands it handles', () => {
+        // given
         let commandManager: jest.Mocked<CommandManager> = createMockInstance(CommandManager);
-
+        // when
         windowManager.setCommandManager(commandManager);
-
+        // then
         expect(commandManager.on).toHaveBeenCalledWith('window.open', expect.any(Function));
     });
 

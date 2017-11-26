@@ -123,6 +123,15 @@ class UIElement {
     }
 
     /**
+     * Get an attribute value
+     * @param attributeName Attribute name
+     * @return Attribute value
+     */
+    getAttributeValue(attributeName: string): string {
+        return this.nativeElement.getAttribute(attributeName);
+    }
+
+    /**
      * Remove an attribute
      * @param attributeName Attribute name
      * @return this
@@ -402,7 +411,8 @@ class UIElement {
      * @return Query selector string
      */
     private buildQuerySelector(...selectorParts: string[]): string {
-        return ':scope>' + selectorParts.join('>');
+        // NOTE: waiting for https://github.com/tmpvar/jsdom/issues/2028 so that unit tests don't fail
+        return /*':scope>' + */selectorParts.join('>');
     }
 
     /**
