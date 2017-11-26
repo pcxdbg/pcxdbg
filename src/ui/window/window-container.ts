@@ -1,5 +1,6 @@
 import {Icon, IconManager, UIElement} from '../element';
 import {Window} from './window';
+import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
 
 /**
@@ -95,7 +96,8 @@ class WindowContainer extends UIElement {
             modeString = 'docked-document';
             break;
         default:
-            throw new Error('unknown window container mode attribute ' + modeString);
+            // TODO: remove once https://github.com/palantir/tslint/pull/3370 is done
+            throw new Error('unknown window container mode ' + mode);
         }
 
         this.attribute('mode', modeString);
@@ -117,6 +119,55 @@ class WindowContainer extends UIElement {
             return WindowContainerMode.DOCKED_DOCUMENT;
         default:
             throw new Error('unknown window container mode attribute ' + modeString);
+        }
+    }
+
+    /**
+     * Set the anchor
+     * @param anchor Anchor
+     */
+    setAnchor(anchor: WindowContainerAnchor): void {
+        let anchorString: string;
+
+        switch (anchor) {
+        case WindowContainerAnchor.BOTTOM:
+            anchorString = 'bottom';
+            break;
+        case WindowContainerAnchor.LEFT:
+            anchorString = 'left';
+            break;
+        case WindowContainerAnchor.NONE:
+            anchorString = 'none';
+            break;
+        case WindowContainerAnchor.RIGHT:
+            anchorString = 'right';
+            break;
+        default:
+            // TODO: remove once https://github.com/palantir/tslint/pull/3370 is done
+            throw new Error('unknown window container anchor ' + anchor);
+        }
+
+        this.attribute('anchor', anchorString);
+    }
+
+    /**
+     * Get the anchor
+     * @return Anchor
+     */
+    getAnchor(): WindowContainerAnchor {
+        let anchorString: string = this.getAttributeValue('anchor');
+
+        switch (anchorString) {
+        case 'bottom':
+            return WindowContainerAnchor.BOTTOM;
+        case 'left':
+            return WindowContainerAnchor.LEFT;
+        case 'none':
+            return WindowContainerAnchor.NONE;
+        case 'right':
+            return WindowContainerAnchor.RIGHT;
+        default:
+            throw new Error('unknown window container anchor attribute ' + anchorString);
         }
     }
 

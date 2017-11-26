@@ -8,6 +8,18 @@ $content-borderwidth: $header-borderwidth;
 $content-bordercolor: $header-bordercolor;
 
 window-container {
+    &[mode=auto-hide] {
+        --container-width: 25px;
+
+        window-container-tab {
+            --border-style: solid;
+            --border-width: 5px;
+            --border-color: #3f3f46;
+        }
+    }
+}
+
+window-container {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -110,6 +122,8 @@ window-container {
 
             > window-container-tab {
                 color: #d0d0d0;
+                white-space: nowrap;
+                box-sizing: border-box;
 
                 &[selected] {
                 }
@@ -125,6 +139,10 @@ window-container {
 
         > window {
             flex-grow: 1;
+        }
+
+        &:empty {
+            display: none;
         }
     }
 
@@ -144,7 +162,6 @@ window-container {
                     border: solid $header-borderwidth transparent;
                     text-shadow: 0px 1px 0px rgba(0,0,0,0.25);
                     padding: 0px 5px;
-                    white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
     
@@ -226,27 +243,21 @@ window-container {
     }
 
     &[mode=auto-hide] {
-        &[anchor=left], &[anchor=right] {
-            width: 25px;
-        }
-
         > window-container-headers {
             order: 1;
             flex-grow: 1;
 
             > window-container-headers-tabs {
-                transform: rotate(90deg) translate(-25px);
-                transform-origin: 0px 25px;
-
                 > window-container-tab {
-                    height: 20px;
-                    border-top: solid 5px #3f3f46;
+                    height: var(--container-width);
+                    border-width: var(--border-width);
+                    border-color: var(--border-color);
                     color: #d0d0d0;
                     text-shadow: 1px 0px 0px rgba(0,0,0,0.25);
                     white-space: nowrap;
 
                     &:hover {
-                        color: #0097FB;
+                        color: #0097fb;
                         border-color: #007acc;
                     }
 
@@ -265,12 +276,71 @@ window-container {
             order: 2;
             position: absolute;
             z-index: 100;
-            top: 0px;
-            right: 25px;
             width: 320px;
             height: 200px;
             box-shadow: -1px 0px 0px $color-background, -2px 0px 0px $color-background, -3px 0px 0px $color-background;
         }
+
+        &[anchor=bottom] {
+            height: var(--container-width);
+
+            > window-container-headers {
+                > window-container-headers-tabs {
+                    > window-container-tab {
+                        border-bottom-style: solid;
+                    }
+                }
+            }
+
+            > window-container-windows {
+                bottom: var(--container-width);
+            }
+        }
+
+        &[anchor=left] {
+            > window-container-headers {
+                > window-container-headers-tabs {
+                    > window-container-tab {
+                        border-bottom-style: solid;
+                    }
+                }
+            }
+
+            > window-container-windows {
+                left: var(--container-width);
+            }
+        }
+
+        &[anchor=right] {
+            > window-container-headers {
+                > window-container-headers-tabs {
+                    > window-container-tab {
+                        border-top-style: solid;
+                    }
+                }
+            }
+
+            > window-container-windows {
+                right: var(--container-width);
+            }
+        }
+
+        &[anchor=left], &[anchor=right] {
+            width: var(--container-width);
+
+            > window-container-headers {
+                > window-container-headers-tabs {
+                    transform: rotate(90deg) translate(calc(-1 * var(--container-width)));
+                    transform-origin: 0px var(--container-width);
+                }
+            }
+
+            > window-container-windows {
+                top: 0px;
+                bottom: 0px;
+            }
+        }
+
     }
 
 }

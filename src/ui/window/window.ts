@@ -1,5 +1,7 @@
 import {Icon, IconManager, UIElement} from '../element';
 import {WindowContainer} from './window-container';
+import {WindowContainerMode} from './window-container-mode';
+import {WindowContainerAnchor} from './window-container-anchor';
 import {Component} from '../../component';
 import {CommandManager} from '../command';
 import {WindowStyle} from './window-style';
@@ -62,6 +64,7 @@ class WindowManager {
      */
     setAvailableArea(targetElement: UIElement): void {
         let nativeElement: HTMLElement;
+        let windowContainer: WindowContainer;
 
         this.targetElement = targetElement;
         this.windowContainers = [
@@ -72,32 +75,42 @@ class WindowManager {
         ];
 
         // TODO: dynamic based on the window layout
-        nativeElement = this.windowContainers[0].attribute('mode', 'docked').attribute('anchor', 'left').getNativeElement();
+        windowContainer = this.windowContainers[0];
+        windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
+        windowContainer.setAnchor(WindowContainerAnchor.LEFT);
+        nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
+        nativeElement.style.width = '240px';
         nativeElement.style.top = '6px';
-        nativeElement.style.left = '6px';
+        nativeElement.style.left = '0px';
         nativeElement.style.bottom = '6px';
-        nativeElement.style.width = '320px';
-        nativeElement = this.windowContainers[1].attribute('mode', 'docked-document').attribute('anchor', 'center').getNativeElement();
+        windowContainer = this.windowContainers[1];
+        windowContainer.setMode(WindowContainerMode.DOCKED_DOCUMENT);
+        windowContainer.setAnchor(WindowContainerAnchor.NONE);
+        nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '6px';
-        nativeElement.style.left = '332px';
-        nativeElement.style.bottom = '332px';
+        nativeElement.style.left = '31px';
+        nativeElement.style.bottom = '31px';
         nativeElement.style.right = '31px';
-        nativeElement = this.windowContainers[2].attribute('mode', 'auto-hide').attribute('anchor', 'right').getNativeElement();
+        windowContainer = this.windowContainers[2];
+        windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
+        windowContainer.setAnchor(WindowContainerAnchor.RIGHT);
+        nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '6px';
-        nativeElement.style.width = '25px';
         nativeElement.style.bottom = '6px';
         nativeElement.style.right = '0px';
-        nativeElement = this.windowContainers[3].attribute('mode', 'docked').attribute('anchor', 'bottom').getNativeElement();
+        windowContainer = this.windowContainers[3];
+        windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
+        windowContainer.setAnchor(WindowContainerAnchor.BOTTOM);
+        nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.height = '320px';
-        nativeElement.style.left = '332px';
-        nativeElement.style.bottom = '6px';
+        nativeElement.style.left = '31px';
+        nativeElement.style.bottom = '0px';
         nativeElement.style.right = '31px';
 
-        this.windowContainers.forEach(windowContainer => targetElement.attach(windowContainer));
+        this.windowContainers.forEach(container => targetElement.attach(container));
     }
 
     /**
