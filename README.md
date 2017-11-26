@@ -17,24 +17,26 @@ A cross-platform debugger front-end written in [TypeScript](https://www.typescri
 
 ## Development
 
-The only requirement to build the application is to have Node.js installed. Once that is done, install all dependencies with:
-
-```npm i```
-
-Then an Electron host with live reload can be started using:
-
-```npm run start```
+Install all dependencies with `npm install`, then an Electron host with live-reload can be started using:
+ 
+```
+npm run start
+```
 
 It is also possible to keep unit tests executing whenever code changes:
 
-```npm run test```
+```
+npm run test
+```
 
 ## Packaging
 
 The application can be packaged for any of the three supported platforms: Linux, MacOS or Windows.
 
-* Windows: ```npm run electron:win32```
-* MacOS: ```npm run electron:macos```
-* Linux: ```npm run electron:linux```
+```
+npm run electron:win32
+npm run electron:macos
+npm run electron:linux
+```
 
 Note: only 64-bit binaries are built.

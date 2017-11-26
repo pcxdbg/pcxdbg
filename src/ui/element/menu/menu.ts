@@ -1,10 +1,8 @@
-import {UIElement} from './element';
-import {Component, componentManager} from '../component';
-import {AcceleratorManager} from './accelerator';
-import {CommandManager, CommandDefinition} from './command';
-import {Icon} from './icon';
-import {IconManager} from './icon-manager';
-import {I18nManager} from '../lng/i18n';
+import {UIElement} from '../element';
+import {Icon, IconManager} from '../icon';
+import {Component, componentManager} from '../../../component';
+import {CommandManager, CommandDefinition} from '../../command';
+import {I18nManager} from '../../../lng';
 
 /**
  * Menu item definition
@@ -34,18 +32,15 @@ class MenuItemData {
  */
 @Component
 class MenuManager {
-    private acceleratorManager: AcceleratorManager;
     private commandManager: CommandManager;
     private iconManager: IconManager;
 
     /**
      * Class constructor
-     * @param acceleratorManager Accelerator manager
      * @param commandManager     Command manager
      * @param iconManager        Icon manager
      */
-    constructor(acceleratorManager: AcceleratorManager, commandManager: CommandManager, iconManager: IconManager) {
-        this.acceleratorManager = acceleratorManager;
+    constructor(commandManager: CommandManager, iconManager: IconManager) {
         this.commandManager = commandManager;
         this.iconManager = iconManager;
     }
@@ -55,7 +50,7 @@ class MenuManager {
      * @return Menu
      */
     createMenu(): Menu {
-        return new Menu(this, this.acceleratorManager, this.commandManager, this.iconManager, false);
+        return new Menu(this, this.commandManager, this.iconManager, false);
     }
 
     /**
@@ -63,7 +58,7 @@ class MenuManager {
      * @return Popup menu
      */
     createPopupMenu(parentMenu?: Menu): Menu {
-        return new Menu(this, this.acceleratorManager, this.commandManager, this.iconManager, true, parentMenu);
+        return new Menu(this, this.commandManager, this.iconManager, true, parentMenu);
     }
 
 }
@@ -72,7 +67,6 @@ class MenuManager {
  * Menu
  */
 class Menu extends UIElement {
-    private acceleratorManager: AcceleratorManager;
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private menuManager: MenuManager;
@@ -82,16 +76,14 @@ class Menu extends UIElement {
 
     /**
      * Class constructor
-     * @param menuManager        Menu manager
-     * @param acceleratorManager Accelerator manager
-     * @param commandManager     Command manager
-     * @param iconManager        Icon manager
-     * @param popupMenu          true if the menu is a popup menu
-     * @param parentMenu         Parent menu
+     * @param menuManager    Menu manager
+     * @param commandManager Command manager
+     * @param iconManager    Icon manager
+     * @param popupMenu      true if the menu is a popup menu
+     * @param parentMenu     Parent menu
      */
-    constructor(menuManager: MenuManager, acceleratorManager: AcceleratorManager, commandManager: CommandManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
+    constructor(menuManager: MenuManager, commandManager: CommandManager, iconManager: IconManager, popupMenu: boolean, parentMenu?: Menu) {
         super('menu');
-        this.acceleratorManager = acceleratorManager;
         this.commandManager = commandManager;
         this.menuManager = menuManager;
         this.iconManager = iconManager;

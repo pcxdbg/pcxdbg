@@ -1,15 +1,9 @@
 @import "constants";
 @import "controls";
-@import "button";
-@import "icon";
-@import "input";
-@import "list";
-@import "menu";
+@import "element/element";
 @import "modal";
-@import "toolbar";
-@import "tree";
-@import "window";
-@import "window-container";
+@import "window/window";
+@import "window/window-container";
 
 body {
     margin: 0px;

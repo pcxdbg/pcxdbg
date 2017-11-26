@@ -1,27 +1,6 @@
-import {UIElement} from './element';
-
-/**
- * List column definition
- * @param <T> Item data type
- */
-interface ListColumnDefinition<T> {
-    id: string;
-    label?: string;
-    labelParameters?: {[parameterName: string]: string};
-    labelText?: string;
-    className?: string;
-    sortable?: boolean | {(lhs: T, rhs: T): number};
-    provider?: {(item: T, cell: UIElement): void};
-}
-
-/**
- * List item definition
- * @param <T> Item data type
- */
-interface ListItemDefinition<T> {
-    click?: {(item: T): void};
-    provider?: {(item: T, row: UIElement): void};
-}
+import {UIElement} from '../element';
+import {ListColumnDefinition} from './list-column-definition';
+import {ListItemDefinition} from './list-item-definition';
 
 /**
  * List
@@ -155,7 +134,5 @@ class List<T> extends UIElement {
 }
 
 export {
-    List,
-    ListColumnDefinition,
-    ListItemDefinition
+    List
 };

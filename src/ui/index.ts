@@ -1,15 +1,14 @@
 export {AcceleratorManager} from './accelerator';
-export {Button} from './button';
 export {ClipboardManager} from './clipboard';
 export {CommandAliasDefinition, CommandDefinition, CommandHandler, CommandManager} from './command';
 export {DocumentManager, DocumentView} from './document';
-export {UIElement} from './element';
-export {Icon} from './icon';
-export {IconManager} from './icon-manager';
-export {Input} from './input';
-export {List, ListColumnDefinition, ListItemDefinition} from './list';
-export {Menu, MenuItemDefinition, MenuManager} from './menu';
+export {Button,
+        Icon, IconManager,
+        Input,
+        List, ListColumnDefinition, ListItemDefinition,
+        Menu, MenuItemDefinition, MenuManager,
+        Toolbar, ToolbarItemDefinition, ToolbarManager,
+        Tree, TreeItemDefinition,
+        UIElement} from './element';
 export {ModalManager, ModalStyle, ModalView} from './modal';
-export {Toolbar, ToolbarItemDefinition, ToolbarManager} from './toolbar';
-export {Tree, TreeItemDefinition} from './tree';
 export {Window, WindowContainer, WindowManager, WindowStyle} from './window';

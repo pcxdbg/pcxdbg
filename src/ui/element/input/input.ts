@@ -1,4 +1,4 @@
-import {UIElement} from './element';
+import {UIElement} from '../element';
 
 /**
  * Input

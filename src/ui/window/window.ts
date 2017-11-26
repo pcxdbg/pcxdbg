@@ -1,8 +1,7 @@
-import {UIElement} from './element';
-import {Component} from '../component';
-import {Icon} from './icon';
-import {IconManager} from './icon-manager';
-import {CommandManager} from './command';
+import {Icon, IconManager, UIElement} from '../element';
+import {Component} from '../../component';
+import {CommandManager} from '../command';
+import {WindowStyle} from './window-style';
 
 /**
  * Window manager
@@ -154,18 +153,6 @@ class WindowManager {
         return componentId.replace(/-/g, '').toLowerCase();
     }
 
-}
-
-/**
- * Window style
- */
-const enum WindowStyle {
-    NO_AUTOHIDE,
-    NO_BACKGROUND,
-    NO_CLOSE,
-    NO_MOVE,
-    NO_POSITION,
-    NO_TITLE
 }
 
 /**
@@ -584,6 +571,5 @@ class WindowContainer extends UIElement {
 export {
     Window,
     WindowContainer,
-    WindowManager,
-    WindowStyle
+    WindowManager
 };

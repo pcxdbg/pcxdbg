@@ -1,5 +1,5 @@
-import {I18nManager} from '../lng/i18n';
-import {componentManager} from '../component';
+import {I18nManager} from '../../lng';
+import {componentManager} from '../../component';
 
 /**
  * User interface drag action type

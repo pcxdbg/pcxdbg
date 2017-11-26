@@ -1,6 +1,6 @@
 import {Window, WindowContainer, WindowManager} from './window';
-import {CommandManager} from './command';
-import {IconManager} from './icon-manager';
+import {CommandManager} from '../command';
+import {IconManager} from '../element';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 describe('Window', () => {

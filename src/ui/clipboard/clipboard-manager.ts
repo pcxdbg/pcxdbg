@@ -1,5 +1,4 @@
-import {Component} from '../component';
-import {clipboard} from 'electron';
+import {Component} from '../../component';
 
 /**
  * Clipboard manager
@@ -9,7 +8,7 @@ class ClipboardManager {
 
     paste(): void {
         window.addEventListener('cut', () => {
-            console.log('CUUUUT');
+            console.log('cut event received on the window');
         }, false);
     }
 

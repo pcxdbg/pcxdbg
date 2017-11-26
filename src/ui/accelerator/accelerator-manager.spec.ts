@@ -1,6 +1,6 @@
-import {AcceleratorManager} from './accelerator';
-import {CommandManager} from './command';
-import {componentManager} from '../component';
+import {AcceleratorManager} from './accelerator-manager';
+import {CommandManager} from '../command';
+import {componentManager} from '../../component';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 const KEY_SHIFT: number = 16;
@@ -93,31 +93,38 @@ describe('Accelerator manager', () => {
         expect(keyboardEvent.returnValue).toEqual(undefined);
     });
 
-    it('ignores the Ctrl key when building a combination', () => {
-        let keyboardEvent: KeyboardEvent = createEvent(KEY_CONTROL, true, true, false);
+    describe('ignores modifier keys when building a combination', () => {
 
-        acceleratorManager.registerAccelerator('Ctrl+Alt', 'test');
-        document.dispatchEvent(keyboardEvent);
+        it('Ctrl key', () => {
+            // given
+            let keyboardEvent: KeyboardEvent = createEvent(KEY_CONTROL, true, true, false);
+            // when
+            acceleratorManager.registerAccelerator('Ctrl+Alt', 'test');
+            document.dispatchEvent(keyboardEvent);
+            // then
+            expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
+        });
 
-        expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
-    });
+        it('Alt key', () => {
+            // given
+            let keyboardEvent: KeyboardEvent = createEvent(KEY_ALT, true, true, false);
+            // when
+            acceleratorManager.registerAccelerator('Ctrl+Alt', 'test');
+            document.dispatchEvent(keyboardEvent);
+            // then
+            expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
+        });
 
-    it('ignores the Alt key when building a combination', () => {
-        let keyboardEvent: KeyboardEvent = createEvent(KEY_ALT, true, true, false);
+        it('Shift key', () => {
+            // given
+            let keyboardEvent: KeyboardEvent = createEvent(KEY_SHIFT, true, false, true);
+            // when
+            acceleratorManager.registerAccelerator('Ctrl+Shift', 'test');
+            document.dispatchEvent(keyboardEvent);
+            // then
+            expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
+        });
 
-        acceleratorManager.registerAccelerator('Ctrl+Alt', 'test');
-        document.dispatchEvent(keyboardEvent);
-
-        expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
-    });
-
-    it('ignores the Shift key when building a combination', () => {
-        let keyboardEvent: KeyboardEvent = createEvent(KEY_SHIFT, true, false, true);
-
-        acceleratorManager.registerAccelerator('Ctrl+Shift', 'test');
-        document.dispatchEvent(keyboardEvent);
-
-        expect(commandManager.executeCommand).toHaveBeenCalledWith('test', undefined);
     });
 
 });

@@ -1,6 +1,5 @@
-import {UIElement} from './element';
+import {UIElement, Button} from './element';
 import {Component, componentManager} from '../component';
-import {Button} from './button';
 import {CommandManager} from './command';
 
 /**

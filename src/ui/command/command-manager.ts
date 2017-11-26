@@ -1,41 +1,9 @@
-import {Component} from '../component';
-import {AcceleratorManager} from './accelerator';
-
-/**
- * Command handler
- * @param commandParameters Command parameters
- * @param commandId         Command identifier
- */
-type CommandHandler = (commandParameters?: {[parameterName: string]: any}, commandId?: string) => void;
-
-/**
- * Command alias definition
- */
-interface CommandAliasDefinition {
-    command: string;
-    parameters?: {[parameterName: string]: any};
-}
-
-/**
- * Command definition
- */
-interface CommandDefinition {
-    id: string;
-    accelerator?: string;
-    label?: string;
-    labelParameters?: {[parameterName: string]: any};
-    description?: string;
-    descriptionParameters?: {[parameterName: string]: any};
-    aliasFor?: CommandAliasDefinition;
-}
-
-/**
- * Command
- */
-interface Command {
-    definition?: CommandDefinition;
-    handler?: CommandHandler;
-}
+import {Component} from '../../component';
+import {Command} from './command';
+import {CommandAliasDefinition} from './command-alias-definition';
+import {CommandDefinition} from './command-definition';
+import {CommandHandler} from './command-handler';
+import {AcceleratorManager} from '../accelerator';
 
 /**
  * Command manager
@@ -150,8 +118,5 @@ class CommandManager {
 }
 
 export {
-    CommandAliasDefinition,
-    CommandDefinition,
-    CommandHandler,
     CommandManager
 };

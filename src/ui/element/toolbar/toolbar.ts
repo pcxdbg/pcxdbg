@@ -1,28 +1,9 @@
-import {UIElement} from './element';
-import {CommandManager} from './command';
-import {IconManager} from './icon-manager';
-import {Component, componentManager, ClassConstructorTypeFromType} from '../component';
-
-/**
- * Toolbar item definition
- */
-interface ToolbarItemDefinition {
-    id?: string;
-    label?: string;
-    labelParameters?: {[parameterName: string]: any};
-    icon?: string;
-    command?: string;
-    commandParameters?: {[parameterName: string]: any};
-    handler?: () => void;
-}
-
-/**
- * Toolbar item
- */
-class ToolbarItem {
-    element: UIElement;
-    definition: ToolbarItemDefinition;
-}
+import {UIElement} from '../element';
+import {ToolbarItem} from './toolbar-item';
+import {ToolbarItemDefinition} from './toolbar-item-definition';
+import {IconManager} from '../icon';
+import {CommandManager} from '../../command';
+import {componentManager} from '../../../component';
 
 /**
  * Toolbar
@@ -93,25 +74,7 @@ class Toolbar extends UIElement {
 
 }
 
-/**
- * Toolbar manager
- */
-@Component
-class ToolbarManager {
-
-    /**
-     * Register a toolbar
-     * @param toolbarClass Toolbar class
-     * @param <T>          Toolbar type
-     */
-    registerToolbar<T extends Toolbar>(toolbarClass: ClassConstructorTypeFromType<T>): void {
-        console.log('Toolbar registration not implemented');
-    }
-
-}
-
 export {
     Toolbar,
-    ToolbarItemDefinition,
-    ToolbarManager
+    ToolbarItemDefinition
 };

@@ -1,18 +1,5 @@
-import {UIElement} from './element';
-
-/**
- * Tree item definition
- * @param <T> Item data type
- */
-interface TreeItemDefinition<T> {
-    label?: string;
-    labelParameters?: {[parameterName: string]: any};
-    labelText?: string;
-    tooltip?: string;
-    tooltipParameters?: {[parameterName: string]: any};
-    tooltipText?: string;
-    className?: string|{(item: T): string};
-}
+import {UIElement} from '../element';
+import {TreeItemDefinition} from './tree-item-definition';
 
 /**
  * Tree
@@ -42,6 +29,5 @@ class Tree<T> extends UIElement {
 }
 
 export {
-    Tree,
-    TreeItemDefinition
+    Tree
 };

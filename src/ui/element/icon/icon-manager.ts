@@ -1,5 +1,5 @@
-import {Component} from '../component';
-import {HttpManager, HttpRequest, HttpResponse} from '../net';
+import {Component} from '../../../component';
+import {HttpManager, HttpRequest, HttpResponse} from '../../../net';
 import {Icon} from './icon';
 
 type DataCache = {[url: string]: string};

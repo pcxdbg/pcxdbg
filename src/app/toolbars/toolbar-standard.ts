@@ -1,4 +1,4 @@
-import {Toolbar} from '../../ui/toolbar';
+import {Toolbar} from '../../ui';
 import {Component} from '../../component';
 
 /**
