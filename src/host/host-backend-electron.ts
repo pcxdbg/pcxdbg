@@ -1,6 +1,6 @@
 import {HostBackend} from './host';
 import {Component} from '../component';
-import {remote} from 'electron';
+import {remote, shell} from 'electron';
 
 /**
  * Electron host backend
@@ -14,6 +14,14 @@ class ElectronHostBackend extends HostBackend {
      */
     getApplicationPath(): string {
         return remote.app.getAppPath();
+    }
+
+    /**
+     * Open an URL
+     * @param url URL
+     */
+    openUrl(url: string): void {
+        shell.openExternal(url);
     }
 
 }

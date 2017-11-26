@@ -13,33 +13,31 @@ describe('Path utility functions', () => {
         pathUtils.setHost(host);
     });
 
-    afterEach(() => pathUtils.shutdown());
+    afterEach(() => {
+        pathUtils.shutdown();
+    });
 
     it('can retrieve an application relative path', () => {
-        let path1: string;
-        let path2: string;
-        let path3: string;
+        // given
         host.getApplicationPath.mockReturnValue('appdir');
-
-        path1 = pathUtils.getApplicationRelativePath();
-        path2 = pathUtils.getApplicationRelativePath('subpath');
-        path3 = pathUtils.getApplicationRelativePath('subpath', 'secondsubpath');
-
+        // when
+        let path1: string = pathUtils.getApplicationRelativePath();
+        let path2: string = pathUtils.getApplicationRelativePath('subpath');
+        let path3: string = pathUtils.getApplicationRelativePath('subpath', 'secondsubpath');
+        // then
         expect(path1).toEqual(path.join('appdir'));
         expect(path2).toEqual(path.join('appdir', 'subpath'));
         expect(path3).toEqual(path.join('appdir', 'subpath', 'secondsubpath'));
     });
 
     it('can retrieve a modules relative path', () => {
-        let path1: string;
-        let path2: string;
-        let path3: string;
+        // given
         host.getApplicationPath.mockReturnValue('appdir');
-
-        path1 = pathUtils.getModulesRelativePath();
-        path2 = pathUtils.getModulesRelativePath('subpath');
-        path3 = pathUtils.getModulesRelativePath('subpath', 'secondsubpath');
-
+        // when
+        let path1: string = pathUtils.getModulesRelativePath();
+        let path2: string = pathUtils.getModulesRelativePath('subpath');
+        let path3: string = pathUtils.getModulesRelativePath('subpath', 'secondsubpath');
+        // then
         expect(path1).toEqual(path.join('appdir', 'node_modules'));
         expect(path2).toEqual(path.join('appdir', 'node_modules', 'subpath'));
         expect(path3).toEqual(path.join('appdir', 'node_modules', 'subpath', 'secondsubpath'));

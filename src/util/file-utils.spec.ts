@@ -38,67 +38,61 @@ describe('File utility functions', () => {
         fs.restore();
     });
 
-    it('can retrieve an application package', async () => {
-        let nodePackage: NodePackage;
-        pathUtils.getApplicationRelativePath.mockImplementation((...subPaths: string[]) => '/' + path.join('app', ...subPaths));
-        fs.mock({
-            app: {
-                'package.json': createPackageJsonContent()
-            }
+    describe('can retrieve', () => {
+
+        it('an application package', async () => {
+            // given
+            pathUtils.getApplicationRelativePath.mockImplementation((...subPaths: string[]) => '/' + path.join('app', ...subPaths));
+            fs.mock({ app: { 'package.json': createPackageJsonContent() } });
+            // when
+            let nodePackage: NodePackage = await fileUtils.getApplicationPackage();
+            // then
+            expect(nodePackage).not.toBeNull();
+            expect(nodePackage.name).toEqual('test-name');
+            expect(nodePackage.description).toEqual('test-desc');
+            expect(nodePackage.version).toEqual('test-ver');
+            expect(nodePackage.license).toEqual('test-lic');
+            expect(nodePackage.homepage).toEqual('http://test');
         });
 
-        nodePackage = await fileUtils.getApplicationPackage();
+        it('a module package', async () => {
+            // given
+            pathUtils.getModulesRelativePath.mockImplementation((...subPaths: string[]) => '/' + path.join('test', ...subPaths));
+            fs.mock({ test: { module: { 'package.json': createPackageJsonContent() } } });
+            // when
+            let nodePackage: NodePackage = await fileUtils.getModulePackage('module');
+            // then
+            expect(nodePackage).not.toBeNull();
+            expect(nodePackage.name).toEqual('test-name');
+            expect(nodePackage.description).toEqual('test-desc');
+            expect(nodePackage.version).toEqual('test-ver');
+            expect(nodePackage.license).toEqual('test-lic');
+            expect(nodePackage.homepage).toEqual('http://test');
+        });
 
-        expect(nodePackage).not.toBeNull();
-        expect(nodePackage.name).toEqual('test-name');
-        expect(nodePackage.description).toEqual('test-desc');
-        expect(nodePackage.version).toEqual('test-ver');
-        expect(nodePackage.license).toEqual('test-lic');
-        expect(nodePackage.homepage).toEqual('http://test');
     });
 
-    it('can retrieve a module package', async () => {
-        let nodePackage: NodePackage;
-        pathUtils.getModulesRelativePath.mockImplementation((...subPaths: string[]) => '/' + path.join('test', ...subPaths));
-        fs.mock({
-            test: {
-                module: {
-                    'package.json': createPackageJsonContent()
-                }
-            }
+    describe('can read a file\'s content', () => {
+
+        it('as text', async () => {
+            // given
+            fs.mock({ 'test.txt': 'test content' });
+            // when
+            let fileContent: string = await fileUtils.readFileContent('/test.txt');
+            // then
+            expect(fileContent).toEqual('test content');
         });
 
-        nodePackage = await fileUtils.getModulePackage('module');
-
-        expect(nodePackage).not.toBeNull();
-        expect(nodePackage.name).toEqual('test-name');
-        expect(nodePackage.description).toEqual('test-desc');
-        expect(nodePackage.version).toEqual('test-ver');
-        expect(nodePackage.license).toEqual('test-lic');
-        expect(nodePackage.homepage).toEqual('http://test');
-    });
-
-    it('can read a file\'s content', async () => {
-        let fileContent: string;
-        fs.mock({
-            'test.txt': 'test content'
+        it('as JSON', async () => {
+            // given
+            fs.mock({ 'test.json': '{"test":"value"}' });
+            // when
+            let fileContent: any = await fileUtils.readJsonFileContent('/test.json');
+            // then
+            expect(fileContent).not.toBeNull();
+            expect(fileContent.test).toEqual('value');
         });
 
-        fileContent = await fileUtils.readFileContent('/test.txt');
-
-        expect(fileContent).toEqual('test content');
-    });
-
-    it('can read a file\'s content as JSON', async () => {
-        let fileContent: any;
-        fs.mock({
-            'test.json': '{"test":"value"}'
-        });
-
-        fileContent = await fileUtils.readJsonFileContent('/test.json');
-
-        expect(fileContent).not.toBeNull();
-        expect(fileContent.test).toEqual('value');
     });
 
     it('throws an exception when attempting to read a file that does not exist', async () => {

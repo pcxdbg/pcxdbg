@@ -2,7 +2,8 @@ import {UIElement} from './element';
 import {Component, componentManager} from '../component';
 import {AcceleratorManager} from './accelerator';
 import {CommandManager, CommandDefinition} from './command';
-import {Icon, IconManager} from './icon';
+import {Icon} from './icon';
+import {IconManager} from './icon-manager';
 import {I18nManager} from '../lng/i18n';
 
 /**

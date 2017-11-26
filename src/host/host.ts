@@ -13,6 +13,14 @@ class HostBackend {
         throw new Error('HostBackend.getApplicationPath must be overriden');
     }
 
+    /**
+     * Open an URL
+     * @param url URL
+     */
+    openUrl(url: string): void {
+        throw new Error('HostBackend.openUrl must be overriden');
+    }
+
 }
 
 /**
@@ -44,6 +52,14 @@ class Host {
      */
     getApplicationPath(): string {
         return this.backend.getApplicationPath();
+    }
+
+    /**
+     * Open an URL
+     * @param url URL
+     */
+    openUrl(url: string): void {
+        this.backend.openUrl(url);
     }
 
 }

@@ -1,6 +1,6 @@
 import {UIElement} from './element';
 import {CommandManager} from './command';
-import {IconManager} from './icon';
+import {IconManager} from './icon-manager';
 import {Component, componentManager, ClassConstructorTypeFromType} from '../component';
 
 /**

@@ -15,6 +15,14 @@ class BrowserHostBackend extends HostBackend {
         return window.location.toString();
     }
 
+    /**
+     * Open an URL
+     * @param url URL
+     */
+    openUrl(url: string): void {
+        window.open(url, '_blank');
+    }
+
 }
 
 export {

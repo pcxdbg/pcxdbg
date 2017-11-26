@@ -5,7 +5,8 @@ import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, Netw
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
 import {HostExplorerView, NetworkExplorerView} from './windows';
 import {COMMANDS} from './application-commands';
-import {remote, shell} from 'electron';
+import {Host} from '../host';
+import {remote} from 'electron';
 
 /**
  * Application
@@ -37,11 +38,14 @@ class Application {
  */
 @Component
 class ApplicationView extends UIElement {
+    private static URL_REPORTBUG: string = 'https://github.com/pcxdbg/pcxdbg/issues/new';
+
     private commandManager: CommandManager;
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private application: Application;
     private clientArea: UIElement;
+    private host: Host;
 
     /**
      * Class constructor
@@ -73,6 +77,15 @@ class ApplicationView extends UIElement {
      */
     shutdown(): void {
         // Nothing to do
+    }
+
+    /**
+     * Set the host
+     * @param host Host
+     */
+    @Component
+    setHost(host: Host): void {
+        this.host = host;
     }
 
     /**
@@ -169,14 +182,14 @@ class ApplicationView extends UIElement {
 
         switch (externalId) {
         case 'report-bug':
-            url = 'https://github.com/pcxdbg/pcxdbg/issues/new';
+            url = ApplicationView.URL_REPORTBUG;
             break;
         default:
             console.error('Unknown external identifier "' + externalId + '"');
             return;
         }
 
-        shell.openExternal(url);
+        this.host.openUrl(url);
     }
 
     /**

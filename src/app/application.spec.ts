@@ -2,6 +2,7 @@ import {Application, ApplicationView} from './application';
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
 import {CommandManager, DocumentManager, ModalManager, WindowManager} from '../ui';
 import {Module} from '../modules';
+import {Host} from '../host';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 describe('Application view', () => {
@@ -11,6 +12,7 @@ describe('Application view', () => {
     let documentManager: jest.Mocked<DocumentManager>;
     let modalManager: jest.Mocked<ModalManager>;
     let windowManager: jest.Mocked<WindowManager>;
+    let host: jest.Mocked<Host>;
 
     beforeEach(() => {
         application = createMockInstance(Application);
@@ -18,32 +20,42 @@ describe('Application view', () => {
         documentManager = createMockInstance(DocumentManager);
         modalManager = createMockInstance(ModalManager);
         windowManager = createMockInstance(WindowManager);
+        host = createMockInstance(Host);
 
         commandManager.on.mockReturnThis();
 
         applicationView = new ApplicationView(application, commandManager, documentManager, modalManager, windowManager);
+        applicationView.setHost(host);
     });
 
-    afterEach(() => applicationView.shutdown());
-
-    it('registers dialog box components', () => {
-        let aboutDialog: jest.Mocked<AboutDialog> = createMockInstance(AboutDialog);
-        let extensionsDialog: jest.Mocked<ExtensionsDialog> = createMockInstance(ExtensionsDialog);
-        let openConnectionDialog: jest.Mocked<OpenConnectionDialog> = createMockInstance(OpenConnectionDialog);
-        let optionsDialog: jest.Mocked<OptionsDialog> = createMockInstance(OptionsDialog);
-
-        applicationView.setDialogComponents(aboutDialog, extensionsDialog, openConnectionDialog, optionsDialog);
-
-        expect(modalManager.registerModal).toHaveBeenCalledTimes(4);
+    afterEach(() => {
+        applicationView.shutdown();
     });
 
-    it('registers module components', () => {
-        let mockModule: jest.Mocked<Module> = createMockInstance(Module);
+    describe('registers', () => {
 
-        applicationView.setModules(mockModule);
+        it('dialog box components', () => {
+            // Given
+            let aboutDialog: jest.Mocked<AboutDialog> = createMockInstance(AboutDialog);
+            let extensionsDialog: jest.Mocked<ExtensionsDialog> = createMockInstance(ExtensionsDialog);
+            let openConnectionDialog: jest.Mocked<OpenConnectionDialog> = createMockInstance(OpenConnectionDialog);
+            let optionsDialog: jest.Mocked<OptionsDialog> = createMockInstance(OptionsDialog);
+            // When
+            applicationView.setDialogComponents(aboutDialog, extensionsDialog, openConnectionDialog, optionsDialog);
+            // Then
+            expect(modalManager.registerModal).toHaveBeenCalledTimes(4);
+        });
 
-        expect(mockModule.registerCommands).toHaveBeenCalledWith(commandManager);
-        expect(mockModule.registerWindows).toHaveBeenCalledWith(windowManager);
+        it('module components', () => {
+            // Given
+            let mockModule: jest.Mocked<Module> = createMockInstance(Module);
+            // When
+            applicationView.setModules(mockModule);
+            // Then
+            expect(mockModule.registerCommands).toHaveBeenCalledWith(commandManager);
+            expect(mockModule.registerWindows).toHaveBeenCalledWith(windowManager);
+        });
+
     });
 
 });

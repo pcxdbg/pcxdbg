@@ -1,6 +1,7 @@
 import {UIElement} from './element';
 import {Component} from '../component';
-import {Icon, IconManager} from './icon';
+import {Icon} from './icon';
+import {IconManager} from './icon-manager';
 import {CommandManager} from './command';
 
 /**
@@ -62,7 +63,7 @@ class WindowManager {
         nativeElement.style.top = '6px';
         nativeElement.style.left = '332px';
         nativeElement.style.bottom = '332px';
-        nativeElement.style.right = '25px';
+        nativeElement.style.right = '31px';
         nativeElement = this.windowContainers[2].attribute('mode', 'auto-hide').attribute('anchor', 'right').getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '6px';
@@ -74,7 +75,7 @@ class WindowManager {
         nativeElement.style.height = '320px';
         nativeElement.style.left = '332px';
         nativeElement.style.bottom = '6px';
-        nativeElement.style.right = '25px';
+        nativeElement.style.right = '31px';
 
         this.windowContainers.forEach(windowContainer => targetElement.attach(windowContainer));
     }
