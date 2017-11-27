@@ -1,1 +1,2 @@
-export {Menu, MenuItemDefinition, MenuManager} from './menu';
+export {Menu, MenuManager} from './menu';
+export {MenuItemDefinition} from './menu-item-definition';

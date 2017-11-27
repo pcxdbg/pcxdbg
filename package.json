@@ -26,7 +26,7 @@
     "electron:macos": "npm run build:release && node ./conf/package.js --asar --platform=darwin --arch=x64",
     "test": "./node_modules/.bin/jest --watch --no-cache --verbose",
     "coverage": "./node_modules/.bin/jest --no-cache --coverage",
-    "tslint": "tslint --config ./conf/tslint.json '**/*.ts' --exclude '**/node_modules/**'"
+    "tslint": "tslint --project ./tsconfig.json --config ./conf/tslint.json '**/*.ts' --exclude '**/node_modules/**'"
   },
   "jest": {
     "mapCoverage": true,

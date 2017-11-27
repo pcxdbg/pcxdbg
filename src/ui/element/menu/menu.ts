@@ -1,23 +1,10 @@
 import {CommandManager, CommandDefinition} from '../../command';
 import {UIElement} from '../element';
 import {Icon, IconManager} from '../icon';
+import {MenuItemDefinition} from './menu-item-definition';
+import {MenuManager} from './menu-manager';
 import {I18nManager} from 'i18n';
-import {applicationContext, Component} from 'injection';
-
-/**
- * Menu item definition
- */
-interface MenuItemDefinition {
-    id?: string;
-    label?: string;
-    labelParameters?: {[parameterName: string]: any};
-    labelText?: string;
-    handler?: (itemDefinition: MenuItemDefinition) => void;
-    icon?: string;
-    command?: string;
-    commandParameters?: {[parameterName: string]: any};
-    popupMenu?: Menu;
-}
+import {applicationContext} from 'injection';
 
 /**
  * Menu item data
@@ -25,42 +12,6 @@ interface MenuItemDefinition {
 class MenuItemData {
     definition: MenuItemDefinition;
     element: UIElement;
-}
-
-/**
- * Menu manager
- */
-@Component
-class MenuManager {
-    private commandManager: CommandManager;
-    private iconManager: IconManager;
-
-    /**
-     * Class constructor
-     * @param commandManager     Command manager
-     * @param iconManager        Icon manager
-     */
-    constructor(commandManager: CommandManager, iconManager: IconManager) {
-        this.commandManager = commandManager;
-        this.iconManager = iconManager;
-    }
-
-    /**
-     * Create a menu
-     * @return Menu
-     */
-    createMenu(): Menu {
-        return new Menu(this, this.commandManager, this.iconManager, false);
-    }
-
-    /**
-     * Create a popup menu
-     * @return Popup menu
-     */
-    createPopupMenu(parentMenu?: Menu): Menu {
-        return new Menu(this, this.commandManager, this.iconManager, true, parentMenu);
-    }
-
 }
 
 /**
@@ -420,6 +371,5 @@ class Menu extends UIElement {
 
 export {
     Menu,
-    MenuItemDefinition,
     MenuManager
 };
