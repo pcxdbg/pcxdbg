@@ -173,7 +173,7 @@ class Menu extends UIElement {
         }
 
         if (itemDefinition.label || itemDefinition.labelText) {
-            this.setLabel(menuItemData);
+            this.applyLabel(menuItemData);
         }
 
         if (itemDefinition.popupMenu) {
@@ -273,14 +273,7 @@ class Menu extends UIElement {
      * @return this
      */
     label(id: string, label: string, labelParameters?: {[parameterName: string]: any}): Menu {
-        let itemData: MenuItemData = this.getItemData(id);
-
-        itemData.definition.label = label;
-        itemData.definition.labelParameters = labelParameters;
-        itemData.definition.labelText = undefined;
-
-        this.setLabel(itemData);
-
+        this.setLabel(id, label, labelParameters, undefined);
         return this;
     }
 
@@ -291,22 +284,32 @@ class Menu extends UIElement {
      * @return this
      */
     labelText(id: string, labelText: string): Menu {
+        this.setLabel(id, undefined, undefined, labelText);
+        return this;
+    }
+
+    /**
+     * Set a menu item's label data
+     * @param id              Menu item identifier
+     * @param label           Label
+     * @param labelParameters Label parameters
+     * @param labelText       Label text
+     */
+    private setLabel(id: string, label: string, labelParameters: {[parameterName: string]: any}, labelText: string): void {
         let itemData: MenuItemData = this.getItemData(id);
 
         itemData.definition.label = undefined;
         itemData.definition.labelParameters = undefined;
         itemData.definition.labelText = labelText;
 
-        this.setLabel(itemData);
-
-        return this;
+        this.applyLabel(itemData);
     }
 
     /**
      * Set a menu item label
      * @param itemData Item data
      */
-    private setLabel(itemData: MenuItemData): void {
+    private applyLabel(itemData: MenuItemData): void {
         let itemDefinition: MenuItemDefinition = itemData.definition;
         let labelElement: UIElement = itemData.element.element('menu-item-label');
         let labelText: string;
