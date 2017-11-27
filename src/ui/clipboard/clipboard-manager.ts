@@ -1,4 +1,4 @@
-import {Component} from '../../component';
+import {Component} from 'injection';
 
 /**
  * Clipboard manager

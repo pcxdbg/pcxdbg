@@ -1,9 +1,9 @@
+import {CommandManager} from '../../command';
 import {UIElement} from '../element';
+import {IconManager} from '../icon';
 import {ToolbarItem} from './toolbar-item';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
-import {IconManager} from '../icon';
-import {CommandManager} from '../../command';
-import {componentManager} from '../../../component';
+import {applicationContext} from 'injection';
 
 /**
  * Toolbar
@@ -31,11 +31,11 @@ class Toolbar extends UIElement {
         let itemElement: UIElement = new UIElement('toolbar-item');
 
         if (itemDefinition.icon) {
-            itemElement.attach(componentManager.getComponent(IconManager).createIcon(16, 16, itemDefinition.icon));
+            itemElement.attach(applicationContext.getComponent(IconManager).createIcon(16, 16, itemDefinition.icon));
         }
 
         if (itemDefinition.command) {
-            itemElement.click(() => componentManager.getComponent(CommandManager).executeCommand(itemDefinition.command, itemDefinition.commandParameters));
+            itemElement.click(() => applicationContext.getComponent(CommandManager).executeCommand(itemDefinition.command, itemDefinition.commandParameters));
         } else if (itemDefinition.handler) {
             itemElement.click(() => itemDefinition.handler());
         }

@@ -1,4 +1,4 @@
-import {CommandManager, Menu, WindowManager} from '../ui';
+import {CommandManager, Menu, WindowManager} from 'ui';
 
 /**
  * Module information

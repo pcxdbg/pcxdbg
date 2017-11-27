@@ -1,5 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {Window} from 'ui';
 
 /**
  * Breakpoint manager
@@ -26,7 +26,7 @@ class BreakpointManager {
 /**
  * Breakpoint list view
  */
-@Component
+@Controller
 class BreakpointListView extends Window {
     private breakpointManager: BreakpointManager;
 

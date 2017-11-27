@@ -1,10 +1,10 @@
+import {CommandManager} from '../command';
 import {Icon, IconManager, UIElement} from '../element';
 import {WindowContainer} from './window-container';
-import {WindowContainerMode} from './window-container-mode';
 import {WindowContainerAnchor} from './window-container-anchor';
-import {Component} from '../../component';
-import {CommandManager} from '../command';
+import {WindowContainerMode} from './window-container-mode';
 import {WindowStyle} from './window-style';
+import {Component, Inject} from 'injection';
 
 /**
  * Window layout orientation
@@ -42,7 +42,7 @@ class WindowManager {
      * Set the command manager
      * @param commandManager Command manager
      */
-    @Component
+    @Inject
     setCommandManager(commandManager: CommandManager): void {
         commandManager
             .on('window.open', parameters => this.openWindow(<string> parameters.windowId))
@@ -53,7 +53,7 @@ class WindowManager {
      * Set the icon manager
      * @param iconManager Icon manager
      */
-    @Component
+    @Inject
     setIconManager(iconManager: IconManager): void {
         this.iconManager = iconManager;
     }
@@ -76,22 +76,22 @@ class WindowManager {
 
         // TODO: dynamic based on the window layout
         windowContainer = this.windowContainers[0];
-        windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
+        windowContainer.setMode(WindowContainerMode.DOCKED);
         windowContainer.setAnchor(WindowContainerAnchor.LEFT);
         nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.width = '240px';
         nativeElement.style.top = '6px';
-        nativeElement.style.left = '0px';
+        nativeElement.style.left = '6px';
         nativeElement.style.bottom = '6px';
+        nativeElement.style.width = '240px';
         windowContainer = this.windowContainers[1];
         windowContainer.setMode(WindowContainerMode.DOCKED_DOCUMENT);
         windowContainer.setAnchor(WindowContainerAnchor.NONE);
         nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '6px';
-        nativeElement.style.left = '31px';
-        nativeElement.style.bottom = '31px';
+        nativeElement.style.left = '252px';
+        nativeElement.style.bottom = '252px';
         nativeElement.style.right = '31px';
         windowContainer = this.windowContainers[2];
         windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
@@ -99,16 +99,17 @@ class WindowManager {
         nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
         nativeElement.style.top = '6px';
-        nativeElement.style.bottom = '6px';
+        nativeElement.style.bottom = '0px';
         nativeElement.style.right = '0px';
         windowContainer = this.windowContainers[3];
-        windowContainer.setMode(WindowContainerMode.AUTO_HIDE);
+        windowContainer.setMode(WindowContainerMode.DOCKED);
         windowContainer.setAnchor(WindowContainerAnchor.BOTTOM);
         nativeElement = windowContainer.getNativeElement();
         nativeElement.style.position = 'absolute';
-        nativeElement.style.left = '31px';
-        nativeElement.style.bottom = '0px';
+        nativeElement.style.left = '252px';
+        nativeElement.style.bottom = '6px';
         nativeElement.style.right = '31px';
+        nativeElement.style.height = '240px';
 
         this.windowContainers.forEach(container => targetElement.attach(container));
     }
@@ -130,13 +131,24 @@ class WindowManager {
     openWindow(componentId: string): void {
         let strippedComponentId: string = this.stripComponentId(componentId);
         let windowComponent: Window;
+        let targetContainer: WindowContainer;
 
         if (!(strippedComponentId in this.windowComponents)) {
             throw new Error('No window component found matching id "' + componentId + '"');
         }
 
+        switch (componentId) {
+        case 'hostexplorer':
+        case 'networkexplorer':
+            targetContainer = this.windowContainers[0];
+            break;
+        default:
+            targetContainer = this.windowContainers[2];
+            break;
+        }
+
         windowComponent = this.windowComponents[strippedComponentId];
-        this.windowContainers[Math.floor(Math.random() * 100) % 4].addWindow(windowComponent);
+        targetContainer.addWindow(windowComponent);
     }
 
     /**
@@ -272,7 +284,7 @@ class Window extends UIElement {
      * Set the window manager
      * @param windowManager Window manager
      */
-    @Component
+    @Inject
     setWindowManager(windowManager: WindowManager): void {
         this.windowManager = windowManager;
     }
@@ -281,7 +293,7 @@ class Window extends UIElement {
      * Set the icon manager
      * @param iconManager Icon manager
      */
-    @Component
+    @Inject
     setIconManager(iconManager: IconManager): void {
         let controls: UIElement = this.element('window-titlebar', 'window-titlebar-controls');
         let controlProperties: WindowControlProperties[] = [{

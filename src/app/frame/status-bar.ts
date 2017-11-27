@@ -1,6 +1,6 @@
-import {Icon, IconManager, UIElement} from '../../ui';
-import {Component} from '../../component';
-import {ConnectionManager} from '../../net';
+import {Component, Inject} from 'injection';
+import {ConnectionManager} from 'network';
+import {Icon, IconManager, UIElement} from 'ui';
 
 /**
  * Status bar view
@@ -33,7 +33,7 @@ class StatusBarView extends UIElement {
      * Set the icon manager
      * @param iconManager Icon manager
      */
-    @Component
+    @Inject
     setIconManager(iconManager: IconManager): void {
         this.element('status-bar-backgroundtasks')
             .attach(iconManager.createIcon(16, 16, 'status-bar-background-tasks'))
@@ -48,7 +48,7 @@ class StatusBarView extends UIElement {
      * Set the connection manager
      * @param connectionManager Connection manager
      */
-    @Component
+    @Inject
     setConnectionManager(connectionManager: ConnectionManager): void {
         // TODO: register event handlers
     }

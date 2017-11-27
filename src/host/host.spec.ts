@@ -1,17 +1,6 @@
-import {Host, HostBackend} from './host';
+import {Host} from './host';
+import {HostBackend} from './host-backend';
 import {createMockInstance} from 'jest-create-mock-instance';
-
-describe('HostBackend', () => {
-
-    it('throws an exception when a method is not implemented', () => {
-        // Given
-        let hostBackend: HostBackend = new HostBackend();
-        // Expect
-        expect(() => hostBackend.getApplicationPath()).toThrowError(/must be overriden/);
-        expect(() => hostBackend.openUrl('test')).toThrowError(/must be overriden/);
-    });
-
-});
 
 describe('Host', () => {
     let host: Host;
@@ -26,20 +15,39 @@ describe('Host', () => {
     describe('delegates to its backend when', () => {
 
         it('retrieving the application path', () => {
-            // Given
+            // given
             hostBackend.getApplicationPath.mockReturnValueOnce('test-app-path');
-            // When
+            // when
             let appPath: string = host.getApplicationPath();
-            // Then
+            // then
             expect(hostBackend.getApplicationPath).toHaveBeenCalledTimes(1);
             expect(appPath).toEqual('test-app-path');
         });
 
         it('opening an URL', () => {
-            // When
+            // when
             hostBackend.openUrl('test-url');
-            // Then
+            // then
+            expect(hostBackend.openUrl).toHaveBeenCalledTimes(1);
             expect(hostBackend.openUrl).toHaveBeenCalledWith('test-url');
+        });
+
+        it('testing whether the application is full-screen', () => {
+            // given
+            hostBackend.isFullScreen.mockReturnValueOnce(true);
+            // when
+            let isFullScreen: boolean = host.isFullScreen();
+            // then
+            expect(hostBackend.isFullScreen).toHaveBeenCalledTimes(1);
+            expect(isFullScreen).toEqual(true);
+        });
+
+        it('setting whether the application is full-screen', () => {
+            // when
+            host.setFullScreen(true);
+            // then
+            expect(hostBackend.setFullScreen).toHaveBeenCalledTimes(1);
+            expect(hostBackend.setFullScreen).toHaveBeenCalledWith(true);
         });
 
     });

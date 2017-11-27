@@ -1,5 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {Window} from 'ui';
 
 /**
  * Disassembly manager
@@ -12,7 +12,7 @@ class DisassemblyManager {
 /**
  * Disassembly view
  */
-@Component
+@Controller
 class DisassemblyView extends Window {
     private disassemblyManager: DisassemblyManager;
 

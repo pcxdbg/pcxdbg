@@ -1,0 +1,48 @@
+
+tree-item {
+
+    > tree-item-content {
+        --background: none;
+        --border-color: transparent;
+        --border-style: none;
+        --border-width: 0px;
+        --height: 22px;
+
+        > tree-item-label {
+            --padding: 2px;
+        }
+    }
+
+    &[selected] {
+        > tree-item-content {
+            --background: #007acc;
+        }
+    }
+}
+
+tree-item {
+    display: block;
+
+    > tree-item-content {
+        background: var(--background);
+        border-color: var(--border-color);
+        border-style: var(--border-style);
+        border-width: var(--border-width);
+        height: var(--height);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        box-sizing: border-box;
+
+        > tree-item-label {
+            padding-left: var(--padding);
+            flex-grow: 1;
+            white-space: nowrap;
+        }
+    }
+
+    > tree-item-children {
+
+    }
+
+}

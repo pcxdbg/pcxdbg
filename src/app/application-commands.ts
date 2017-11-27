@@ -1,4 +1,4 @@
-import {CommandDefinition} from '../ui';
+import {CommandDefinition} from 'ui';
 
 const COMMANDS: CommandDefinition[] = [{
     id: 'action.redo',

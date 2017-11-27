@@ -1,5 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {Window} from 'ui';
 
 /**
  * Call stack manager
@@ -12,7 +12,7 @@ class CallStackManager {
 /**
  * Call stack view
  */
-@Component
+@Controller
 class CallStackView extends Window {
     private callStackManager: CallStackManager;
 

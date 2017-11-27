@@ -32,11 +32,11 @@ function pack(platform, architecture, callback) {
     let icon;
 
     if (platform === PLATFORM_MACOS) {
-        icon = 'src/ico/mac/icon.icns';
+        icon = 'assets/ico/mac/icon.icns';
     } else if (platform === PLATFORM_WIN32) {
-        icon = 'src/ico/win/icon.ico';
+        icon = 'assets/ico/win/icon.ico';
     } else if (platform === PLATFORM_LINUX) {
-        icon = 'src/ico/png/1024x1024.png';
+        icon = 'assets/ico/png/1024x1024.png';
     }
 
     defaultOptions.icon = icon;

@@ -1,6 +1,6 @@
-import {Component} from '../../../component';
-import {HttpManager, HttpRequest, HttpResponse} from '../../../net';
 import {Icon} from './icon';
+import {Component} from 'injection';
+import {HttpManager, HttpRequest, HttpResponse} from 'network';
 
 type DataCache = {[url: string]: string};
 type LoadingCache = {[url: string]: Promise<string>};

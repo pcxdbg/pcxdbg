@@ -1,6 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {UIElement} from '../../ui/element';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {UIElement, Window} from 'ui';
 
 /**
  * Memory manager
@@ -13,7 +12,7 @@ class MemoryManager {
 /**
  * Memory view
  */
-@Component
+@Controller
 class MemoryView extends Window {
     private static REGEXP_NONASCII: RegExp = /[\x00-\x1F\x7F-\xFF]/;
     private static HTML_TABLE: string = `
@@ -104,7 +103,6 @@ class MemoryView extends Window {
         }
 
         if (rowIndex !== -1) {
-            console.log('hmpf');
             selectedRow = this.tableElement.selectNativeElement<HTMLTableRowElement>('tbody', 'tr:nth-child(' + (rowIndex + 1) + ')');
             selectedRow.setAttribute('selected', '');
         }

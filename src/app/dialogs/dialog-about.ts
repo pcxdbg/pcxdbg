@@ -1,8 +1,8 @@
-import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement} from '../../ui';
-import {Component} from '../../component';
-import {I18nManager} from '../../lng';
-import {FileUtils, NodePackage} from '../../util';
 import {remote} from 'electron';
+import {Component, Inject} from 'injection';
+import {I18nManager} from 'i18n';
+import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement} from 'ui';
+import {FileUtils, NodePackage} from 'utils';
 
 /**
  * Version information
@@ -73,7 +73,7 @@ class AboutDialog extends ModalView {
      * Set the i18n manager
      * @param i18nManager i18n manager
      */
-    @Component
+    @Inject
     setI18nManager(i18nManager: I18nManager): void {
         this.i18nManager = i18nManager;
     }
@@ -82,7 +82,7 @@ class AboutDialog extends ModalView {
      * Set the icon manager
      * @param iconManager Icon manager
      */
-    @Component
+    @Inject
     setIconManager(iconManager: IconManager): void {
         this.iconManager = iconManager;
     }
@@ -91,7 +91,7 @@ class AboutDialog extends ModalView {
      * Set the file utility functions
      * @param fileUtils File utility functions
      */
-    @Component
+    @Inject
     setFileUtils(fileUtils: FileUtils): void {
         this.fileUtils = fileUtils;
     }

@@ -1,1 +1,1 @@
-export {Host, HostBackend} from './host';
+export {Host} from './host';

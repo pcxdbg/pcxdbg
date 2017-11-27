@@ -1,12 +1,11 @@
-import {CommandManager, DocumentManager, ModalManager, UIElement, Window, WindowManager} from '../ui';
-import {Component} from '../component';
-import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
-import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from '../modules';
-import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
-import {HostExplorerView, NetworkExplorerView} from './windows';
 import {COMMANDS} from './application-commands';
-import {Host} from '../host';
-import {remote} from 'electron';
+import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
+import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
+import {HostExplorerView, NetworkExplorerView} from './windows';
+import {Component, Controller, Inject, PreDestroy} from 'injection';
+import {Host} from 'host';
+import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from 'modules';
+import {CommandManager, DocumentManager, ModalManager, UIElement, Window, WindowManager} from 'ui';
 
 /**
  * Application
@@ -26,7 +25,7 @@ class Application {
      * @param storageModule Storage module
      * @param systemModule  System module
      */
-    @Component
+    @Inject
     setModules(apuModule: ApuModule, cameraModule: CameraModule, cpuModule: CpuModule, gpuModule: GpuModule, inputModule: InputModule, networkModule: NetworkModule, onlineModule: OnlineModule, storageModule: StorageModule, systemModule: SystemModule): void {
         // Ensures injected modules are instantiated
     }
@@ -36,7 +35,7 @@ class Application {
 /**
  * Application view
  */
-@Component
+@Controller
 class ApplicationView extends UIElement {
     private static URL_REPORTBUG: string = 'https://github.com/pcxdbg/pcxdbg/issues/new';
 
@@ -75,6 +74,7 @@ class ApplicationView extends UIElement {
     /**
      * Shut the application down
      */
+    @PreDestroy
     shutdown(): void {
         // Nothing to do
     }
@@ -83,7 +83,7 @@ class ApplicationView extends UIElement {
      * Set the host
      * @param host Host
      */
-    @Component
+    @Inject
     setHost(host: Host): void {
         this.host = host;
     }
@@ -95,7 +95,7 @@ class ApplicationView extends UIElement {
      * @param toolbarContainerView Toolbar container view
      * @param statusBarView        Status bar view
      */
-    @Component
+    @Inject
     setFrameComponents(titleBarView: TitleBarView, mainMenuView: MainMenuView, toolbarContainerView: ToolbarContainerView, statusBarView: StatusBarView): void {
         [
             titleBarView,
@@ -113,7 +113,7 @@ class ApplicationView extends UIElement {
      * @param hostExplorerView    Host explorer view
      * @param networkExplorerView Network explorer view
      */
-    @Component
+    @Inject
     setMainComponents(hostExplorerView: HostExplorerView, networkExplorerView: NetworkExplorerView): void {
         [
             hostExplorerView, networkExplorerView
@@ -127,7 +127,7 @@ class ApplicationView extends UIElement {
      * @param openConnectionDialog Open connection dialog
      * @param optionsDialog        Options dialog
      */
-    @Component
+    @Inject
     setDialogComponents(aboutDialog: AboutDialog, extensionsDialog: ExtensionsDialog, openConnectionDialog: OpenConnectionDialog, optionsDialog: OptionsDialog): void {
         [
             aboutDialog,
@@ -141,7 +141,7 @@ class ApplicationView extends UIElement {
      * Set the modules
      * @param moduleList List of modules
      */
-    @Component
+    @Inject
     setModules(...moduleList: Module[]): void {
         moduleList.forEach(module => {
             module.registerCommands(this.commandManager);
@@ -196,8 +196,7 @@ class ApplicationView extends UIElement {
      * Handler for the view.fullscreen.toggle command
      */
     private onViewFullScreenToggleCommand(): void {
-        let browserWindow: Electron.BrowserWindow = remote.getCurrentWindow();
-        let fullScreen: boolean = !browserWindow.isFullScreen();
+        let fullScreen: boolean = !this.host.isFullScreen();
 
         if (fullScreen) {
             this.attribute('full-screen');
@@ -205,7 +204,7 @@ class ApplicationView extends UIElement {
             this.removeAttribute('full-screen');
         }
 
-        browserWindow.setFullScreen(fullScreen);
+        this.host.setFullScreen(fullScreen);
     }
 
 }

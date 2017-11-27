@@ -1,9 +1,9 @@
 import {Application, ApplicationView} from './application';
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
-import {CommandManager, DocumentManager, ModalManager, WindowManager} from '../ui';
-import {Module} from '../modules';
-import {Host} from '../host';
+import {Host} from 'host';
 import {createMockInstance} from 'jest-create-mock-instance';
+import {Module} from 'modules';
+import {CommandManager, DocumentManager, ModalManager, WindowManager} from 'ui';
 
 describe('Application view', () => {
     let applicationView: ApplicationView;

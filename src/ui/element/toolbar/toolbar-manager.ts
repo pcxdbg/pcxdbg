@@ -1,5 +1,5 @@
-import {Component, ClassConstructorTypeFromType} from '../../../component';
 import {Toolbar} from './toolbar';
+import {Component, ClassConstructorTypeFromType} from 'injection';
 
 /**
  * Toolbar manager

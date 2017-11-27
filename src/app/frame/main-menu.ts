@@ -1,6 +1,6 @@
-import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElement, WindowManager} from '../../ui';
-import {Component} from '../../component';
-import {Module} from '../../modules';
+import {Component} from 'injection';
+import {Module} from 'modules';
+import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElement, WindowManager} from 'ui';
 
 /**
  * Main menu view

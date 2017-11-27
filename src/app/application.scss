@@ -8,8 +8,8 @@
 @import "dialogs/dialog-extensions";
 @import "dialogs/dialog-open-connection";
 @import "dialogs/dialog-options";
-@import "windows/host-explorer";
-@import "windows/network-explorer";
+@import "windows/host-explorer/host-explorer";
+@import "windows/network-explorer/network-explorer";
 
 application {
     position: absolute;

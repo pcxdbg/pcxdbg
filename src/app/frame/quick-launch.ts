@@ -1,5 +1,5 @@
-import {AcceleratorManager, UIElement} from '../../ui';
-import {Component} from '../../component';
+import {Component} from 'injection';
+import {AcceleratorManager, UIElement} from 'ui';
 
 /**
  * Quick launch

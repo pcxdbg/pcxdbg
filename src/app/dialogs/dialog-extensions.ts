@@ -1,5 +1,5 @@
-import {ModalView, UIElement} from '../../ui';
-import {Component} from '../../component';
+import {Component} from 'injection';
+import {ModalView, UIElement} from 'ui';
 
 /**
  * Extensions dialog box

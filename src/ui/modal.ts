@@ -1,6 +1,6 @@
-import {UIElement, Button} from './element';
-import {Component, componentManager} from '../component';
 import {CommandManager} from './command';
+import {UIElement, Button} from './element';
+import {applicationContext, Component, Inject} from 'injection';
 
 /**
  * Modal style
@@ -126,7 +126,7 @@ abstract class ModalView extends UIElement {
      * Close the modal
      */
     close(): void {
-        componentManager.getComponent(ModalManager).hideModal(this.id);
+        applicationContext.getComponent(ModalManager).hideModal(this.id);
     }
 
     /**
@@ -188,7 +188,7 @@ class ModalManager {
      * Set the command manager
      * @param commandManager Command manager
      */
-    @Component
+    @Inject
     setCommandManager(commandManager: CommandManager): void {
         commandManager
             .on('modal.open', parameters => this.showModal(parameters.modalId))

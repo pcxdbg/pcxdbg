@@ -1,7 +1,7 @@
+import {Icon, IconManager} from '../element';
 import {WindowContainer} from './window-container';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
-import {Icon, IconManager} from '../element';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 describe('Window container', () => {

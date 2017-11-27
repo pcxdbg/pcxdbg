@@ -1,13 +1,13 @@
-import {Module, ModuleInformation} from '../module';
-import {Component} from '../../component';
 import {BreakpointListView, BreakpointManager} from './breakpoint';
 import {CallStackView} from './call-stack';
+import {COMMANDS} from './cpu-commands';
 import {DisassemblyView} from './disassembly';
 import {MemoryView} from './memory';
+import {Module, ModuleInformation} from '../module';
 import {ThreadListView} from './thread';
 import {WatchListView} from './watch';
-import {CommandManager, Menu, WindowManager} from '../../ui';
-import {COMMANDS} from './cpu-commands';
+import {Component, Inject} from 'injection';
+import {CommandManager, Menu, WindowManager} from 'ui';
 
 /**
  * CPU module
@@ -30,7 +30,7 @@ class CpuModule extends Module {
      * @param threadListView     Thread list view
      * @param watchListView      Watch list view
      */
-    @Component
+    @Inject
     setWindowComponents(breakpointListView: BreakpointListView, callStackView: CallStackView, disassemblyView: DisassemblyView, memoryView: MemoryView, threadListView: ThreadListView, watchListView: WatchListView): void {
         this.breakpointListView = breakpointListView;
         this.callStackView = callStackView;

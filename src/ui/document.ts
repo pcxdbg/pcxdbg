@@ -1,7 +1,7 @@
+import {CommandManager} from './command';
 import {UIElement} from './element';
 import {WindowManager} from './window';
-import {Component} from '../component';
-import {CommandManager} from './command';
+import {Component, Inject} from 'injection';
 
 /**
  * Document manager
@@ -14,7 +14,7 @@ class DocumentManager {
      * Set the command manager
      * @param commandManager Command manager
      */
-    @Component
+    @Inject
     setCommandManager(commandManager: CommandManager): void {
         commandManager
             .on('document.open', parameters => this.openDocument(parameters.type, parameters.parameters))
@@ -26,7 +26,7 @@ class DocumentManager {
      * Set the window manager
      * @param windowManager Window manager
      */
-    @Component
+    @Inject
     setWindowManager(windowManager: WindowManager): void {
         this.windowManager = windowManager;
     }

@@ -1,6 +1,6 @@
-import {Toolbar, UIElement} from '../../ui';
-import {Component} from '../../component';
 import {StandardToolbar} from '../toolbars';
+import {Component, Inject} from 'injection';
+import {UIElement} from 'ui';
 
 /**
  * Toolbar container view
@@ -21,7 +21,7 @@ class ToolbarContainerView extends UIElement {
      * Set the application toolbars
      * @param standardToolbar Standard toolbar
      */
-    @Component
+    @Inject
     setApplicationToolbars(standardToolbar: StandardToolbar): void {
         this.attach(standardToolbar);
     }

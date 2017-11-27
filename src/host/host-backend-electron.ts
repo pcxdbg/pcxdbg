@@ -1,5 +1,5 @@
-import {HostBackend} from './host';
-import {Component} from '../component';
+import {HostBackend} from './host-backend';
+import {Component} from 'injection';
 import {remote, shell} from 'electron';
 
 /**
@@ -7,6 +7,34 @@ import {remote, shell} from 'electron';
  */
 @Component
 class ElectronHostBackend extends HostBackend {
+
+    /**
+     * Minimize the application window
+     */
+    minimize(): void {
+        remote.getCurrentWindow().minimize();
+    }
+
+    /**
+     * Restore the application window
+     */
+    restore(): void {
+        remote.getCurrentWindow().restore();
+    }
+
+    /**
+     * Maximize the application window
+     */
+    maximize(): void {
+        remote.getCurrentWindow().maximize();
+    }
+
+    /**
+     * Close the application window
+     */
+    close(): void {
+        remote.getCurrentWindow().close();
+    }
 
     /**
      * Get the application path
@@ -22,6 +50,22 @@ class ElectronHostBackend extends HostBackend {
      */
     openUrl(url: string): void {
         shell.openExternal(url);
+    }
+
+    /**
+     * Test whether the application is full-screen
+     * @return true if the application is full-screen
+     */
+    isFullScreen(): boolean {
+        return remote.getCurrentWindow().isFullScreen();
+    }
+
+    /**
+     * Set whether the application is full-screen or not
+     * @param fullScreen true if the application should be full-screen
+     */
+    setFullScreen(fullScreen: boolean): void {
+        remote.getCurrentWindow().setFullScreen(fullScreen);
     }
 
 }

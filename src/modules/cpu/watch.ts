@@ -1,6 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {List} from '../../ui';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {List, Window} from 'ui';
 
 /**
  * Watch
@@ -20,7 +19,7 @@ class WatchManager {
 /**
  * Watch list view
  */
-@Component
+@Controller
 class WatchListView extends Window {
     private watchManager: WatchManager;
     private list: List<Watch>;

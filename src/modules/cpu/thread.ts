@@ -1,5 +1,5 @@
-import {Window, WindowManager} from '../../ui/window';
-import {Component} from '../../component';
+import {Component, Controller} from 'injection';
+import {Window} from 'ui';
 
 /**
  * Thread manager
@@ -12,7 +12,7 @@ class ThreadManager {
 /**
  * Thead list view
  */
-@Component
+@Controller
 class ThreadListView extends Window {
     private threadManager: ThreadManager;
 

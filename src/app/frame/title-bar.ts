@@ -1,8 +1,8 @@
 import {Icon, IconManager, UIElement} from '../../ui';
-import {Component} from '../../component';
-import {I18nManager} from '../../lng';
 import {QuickLaunch} from './quick-launch';
-import {remote} from 'electron';
+import {Host} from 'host';
+import {Component, Inject} from 'injection';
+import {I18nManager} from 'i18n';
 
 /**
  * Title bar control icon
@@ -38,6 +38,7 @@ class TitleBarView extends UIElement {
     `;
 
     private maximized: boolean;
+    private host: Host;
 
     /**
      * Class constructor
@@ -72,8 +73,17 @@ class TitleBarView extends UIElement {
             ;
         }
 
-        this.setMaximized(false); // TODO: recover from previous run
         this.applyTranslations();
+    }
+
+    /**
+     * Set the host
+     * @param host Host
+     */
+    @Inject
+    setHost(host: Host): void {
+        this.host = host;
+        this.setMaximized(false); // TODO: recover from previous run
     }
 
     /**
@@ -89,7 +99,7 @@ class TitleBarView extends UIElement {
      * Minimize the application window
      */
     private minimize(): void {
-        remote.getCurrentWindow().minimize();
+        this.host.minimize();
     }
 
     /**
@@ -110,7 +120,7 @@ class TitleBarView extends UIElement {
      * Close the application window
      */
     private close(): void {
-        remote.getCurrentWindow().close();
+        this.host.close();
     }
 
     /**
@@ -118,7 +128,6 @@ class TitleBarView extends UIElement {
      * @param maximized true if the application is maximized
      */
     private setMaximized(maximized: boolean): void {
-        let currentWindow: Electron.BrowserWindow = remote.getCurrentWindow();
         let iconMaximize: UIElement = this.element('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon:nth-child(3)');
         let iconRestore: UIElement = this.element('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon:nth-child(2)');
         let hidden: UIElement = maximized ? iconMaximize : iconRestore;
@@ -127,9 +136,9 @@ class TitleBarView extends UIElement {
         // TODO: https://gist.github.com/medmunds/fb1cd6b370a6cec5d618
         this.maximized = maximized;
         if (maximized) {
-            currentWindow.maximize();
+            this.host.maximize();
         } else {
-            currentWindow.restore();
+            this.host.restore();
         }
 
         hidden.attribute('hidden', '');

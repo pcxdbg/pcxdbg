@@ -1,8 +1,8 @@
-export {UIElement} from './element';
 export {Button} from './button';
+export {UIElement} from './element';
 export {Icon, IconManager} from './icon';
 export {Input} from './input';
-export {Menu, MenuItemDefinition, MenuManager} from './menu';
 export {List, ListColumnDefinition, ListItemDefinition} from './list';
+export {Menu, MenuItemDefinition, MenuManager} from './menu';
 export {Toolbar, ToolbarItemDefinition, ToolbarManager} from './toolbar';
-export {Tree, TreeItemDefinition} from './tree';
+export {Tree, TreeItem, TreeItemTypeDefinition, TreeItemTypeDictionary} from './tree';

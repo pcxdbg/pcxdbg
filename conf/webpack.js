@@ -101,11 +101,11 @@ function getPlugins() {
     }));
 
     plugins.push(new CopyWebpackPlugin([{
-        from: 'src/**/*.svg',
+        from: 'assets/svg/**/*.svg',
         to: './images/',
         flatten: true
     }, {
-        from: 'src/lng/**/*.json',
+        from: 'assets/lng/**/*.json',
         to: './translations/',
         flatten: true
     }]));
@@ -200,7 +200,8 @@ module.exports = {
             environments: isRelease ? path.resolve(__dirname, 'src/environments/index.release.ts') : path.resolve(__dirname, 'src/environments/index.ts')
         },
         modules: [
-            './node_modules'
+            './node_modules',
+            './src'
         ]
     },
     resolveLoader: {

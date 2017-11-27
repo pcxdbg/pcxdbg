@@ -1,5 +1,5 @@
-import {I18nManager} from '../../lng';
-import {componentManager} from '../../component';
+import {I18nManager} from 'i18n';
+import {applicationContext} from 'injection';
 
 /**
  * User interface drag action type
@@ -202,7 +202,7 @@ class UIElement {
      * @return this
      */
     applyTranslations(): UIElement {
-        componentManager.getComponent(I18nManager).translateElement(this.getNativeElement(), true);
+        applicationContext.getComponent(I18nManager).translateElement(this.getNativeElement(), true);
         return this;
     }
 

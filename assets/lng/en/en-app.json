@@ -1,0 +1,225 @@
+{
+    "dialog": {
+        "about": {
+            "dependencies": {
+                "column": {
+                    "license": "License",
+                    "name": "Dependency",
+                    "url": "Website",
+                    "version": "Version"
+                }
+            },
+            "name": "pcxdbg",
+            "version": {
+                "application": {
+                    "label": "Version {{version}}"
+                },
+                "build": {
+                    "label": "Built on {{buildDate}}"
+                },
+                "electron": {
+                    "label": "Electron: {{versionElectron}} (Chrome {{versionChrome}})"
+                },
+                "node": {
+                    "label": "Node: {{versionNode}} (V8 {{versionV8}}, OpenSSL {{versionOpenSSL}})"
+                },
+                "revision": {
+                    "label": "Revision #{{revisionNumber}} ({{revisionId}})"
+                }
+            }
+        },
+        "extensions": {
+            "title": "Extensions and Updates"
+        },
+        "open-connection": {
+            "control": {
+                "new": "New Connection"
+            },
+            "title": "Open Connection"
+        },
+        "options": {
+            "title": "Options"
+        }
+    },
+    "host-explorer": {
+        "title": "Host Explorer",
+        "tree": {
+            "item": {
+                "process": {
+                    "label": "{{name}} ({{id}}) on {{backend}} ({{hostName}})"
+                }
+            }
+        }
+    },
+    "main-menu": {
+        "debug": {
+            "break-all": "Break All",
+            "continue": "Continue",
+            "delete-all-breakpoints": "Delete All Breakpoints",
+            "detach-all": "Detach All",
+            "disable-all-breakpoints": "Disable All Breakpoints",
+            "label": "&Debug",
+            "new-breakpoint": {
+                "data": "Data Breakpoint...",
+                "function": "Function Breakpoint...",
+                "label": "New Breakpoint"
+            },
+            "restart": "Restart",
+            "step-into": "Step Into",
+            "step-out": "Step Out",
+            "step-over": "Step Over",
+            "stop": "Stop Debugging",
+            "terminate-all": "Terminate All",
+            "toggle-breakpoint": "Toggle Breakpoint",
+            "windows": {
+                "autos": "Autos",
+                "breakpoints": "Breakpoints",
+                "call-stack": "Call Stack",
+                "disassembly": "Disassembly",
+                "immediates": "Immediates",
+                "label": "Windows",
+                "locals": "Locals",
+                "memory": "Memory",
+                "modules": "Modules",
+                "output": "Output",
+                "processes": "Processes",
+                "registers": "Registers",
+                "threads": "Threads",
+                "watches": "Watches"
+            }
+       },
+        "edit": {
+            "copy": "&Copy",
+            "cut": "Cu&t",
+            "delete": "&Delete",
+            "find-replace": {
+                "label": "&Find and Replace"
+            },
+            "goto": {
+                "file": "Go To F&ile...",
+                "function": "Go To &Function...",
+                "label": "&Go To",
+                "line": "Go To &Line..."
+            },
+            "label": "&Edit",
+            "paste": "&Paste",
+            "redo": "&Redo",
+            "select-all": "Select &All",
+            "undo": "&Undo"
+        },
+        "file": {
+            "close": "&Close",
+            "close-connection": "Close Connection",
+            "exit": "E&xit",
+            "label": "&File",
+            "open": {
+                "connection": "&Connection...",
+                "file": "&File...",
+                "label": "&Open"
+            },
+            "page-setup": "Page Set&up...",
+            "print": "&Print...",
+            "recent-connections": "Recent Co&nnections",
+            "recent-files": "Recent &Files",
+            "save": "&Save <fileName>",
+            "save-as": "Save <fileName> &As...",
+            "save-all": "Save A&ll",
+            "source-control": {
+                "label": "Sou&rce Control"
+            }
+        },
+        "help": {
+            "about": "About pcxdbg",
+            "feedback": {
+                "label": "Send Feedback",
+                "report-bug": "Report a Problem..."
+            },
+            "label": "&Help",
+            "view": "View Help"
+        },
+        "profile": {
+            "logout": "Sign Out",
+            "preferences": "Preferences",
+            "rights": "Rights"
+        },
+        "tools": {
+            "customize": "Customize",
+            "extensions": "Extensions and &Updates...",
+            "label": "&Tools",
+            "options": "Options"
+        },
+        "view": {
+            "all-windows": "All Windows",
+            "bookmark-window": "Bookmark Window",
+            "call-hierarchy": "Call Hierarchy",
+            "chat": "Chat",
+            "command-window": "Command Window",
+            "error-list": "Error List",
+            "fullscreen": "F&ull Screen",
+            "host-explorer": "Host Explorer",
+            "label": "&View",
+            "navigate-backward": "Navigate Backward",
+            "navigate-forward": "Navigate Forward",
+            "network-explorer": "Network Explorer",
+            "notifications": "Notifications",
+            "object-browser": "Object Browser",
+            "output": "Output",
+            "toolbars": {
+                "label": "&Toolbars",
+                "standard": "Standard"
+            }
+        },
+        "window": {
+            "apply-window-layout": {
+                "label": "Appl&y Window Layout",
+                "none-saved": "No Saved Layouts"
+            },
+            "auto-hide": "&Auto Hide",
+            "auto-hide-all": "A&uto Hide All",
+            "close-all-documents": "C&lose All Documents",
+            "dock": "Doc&k",
+            "float": "&Float",
+            "hide": "&Hide",
+            "label": "&Window",
+            "manage-window-layouts": "&Manage Window Layouts",
+            "new-horizontal-tab-group": "New Hori&zontal Tab Group",
+            "new-vertical-tab-group": "New &Vertical Tab Group",
+            "new-window": "&New Window",
+            "pin-tab": "&Pin Tab",
+            "reset-window-layout": "&Reset Winow Layout",
+            "save-window-layout": "&Save Window Layout",
+            "split": "S&plit",
+            "windows": "&Windows..."
+        }
+    },
+    "network-explorer": {
+        "title": "Network Explorer",
+        "tree": {
+            "item": {
+                "discovered-list": {
+                    "label": "Available on the network"
+                },
+                "saved-list": {
+                    "label": "Favorites"
+                }
+            }
+        }
+    },
+    "quick-launch": {
+        "placeholder": "Quick Launch (Ctrl+Q)",
+        "search": "Search",
+        "title": "Type words to search for or type \"@\" to list the available search providers"
+    },
+    "status-bar": {
+        "background-tasks": "Background tasks"
+    },
+    "title-bar": {
+        "controls": {
+            "close": "Close",
+            "maximize": "Maximize",
+            "minimize": "Minimize",
+            "restore": "Restore"
+        },
+        "label": "pcxdbg"
+    }
+}

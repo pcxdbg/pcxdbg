@@ -1,6 +1,6 @@
+import {AcceleratorManager} from '../accelerator';
 import {CommandManager} from './command-manager';
 import {CommandDefinition} from './command-definition';
-import {AcceleratorManager} from '../accelerator';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 describe('Command manager', () => {

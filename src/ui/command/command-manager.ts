@@ -1,9 +1,9 @@
-import {Component} from '../../component';
+import {AcceleratorManager} from '../accelerator';
 import {Command} from './command';
 import {CommandAliasDefinition} from './command-alias-definition';
 import {CommandDefinition} from './command-definition';
 import {CommandHandler} from './command-handler';
-import {AcceleratorManager} from '../accelerator';
+import {Component, Inject, PreDestroy} from 'injection';
 
 /**
  * Command manager
@@ -14,19 +14,20 @@ class CommandManager {
     private acceleratorManager: AcceleratorManager;
 
     /**
-     * Shut the manager down
-     */
-    shutdown(): void {
-        // Nothing to do
-    }
-
-    /**
      * Set the accelerator manager
      * @param acceleratorManager Accelerator manager
      */
-    @Component
+    @Inject
     setAcceleratorManager(acceleratorManager: AcceleratorManager): void {
         this.acceleratorManager = acceleratorManager;
+    }
+
+    /**
+     * Shut the manager down
+     */
+    @PreDestroy
+    shutdown(): void {
+        // Nothing to do
     }
 
     /**

@@ -1,6 +1,6 @@
-import {Component, componentManager} from '../../component';
 import {Accelerator} from './accelerator';
 import {KeyMapping} from './key-mapping';
+import {applicationContext, Component, PreDestroy} from 'injection';
 
 /**
  * Command manager forward declaration (will be removed once using the external injection library and interfaces)
@@ -16,7 +16,6 @@ class CommandManager {
 class AcceleratorManager {
     private keydownListener: (keyboardEvent: KeyboardEvent) => any = keyboardEvent => this.onKeydown(keyboardEvent);
     private accelerators: {[combination: string]: Accelerator} = {};
-    x: number;
 
     /**
      * Class constructor
@@ -28,6 +27,7 @@ class AcceleratorManager {
     /**
      * Shut the manager down
      */
+    @PreDestroy
     shutdown(): void {
         document.removeEventListener('keydown', this.keydownListener);
     }
@@ -69,7 +69,8 @@ class AcceleratorManager {
             keyboardEvent.preventDefault();
             keyboardEvent.stopPropagation();
             keyboardEvent.returnValue = false;
-            componentManager.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
+            // TODO: use injection once the external library is used and interafaces can be used
+            applicationContext.getComponent(CommandManager).executeCommand(accelerator.commandId, accelerator.commandParameters);
         }
     }
 

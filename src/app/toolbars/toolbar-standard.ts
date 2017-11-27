@@ -1,5 +1,5 @@
-import {Toolbar} from '../../ui';
-import {Component} from '../../component';
+import {Component} from 'injection';
+import {Toolbar} from 'ui';
 
 /**
  * Standard toolbar

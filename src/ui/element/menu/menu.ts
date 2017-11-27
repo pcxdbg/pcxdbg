@@ -1,8 +1,8 @@
+import {CommandManager, CommandDefinition} from '../../command';
 import {UIElement} from '../element';
 import {Icon, IconManager} from '../icon';
-import {Component, componentManager} from '../../../component';
-import {CommandManager, CommandDefinition} from '../../command';
-import {I18nManager} from '../../../lng';
+import {I18nManager} from 'i18n';
+import {applicationContext, Component} from 'injection';
 
 /**
  * Menu item definition
@@ -313,7 +313,7 @@ class Menu extends UIElement {
         let n: number;
 
         if (itemDefinition.label) {
-            labelText = componentManager.getComponent(I18nManager).translateKey(itemDefinition.label, itemDefinition.labelParameters);
+            labelText = applicationContext.getComponent(I18nManager).translateKey(itemDefinition.label, itemDefinition.labelParameters);
         } else {
             labelText = itemDefinition.labelText;
         }

@@ -1,5 +1,5 @@
-import {Button, ModalView, UIElement} from '../../ui';
-import {Component} from '../../component';
+import {Component} from 'injection';
+import {Button, ModalView, UIElement} from 'ui';
 
 /**
  * Open connection dialog box

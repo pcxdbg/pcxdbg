@@ -1,6 +1,6 @@
 import {AcceleratorManager} from './accelerator-manager';
 import {CommandManager} from '../command';
-import {componentManager} from '../../component';
+import {applicationContext} from 'injection';
 import {createMockInstance} from 'jest-create-mock-instance';
 
 const KEY_SHIFT: number = 16;
@@ -37,7 +37,7 @@ describe('Accelerator manager', () => {
     beforeEach(() => {
         acceleratorManager = new AcceleratorManager();
         commandManager = createMockInstance(CommandManager);
-        componentManager.getComponent = () => <any> commandManager;
+        applicationContext.getComponent = () => <any> commandManager;
     });
 
     afterEach(() => acceleratorManager.shutdown());
