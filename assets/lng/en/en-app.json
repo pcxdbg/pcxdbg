@@ -41,16 +41,6 @@
             "title": "Options"
         }
     },
-    "host-explorer": {
-        "title": "Host Explorer",
-        "tree": {
-            "item": {
-                "process": {
-                    "label": "{{name}} ({{id}}) on {{backend}} ({{hostName}})"
-                }
-            }
-        }
-    },
     "main-menu": {
         "debug": {
             "break-all": "Break All",
@@ -192,19 +182,6 @@
             "windows": "&Windows..."
         }
     },
-    "network-explorer": {
-        "title": "Network Explorer",
-        "tree": {
-            "item": {
-                "discovered-list": {
-                    "label": "Available on the network"
-                },
-                "saved-list": {
-                    "label": "Favorites"
-                }
-            }
-        }
-    },
     "quick-launch": {
         "placeholder": "Quick Launch (Ctrl+Q)",
         "search": "Search",
@@ -221,5 +198,33 @@
             "restore": "Restore"
         },
         "label": "pcxdbg"
+    },
+    "window": {
+        "host-explorer": {
+            "title": "Host Explorer",
+            "tree": {
+                "item": {
+                    "host": {
+                        "label": "{{backend}} on {{hostName}}"
+                    },
+                    "process": {
+                        "label": "{{name}} (pid: {{id}})"
+                    }
+                }
+            }
+        },
+        "network-explorer": {
+            "title": "Network Explorer",
+            "tree": {
+                "item": {
+                    "discovered-list": {
+                        "label": "Available on the network"
+                    },
+                    "saved-list": {
+                        "label": "Favorites"
+                    }
+                }
+            }
+        }
     }
 }

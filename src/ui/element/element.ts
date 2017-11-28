@@ -45,7 +45,7 @@ class UIElement {
      * @param handler Click handler
      * @return this
      */
-    click(handler?: (e?: MouseEvent) => void): UIElement {
+    click(handler?: (e: MouseEvent) => void): UIElement {
         if (handler) {
             this.nativeElement.addEventListener('click', e => handler(e), false);
         } else {

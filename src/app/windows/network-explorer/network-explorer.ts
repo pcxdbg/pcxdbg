@@ -23,7 +23,7 @@ class NetworkExplorerView extends Window {
      */
     constructor() {
         super();
-        this.setTitle('app:network-explorer.title');
+        this.setTitle('app:window.network-explorer.title');
     }
 
     /**
@@ -38,7 +38,7 @@ class NetworkExplorerView extends Window {
             .setItemTypeDefinition('discovered-list', {
                 labelProvider: element => {
                     element
-                        .i18n('app:network-explorer.tree.item.discovered-list.label')
+                        .i18n('app:window.network-explorer.tree.item.discovered-list.label')
                         .applyTranslations()
                     ;
                 }
@@ -47,7 +47,7 @@ class NetworkExplorerView extends Window {
                 matcher: (lhs, rhs) => lhs.id === rhs.id,
                 labelProvider: (element, host) => {
                     element
-                        .i18n('app:network-explorer.tree.item.host.label', {id: host.id, hostName: host.hostName, backend: host.backend})
+                        .i18n('app:window.network-explorer.tree.item.host.label', {id: host.id, hostName: host.hostName, backend: host.backend})
                         .applyTranslations()
                     ;
                 }
@@ -56,7 +56,7 @@ class NetworkExplorerView extends Window {
                 matcher: (lhs, rhs) => lhs.id === rhs.id,
                 labelProvider: (element, process) => {
                     element
-                        .i18n('app:network-explorer.tree.item.process.label', {name: process.name, id: process.id})
+                        .i18n('app:window.network-explorer.tree.item.process.label', {name: process.name, id: process.id})
                         .applyTranslations()
                     ;
                 }
@@ -64,7 +64,7 @@ class NetworkExplorerView extends Window {
             .setItemTypeDefinition('saved-list', {
                 labelProvider: element => {
                     element
-                        .i18n('app:network-explorer.tree.item.saved-list.label')
+                        .i18n('app:window.network-explorer.tree.item.saved-list.label')
                         .applyTranslations()
                     ;
                 }

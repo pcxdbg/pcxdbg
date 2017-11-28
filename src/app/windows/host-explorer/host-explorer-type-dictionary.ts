@@ -1,3 +1,4 @@
+import {HostExplorerHostItem} from './host-explorer-host-item';
 import {HostExplorerProcessItem} from './host-explorer-process-item';
 import {TreeItemTypeDictionary} from 'ui';
 
@@ -15,6 +16,7 @@ interface HostExplorerTypeDictionary extends TreeItemTypeDictionary {
     'gpu-shader-vertex': string;
     'gpu-texture': string;
     'gpu': undefined;
+    'host': HostExplorerHostItem;
     'input-device-list': undefined;
     'input-device': string;
     'input': undefined;

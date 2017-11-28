@@ -6,16 +6,46 @@ tree-item {
         --border-color: transparent;
         --border-style: none;
         --border-width: 0px;
-        --height: 22px;
+        --height: 19px;
+
+        > tree-item-expander {
+            --margin: 6px;
+            --fill: #f1f1f1;
+            --fill-rule: evenodd;
+        }
+
+        > tree-item-icon {
+            --margin: 8px;
+        }
 
         > tree-item-label {
-            --padding: 2px;
+            --margin: 5px;
         }
+    }
+
+    &[expanded] > tree-item-content > tree-item-expander {
+        --fill-rule: nonzero;
+    }
+        
+    &:not([selected]) > tree-item-content > tree-item-expander:hover {
+        --fill: #007acc;
     }
 
     &[selected] {
         > tree-item-content {
             --background: #007acc;
+
+            > tree-item-content > tree-item-expander {
+                --fill: #f1f1f1;
+            }
+        }
+
+        &[expanded] > tree-item-content > tree-item-expander:hover {
+            --fill-rule: evenodd;
+        }
+
+        &:not([expanded]) > tree-item-content > tree-item-expander:hover {
+            --fill-rule: nonzero;
         }
     }
 }
@@ -34,8 +64,21 @@ tree-item {
         align-items: center;
         box-sizing: border-box;
 
+        > tree-item-expander {
+            margin-left: var(--margin);
+
+            > icon path {
+                fill: var(--fill);
+                fill-rule: var(--fill-rule);
+            }
+        }
+
+        > tree-item-icon {
+            margin-left: var(--margin);
+        }
+
         > tree-item-label {
-            padding-left: var(--padding);
+            margin-left: var(--margin);
             flex-grow: 1;
             white-space: nowrap;
         }
@@ -43,6 +86,14 @@ tree-item {
 
     > tree-item-children {
 
+    }
+
+    &[expanded] > tree-item-content > tree-item-expander > icon:nth-child(1) {
+        display: none;
+    }
+
+    &:not([expanded]) > tree-item-content > tree-item-expander > icon:nth-child(2) {
+        display: none;
     }
 
 }

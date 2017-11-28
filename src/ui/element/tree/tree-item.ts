@@ -1,5 +1,7 @@
 import {UIElement} from '../element';
+import {IconManager} from '../icon';
 import {TreeItemTypeDefinition} from './tree-item-type-definition';
+import {applicationContext} from 'injection';
 
 /**
  * Tree item
@@ -9,9 +11,9 @@ import {TreeItemTypeDefinition} from './tree-item-type-definition';
 class TreeItem<K extends keyof D, D> extends UIElement {
     private static HTML: string = `
         <tree-item-content>
-            <tree-item-expander>+</tree-item-expander>
+            <tree-item-expander></tree-item-expander>
             <tree-item-icon>Icon</tree-item-icon>
-            <tree-item-label>Tree Item Label</tree-item-label>
+            <tree-item-label></tree-item-label>
         </tree-item-content>
         <tree-item-children>Child Nodes</tree-item-children>
     `;
@@ -25,8 +27,20 @@ class TreeItem<K extends keyof D, D> extends UIElement {
      */
     constructor(itemTypeDefinition: TreeItemTypeDefinition<D>, itemData: D[K]) {
         super('tree-item', TreeItem.HTML);
+        let expanderElement: UIElement = this.element('tree-item-content', 'tree-item-expander');
+        let labelElement: UIElement = this.element('tree-item-content', 'tree-item-label');
+        let iconElement: UIElement = this.element('tree-item-content', 'tree-item-icon');
+        let iconManager: IconManager = applicationContext.getComponent(IconManager);
+
+        itemTypeDefinition.labelProvider(labelElement, <any> itemData);
+
+        expanderElement
+            .attach(iconManager.createIcon(16, 16, 'tree-expand'))
+            .attach(iconManager.createIcon(16, 16, 'tree-expanded'))
+            .click(() => this.attribute('expanded'))
+        ;
+
         this.click(() => this.attribute('selected'));
-        itemTypeDefinition.labelProvider(this.element('tree-item-content', 'tree-item-label'), <any> itemData);
     }
 
     /**
