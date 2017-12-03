@@ -3,6 +3,8 @@ engines:
   tslint:
     enabled: true
     config: "./conf/tslint.json"
+  duplication:
+      enabled: false
 checks:
   argument-count:
     config:
