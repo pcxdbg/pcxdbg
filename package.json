@@ -34,14 +34,14 @@
       "src/**/*.ts",
       "!src/**/index.ts"
     ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js",
       "json"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
     ],
     "roots": [
       "<rootDir>/src"

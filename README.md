@@ -15,6 +15,8 @@
 
 A cross-platform debugger front-end written in [TypeScript](https://www.typescriptlang.org/) and embedded within an [Electron](https://electron.atom.io/) host.
 
+WARNING: This project is still in its early stages of being ported from a previous Angular-based version. At the moment it does not offer any real features.
+
 ## Development
 
 Install all dependencies with `npm install`, then an Electron host with live-reload can be started using:
