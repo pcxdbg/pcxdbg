@@ -75,9 +75,9 @@ class Tree<D extends TreeItemTypeDictionary> extends UIElement {
                     let childTreeItem: TreeItem<any, D> = this.createTreeItem(childItem.type, childItem.item);
                     treeItem.attach(childTreeItem);
                 });
-            })
+            });
         }
-        
+
         return treeItem;
     }
 
