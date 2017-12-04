@@ -123,15 +123,6 @@ class UIElement {
     }
 
     /**
-     * Get an attribute value
-     * @param attributeName Attribute name
-     * @return Attribute value
-     */
-    getAttributeValue(attributeName: string): string {
-        return this.nativeElement.getAttribute(attributeName);
-    }
-
-    /**
      * Remove an attribute
      * @param attributeName Attribute name
      * @return this
@@ -139,6 +130,30 @@ class UIElement {
     removeAttribute(attributeName: string): UIElement {
         this.nativeElement.removeAttribute(attributeName);
         return this;
+    }
+
+    /**
+     * Toggle an attribute, setting it if not set and removing it otherwise
+     * @param attributeName Attribute name
+     * @return this
+     */
+    toggleAttribute(attributeName: string, attributeValue?: string): UIElement {
+        if (this.hasAttribute(attributeName)) {
+            this.removeAttribute(attributeName);
+        } else {
+            this.attribute(attributeName, attributeValue);
+        }
+
+        return this;
+    }
+
+    /**
+     * Get an attribute value
+     * @param attributeName Attribute name
+     * @return Attribute value
+     */
+    getAttributeValue(attributeName: string): string {
+        return this.nativeElement.getAttribute(attributeName);
     }
 
     /**
