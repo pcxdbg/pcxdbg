@@ -8,7 +8,7 @@ import {TreeItemTypeDictionary} from './tree-item-type-dictionary';
  * @param <D> Dictionary of possible item types
  */
 class Tree<D extends TreeItemTypeDictionary> extends UIElement {
-    private itemTypeDefinitions: {[typeName: string]: TreeItemTypeDefinition<D[any]>} = {};
+    private itemTypeDefinitions: {[typeName: string]: TreeItemTypeDefinition<any, D>} = {};
 
     /**
      * Class constructor
@@ -24,13 +24,13 @@ class Tree<D extends TreeItemTypeDictionary> extends UIElement {
      * @param <K>                Item type key within the dictionary
      * @return this
      */
-    setItemTypeDefinition<K extends keyof D>(itemType: K, itemTypeDefinition: TreeItemTypeDefinition<D[K]>): Tree<D> {
+    setItemTypeDefinition<K extends keyof D>(itemType: K, itemTypeDefinition: TreeItemTypeDefinition<K, D>): Tree<D> {
         this.itemTypeDefinitions[itemType] = itemTypeDefinition;
         return this;
     }
 
     /**
-     * Add an item
+     * Add a root item
      * @param itemType       Item type
      * @param item           Item
      * @param parentItemType Parent item type
@@ -39,7 +39,7 @@ class Tree<D extends TreeItemTypeDictionary> extends UIElement {
      * @param <PK>           Parent item type key within the dictionary
      * @return this
      */
-    addItem<K extends keyof D, PK extends keyof D>(itemType: K, item: D[K], parentItemType?: PK, parentItem?: D[PK]): Tree<D> {
+    addRootItem<K extends keyof D, PK extends keyof D>(itemType: K, item: D[K], parentItemType?: PK, parentItem?: D[PK]): Tree<D> {
         let treeItem: TreeItem<K, D> = this.createTreeItem<K>(itemType, item);
 
         this.attach(treeItem);
@@ -66,8 +66,18 @@ class Tree<D extends TreeItemTypeDictionary> extends UIElement {
      * @return Tree item
      */
     private createTreeItem<K extends keyof D>(itemType: K, itemData: D[K]): TreeItem<K, D> {
-        let treeItemTypeDefinition: TreeItemTypeDefinition<D[K]> = this.getTreeItemTypeDefinition(itemType);
+        let treeItemTypeDefinition: TreeItemTypeDefinition<K, D> = this.getTreeItemTypeDefinition(itemType);
         let treeItem: TreeItem<K, D> = new TreeItem<K, D>(treeItemTypeDefinition, itemData);
+
+        if (treeItemTypeDefinition.childNodesResolver) {
+            treeItemTypeDefinition.childNodesResolver(itemData).then(childItems => {
+                childItems.forEach(childItem => {
+                    let childTreeItem: TreeItem<any, D> = this.createTreeItem(childItem.type, childItem.item);
+                    treeItem.attach(childTreeItem);
+                });
+            })
+        }
+        
         return treeItem;
     }
 
@@ -77,8 +87,8 @@ class Tree<D extends TreeItemTypeDictionary> extends UIElement {
      * @param <K>      Item type key within the dictionary
      * @return Tree item type definition
      */
-    private getTreeItemTypeDefinition<K extends keyof D>(itemType: K): TreeItemTypeDefinition<D[K]> {
-        let treeItemTypeDefinition: TreeItemTypeDefinition<D[K]> = this.itemTypeDefinitions[itemType];
+    private getTreeItemTypeDefinition<K extends keyof D>(itemType: K): TreeItemTypeDefinition<K, D> {
+        let treeItemTypeDefinition: TreeItemTypeDefinition<K, D> = this.itemTypeDefinitions[itemType];
         if (!treeItemTypeDefinition) {
             throw new Error('unknown tree item type ' + itemType);
         }

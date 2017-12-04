@@ -5,4 +5,4 @@ export {Input} from './input';
 export {List, ListColumnDefinition, ListItemDefinition} from './list';
 export {Menu, MenuItemDefinition, MenuManager} from './menu';
 export {Toolbar, ToolbarItemDefinition, ToolbarManager} from './toolbar';
-export {Tree, TreeItem, TreeItemTypeDefinition, TreeItemTypeDictionary} from './tree';
+export {Tree, TreeItem, TreeItemChild, TreeItemTypeDefinition, TreeItemTypeDictionary} from './tree';

@@ -16,6 +16,7 @@ tree-item {
 
         > tree-item-icon {
             --margin: 8px;
+            --width: 16px;
         }
 
         > tree-item-label {
@@ -75,6 +76,7 @@ tree-item {
 
         > tree-item-icon {
             margin-left: var(--margin);
+            width: var(--width);
         }
 
         > tree-item-label {
@@ -86,6 +88,9 @@ tree-item {
 
     > tree-item-children {
 
+        &:empty {
+            display: none;
+        }
     }
 
     &[expanded] > tree-item-content > tree-item-expander > icon:nth-child(1) {
@@ -96,4 +101,8 @@ tree-item {
         display: none;
     }
 
+}
+
+tree-item-children > tree-item > tree-item-content {
+    margin-left: 18px;
 }

@@ -69,8 +69,8 @@ class NetworkExplorerView extends Window {
                     ;
                 }
             })
-            .addItem('saved-list', undefined)
-            .addItem('discovered-list', undefined)
+            .addRootItem('saved-list', undefined)
+            .addRootItem('discovered-list', undefined)
             .attachTo(this)
         ;
     }

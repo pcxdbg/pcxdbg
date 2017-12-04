@@ -1,15 +1,18 @@
 import {UIElement} from '../element';
 import {Icon} from '../icon';
+import {TreeItemChild} from './tree-item-child';
 import {TreeItemTypeDictionary} from './tree-item-type-dictionary';
 
 /**
  * Tree item type definition
+ * @param <K> Item type key within the dictionary
+ * @param <D> Item dicctionary type
  */
-interface TreeItemTypeDefinition<T> {
-    matcher?: (lhs: T, rhs: T) => boolean;
-    labelProvider: (element: UIElement, item: T) => void;
-    iconResolver?: (item: T) => Promise<Icon>;
-    childNodesResolver?: (item: T) => Promise<T[]>;
+interface TreeItemTypeDefinition<K extends keyof D, D extends TreeItemTypeDictionary> {
+    matcher?: (lhs: D[K], rhs: D[K]) => boolean;
+    labelProvider: (element: UIElement, item: D[K]) => void;
+    iconResolver?: (item: D[K]) => Icon;
+    childNodesResolver?: (item: D[K]) => Promise<TreeItemChild<any, D>[]>;
 }
 
 export {

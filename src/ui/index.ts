@@ -8,7 +8,7 @@ export {Button,
         List, ListColumnDefinition, ListItemDefinition,
         Menu, MenuItemDefinition, MenuManager,
         Toolbar, ToolbarItemDefinition, ToolbarManager,
-        Tree, TreeItem, TreeItemTypeDefinition, TreeItemTypeDictionary,
+        Tree, TreeItem, TreeItemChild, TreeItemTypeDefinition, TreeItemTypeDictionary,
         UIElement} from './element';
 export {ModalManager, ModalStyle, ModalView} from './modal';
 export {Window, WindowContainer, WindowManager, WindowStyle} from './window';
