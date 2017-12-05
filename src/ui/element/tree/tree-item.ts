@@ -37,7 +37,7 @@ class TreeItem<K extends keyof D, D> extends UIElement {
             .attach(iconManager.createIcon(16, 16, 'tree-expand'))
             .attach(iconManager.createIcon(16, 16, 'tree-expanded'))
             .click(e => {
-                e.preventDefault();
+                e.stopPropagation();
                 this.toggleAttribute('expanded');
             })
         ;
@@ -48,7 +48,10 @@ class TreeItem<K extends keyof D, D> extends UIElement {
             iconElement.attach(icon);
         }
 
-        this.click(() => this.attribute('selected'));
+        this.click(e => {
+            e.stopPropagation();
+            this.attribute('selected');
+        });
     }
 
     /**
