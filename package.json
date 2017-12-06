@@ -105,6 +105,6 @@
     "webdriver-manager": "12.0.6",
     "webpack": "3.10.0",
     "webpack-concat-plugin": "1.4.2",
-    "webpack-dev-server": "2.9.5"
+    "webpack-dev-server": "2.9.6"
   }
 }
