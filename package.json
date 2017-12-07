@@ -90,7 +90,7 @@
     "npm-run-all": "4.1.2",
     "postcss-loader": "2.0.9",
     "postcss-url": "7.3.0",
-    "protractor": "5.2.0",
+    "protractor": "5.2.1",
     "raw-loader": "0.5.1",
     "sass-loader": "6.0.6",
     "script-loader": "0.7.2",
