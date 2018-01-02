@@ -4,7 +4,7 @@ engines:
     enabled: true
     config: "./conf/tslint.json"
   duplication:
-      enabled: false
+    enabled: false
 checks:
   argument-count:
     config:
