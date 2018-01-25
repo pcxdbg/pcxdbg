@@ -1,5 +1,5 @@
-import {Component} from 'injection';
-import {AcceleratorManager, UIElement} from 'ui';
+import {Component, Inject} from 'injection';
+import {CommandManager, UIElement} from 'ui';
 
 /**
  * Quick launch
@@ -22,9 +22,8 @@ class QuickLaunch extends UIElement {
 
     /**
      * Class constructor
-     * @param acceleratorManager Accelerator manager
      */
-    constructor(acceleratorManager: AcceleratorManager) {
+    constructor() {
         super('quick-launch', QuickLaunch.HTML);
         let form: HTMLFormElement = this.selectNativeElement<HTMLFormElement>('form');
 
@@ -38,7 +37,16 @@ class QuickLaunch extends UIElement {
         this.inputField.addEventListener('focus', () => this.onFocus(), false);
         this.inputField.addEventListener('keyup', () => this.onInputChange(), false);
 
-        // acceleratorManager.registerAccelerator('Ctrl+Q', () => this.inputField.focus());
+        
+    }
+
+    /**
+     * Set the command manager
+     * @param commandManager Command manager
+     */
+    @Inject
+    setCommandManager(commandManager: CommandManager): void {
+        commandManager.on('quicklaunch.focus', () => this.inputField.focus());
     }
 
     /**

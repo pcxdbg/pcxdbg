@@ -197,6 +197,11 @@ const COMMANDS: CommandDefinition[] = [{
     label: 'app:command.profile.signout.label',
     description: 'app:command.profile.signout.description'
 }, {
+    id: 'quicklaunch.focus',
+    label: 'app:command.quicklaunch.focus.label',
+    description: 'app:command.quicklaunch.focus.description',
+    accelerator: 'Ctrl+Q'
+}, {
     id: 'toolbar.open'
 }, {
     id: 'toolbar.open.standard',
