@@ -40,6 +40,12 @@ class Toolbar extends UIElement {
             itemElement.click(() => itemDefinition.handler());
         }
 
+        if (itemDefinition.label) {
+            itemElement.i18n('[title]' + itemDefinition.label, itemDefinition.labelParameters).applyTranslations();
+        } else if (itemDefinition.labelText) {
+            itemElement.attribute('title', itemDefinition.labelText);
+        }
+
         this.attach(itemElement);
 
         return this;
