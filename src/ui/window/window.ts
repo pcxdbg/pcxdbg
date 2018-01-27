@@ -142,6 +142,9 @@ class WindowManager {
         case 'networkexplorer':
             targetContainer = this.windowContainers[0];
             break;
+        case 'outputwindow':
+            targetContainer = this.windowContainers[3];
+            break;
         default:
             targetContainer = this.windowContainers[2];
             break;

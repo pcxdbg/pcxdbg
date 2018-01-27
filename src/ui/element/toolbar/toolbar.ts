@@ -1,4 +1,4 @@
-import {CommandManager} from '../../command';
+import {CommandDefinition, CommandManager} from '../../command';
 import {UIElement} from '../element';
 import {IconManager} from '../icon';
 import {ToolbarItem} from './toolbar-item';
@@ -29,19 +29,30 @@ class Toolbar extends UIElement {
      */
     item(itemDefinition: ToolbarItemDefinition): Toolbar {
         let itemElement: UIElement = new UIElement('toolbar-item');
+        let commandManager: CommandManager = applicationContext.getComponent(CommandManager);
 
         if (itemDefinition.icon) {
             itemElement.attach(applicationContext.getComponent(IconManager).createIcon(16, 16, itemDefinition.icon));
         }
 
         if (itemDefinition.command) {
-            itemElement.click(() => applicationContext.getComponent(CommandManager).executeCommand(itemDefinition.command, itemDefinition.commandParameters));
+            commandManager = applicationContext.getComponent(CommandManager);
+            itemElement.click(() => commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
         } else if (itemDefinition.handler) {
             itemElement.click(() => itemDefinition.handler());
         }
 
         if (itemDefinition.label) {
-            itemElement.i18n('[title]' + itemDefinition.label, itemDefinition.labelParameters).applyTranslations();
+            let i18nKey: string = '[title]' + itemDefinition.label;
+
+            if (itemDefinition.command) {
+                let commandDefinition: CommandDefinition = commandManager.getCommandDefinition(itemDefinition.command);
+                if (commandDefinition && commandDefinition.accelerator) {
+                    i18nKey += ' ($cmdacc(' + itemDefinition.command + '))';
+                }
+            }
+
+            itemElement.i18n(i18nKey, itemDefinition.labelParameters).applyTranslations();
         } else if (itemDefinition.labelText) {
             itemElement.attribute('title', itemDefinition.labelText);
         }

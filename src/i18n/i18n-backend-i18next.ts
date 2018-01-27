@@ -1,6 +1,7 @@
 import {I18nBackend} from './i18n-backend';
+import {Component, Inject} from 'injection';
 import {LanguageChangeHandler} from './language-change-handler';
-import {Component} from 'injection';
+import {LanguagePostProcessor} from './language-post-processor';
 import * as i18next from 'i18next';
 import * as i18nextXHRBackend from 'i18next-xhr-backend';
 import * as moment from 'moment';
@@ -11,6 +12,16 @@ import * as moment from 'moment';
 @Component
 class I18nextI18nBackend extends I18nBackend {
     private languageChangeHandler: LanguageChangeHandler;
+    private languagePostProcessors: LanguagePostProcessor[];
+
+    /**
+     * Set the language post-processors
+     * @param languagePostProcessorList List of language post-processors
+     */
+    @Inject
+    setLanguagePostProcessors(languagePostProcessorList: LanguagePostProcessor[]): void {
+        this.languagePostProcessors = languagePostProcessorList;
+    }
 
     /**
      * Initialize the backend
@@ -38,10 +49,10 @@ class I18nextI18nBackend extends I18nBackend {
                 }
             });
 
-            i18next
-                .use(i18nextXHRBackend)
-                .init(i18nextOptions)
-            ;
+            i18next.use(i18nextXHRBackend);
+            this.languagePostProcessors.forEach(languagePostProcessor => this.registerLanguagePostProcessor(i18nextOptions, languagePostProcessor));
+
+            i18next.init(i18nextOptions)
         });
     }
 
@@ -80,6 +91,24 @@ class I18nextI18nBackend extends I18nBackend {
      */
     formatDate(date: Date, formatPattern: string): string {
         return moment(date).format(formatPattern);
+    }
+
+    /**
+     * Register a language post-processor
+     * @param i18nextOptions        i18next options
+     * @param languagePostProcessor Language post-proccessor
+     */
+    private registerLanguagePostProcessor(i18nextOptions: i18next.InitOptions, languagePostProcessor: LanguagePostProcessor): void {
+        let languagePostProcessorNames: string[] = i18nextOptions.postProcess = <string []> i18nextOptions.postProcess || [];
+        let languagePostProcessorName: string = languagePostProcessor.getName();
+
+        languagePostProcessorNames.push(languagePostProcessorName);
+
+        i18next.use({
+            type: 'postProcessor',
+            name: languagePostProcessorName,
+            process: (value, key, options) => languagePostProcessor.postProcess(value, key, options)
+        });
     }
 
     /**
