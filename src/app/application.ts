@@ -1,7 +1,7 @@
 import {COMMANDS} from './application-commands';
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
-import {HostExplorerView, NetworkExplorerView} from './windows';
+import {HostExplorerView, NetworkExplorerView, OutputWindowView} from './windows';
 import {Component, Controller, Inject, PreDestroy} from 'injection';
 import {Host} from 'host';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from 'modules';
@@ -112,11 +112,14 @@ class ApplicationView extends UIElement {
      * Set the main components
      * @param hostExplorerView    Host explorer view
      * @param networkExplorerView Network explorer view
+     * @param outputWindowView    Output window view
      */
     @Inject
-    setMainComponents(hostExplorerView: HostExplorerView, networkExplorerView: NetworkExplorerView): void {
+    setMainComponents(hostExplorerView: HostExplorerView, networkExplorerView: NetworkExplorerView, outputWindowView: OutputWindowView): void {
         [
-            hostExplorerView, networkExplorerView
+            hostExplorerView,
+            networkExplorerView,
+            outputWindowView
         ].forEach(windowComponent => this.windowManager.registerWindow(windowComponent));
     }
 

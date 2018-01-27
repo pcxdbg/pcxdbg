@@ -225,6 +225,14 @@
                     }
                 }
             }
+        },
+        "output-window": {
+            "title": "Output",
+            "toolbar": {
+                "clear-all": "Clear All",
+                "show-from": "Show output from:",
+                "word-wrap": "Toggle Word Wrap"
+            }
         }
     }
 }
