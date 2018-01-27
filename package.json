@@ -59,7 +59,7 @@
     "moment": "2.20.1"
   },
   "devDependencies": {
-    "@types/i18next": "8.4.2",
+    "@types/i18next": "8.4.3",
     "@types/i18next-xhr-backend": "1.4.1",
     "@types/jest": "22.1.0",
     "@types/node": "9.4.0",
