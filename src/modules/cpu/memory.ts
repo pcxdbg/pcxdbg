@@ -51,16 +51,11 @@ class MemoryView extends Window {
      * @param rowIndex Row index
      */
     private addRow(rowIndex: number): void {
-        let cellAddr: HTMLTableDataCellElement = document.createElement('td');
-        let cellIcon: HTMLTableDataCellElement = document.createElement('td');
-        let cellData: HTMLTableDataCellElement = document.createElement('td');
-        let cellChar: HTMLTableDataCellElement = document.createElement('td');
+        let cellAddr: HTMLTableDataCellElement = this.createCell('addr');
+        let cellIcon: HTMLTableDataCellElement = this.createCell('icon');
+        let cellData: HTMLTableDataCellElement = this.createCell('data');
+        let cellChar: HTMLTableDataCellElement = this.createCell('char');
         let row: HTMLTableRowElement = document.createElement('tr');
-
-        cellIcon.className = 'icon';
-        cellAddr.className = 'addr';
-        cellData.className = 'data';
-        cellChar.className = 'char';
 
         cellAddr.innerText = this.hexFromData(this.offset + rowIndex * this.columns, undefined, true);
 
@@ -88,6 +83,17 @@ class MemoryView extends Window {
         row.appendChild(cellChar);
 
         this.tableElement.selectNativeElement<HTMLTableSectionElement>('tbody').appendChild(row);
+    }
+
+    /**
+     * Create a table cell with a specific class name
+     * @param className Class name
+     * @return Table cell
+     */
+    private createCell(className: string): HTMLTableDataCellElement {
+        let cell: HTMLTableDataCellElement = document.createElement('td');
+        cell.className = className;
+        return cell;
     }
 
     /**
@@ -119,24 +125,42 @@ class MemoryView extends Window {
 
     /**
      * Get a hex representation from a value
-     * @param value Value
-     * @param width String width
+     * @param value  Value
+     * @param width  String width
      * @param prefix Prefix the string with 0x
      * @return Hexadecimal representation
      */
     private hexFromData(value: number, width?: number, prefix?: boolean): string {
         let str: string = value.toString(16);
-        let pfx: string = prefix ? '0x' : '';
+        return this.getHexPrefix(prefix) + this.buildHexPadding(str, width || 8) + str;
+    }
 
-        width = width || 8;
+    /**
+     * Get the prefix to use for a hex representation
+     * @param prefix true if a prefix should be used
+     * @return Prefix
+     */
+    private getHexPrefix(prefix?: boolean): string {
+        return prefix ? '0x' : '';
+    }
+
+    /**
+     * Build a padding string for a hex representation
+     * @param str   Hex representation
+     * @param width Total width
+     */
+    private buildHexPadding(str: string, width?: number): string {
+        let paddingString: string = '';
 
         if (width && str.length < width) {
-            for (let i: number = 0, end: number = width - str.length; i !== end; ++i) {
-                pfx += '0';
+            let end: number = width - str.length;
+
+            for (let i: number = 0; i !== end; ++i) {
+                paddingString += '0';
             }
         }
 
-        return pfx + str;
+        return paddingString;
     }
 
     /**
