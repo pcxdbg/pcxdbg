@@ -3,7 +3,10 @@ import {UIElement} from '../element';
 import {IconManager} from '../icon';
 import {ToolbarItem} from './toolbar-item';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
+import {ToolbarSeparator} from './toolbar-separator';
 import {applicationContext} from 'injection';
+
+// TODO: make a prototype component when using the external injection library (and set icon/command managers through injection)
 
 /**
  * Toolbar
@@ -13,7 +16,7 @@ class Toolbar extends UIElement {
         <toolbar-grip></toolbar-grip>
     `;
 
-    private items: {[itemId: string]: ToolbarItem};
+    private items: {[itemId: string]: ToolbarItem} = {};
 
     /**
      * Class constructor
@@ -28,36 +31,15 @@ class Toolbar extends UIElement {
      * @return this
      */
     item(itemDefinition: ToolbarItemDefinition): Toolbar {
-        let itemElement: UIElement = new UIElement('toolbar-item');
         let commandManager: CommandManager = applicationContext.getComponent(CommandManager);
+        let iconManager: IconManager = applicationContext.getComponent(IconManager);
+        let toolbarItem: ToolbarItem = new ToolbarItem(itemDefinition, iconManager, commandManager);
 
-        if (itemDefinition.icon) {
-            itemElement.attach(applicationContext.getComponent(IconManager).createIcon(16, 16, itemDefinition.icon));
+        if (itemDefinition.id) {
+            this.items[itemDefinition.id] = toolbarItem;
         }
 
-        if (itemDefinition.command) {
-            commandManager = applicationContext.getComponent(CommandManager);
-            itemElement.click(() => commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
-        } else if (itemDefinition.handler) {
-            itemElement.click(() => itemDefinition.handler());
-        }
-
-        if (itemDefinition.label) {
-            let i18nKey: string = '[title]' + itemDefinition.label;
-
-            if (itemDefinition.command) {
-                let commandDefinition: CommandDefinition = commandManager.getCommandDefinition(itemDefinition.command);
-                if (commandDefinition && commandDefinition.accelerator) {
-                    i18nKey += ' ($cmdacc(' + itemDefinition.command + '))';
-                }
-            }
-
-            itemElement.i18n(i18nKey, itemDefinition.labelParameters).applyTranslations();
-        } else if (itemDefinition.labelText) {
-            itemElement.attribute('title', itemDefinition.labelText);
-        }
-
-        this.attach(itemElement);
+        this.attach(toolbarItem);
 
         return this;
     }
@@ -67,7 +49,7 @@ class Toolbar extends UIElement {
      * @return this
      */
     separator(): Toolbar {
-        this.attach(new UIElement('toolbar-separator'));
+        this.attach(new ToolbarSeparator());
         return this;
     }
 
