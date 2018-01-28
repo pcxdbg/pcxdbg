@@ -36,8 +36,6 @@ class QuickLaunch extends UIElement {
         this.inputField.addEventListener('blur', () => this.onFocusLost(), false);
         this.inputField.addEventListener('focus', () => this.onFocus(), false);
         this.inputField.addEventListener('keyup', () => this.onInputChange(), false);
-
-        
     }
 
     /**

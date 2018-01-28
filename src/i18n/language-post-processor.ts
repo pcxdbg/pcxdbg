@@ -25,7 +25,7 @@ class LanguagePostProcessor { // TODO: make abstract when using the external inj
      * Post-process an i18n value
      * @param value   Translation value
      * @param key     Translation key
-     * @param options Options 
+     * @param options Options
      * @return Processed value
      */
     postProcess(value: string, key?: string, options?: {}): string {

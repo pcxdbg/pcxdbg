@@ -52,7 +52,7 @@ class I18nextI18nBackend extends I18nBackend {
             i18next.use(i18nextXHRBackend);
             this.languagePostProcessors.forEach(languagePostProcessor => this.registerLanguagePostProcessor(i18nextOptions, languagePostProcessor));
 
-            i18next.init(i18nextOptions)
+            i18next.init(i18nextOptions);
         });
     }
 
