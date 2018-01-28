@@ -81,19 +81,27 @@ class HttpRequestInstance<RQ, RS> {
         let headers: HttpHeaderMap = {};
 
         if (headerString) {
-            let headerPair: string;
-
-            for (headerPair of headerString.split(HttpRequestInstance.HEADER_SEPARATOR)) {
-                let separatorIndex: number = headerPair.indexOf(HttpRequestInstance.HEADERVALUE_SEPARATOR);
-                if (separatorIndex > 0) {
-                    let headerName: string = headerPair.substring(0, separatorIndex);
-                    let headerValue: string = headerPair.substring(separatorIndex + 2);
-                    headers[headerName] = headerValue;
-                }
-            }
+            headerString
+                .split(HttpRequestInstance.HEADER_SEPARATOR)
+                .forEach(headerPair => this.parseResponseHeaderPair(headerPair, headers))
+            ;
         }
 
         return headers;
+    }
+
+    /**
+     * Parse a response header pair
+     * @param headerPair Header pair
+     * @param headers    Header map
+     */
+    private parseResponseHeaderPair(headerPair: string, headers: HttpHeaderMap): void {
+        let separatorIndex: number = headerPair.indexOf(HttpRequestInstance.HEADERVALUE_SEPARATOR);
+        if (separatorIndex > 0) {
+            let headerName: string = headerPair.substring(0, separatorIndex);
+            let headerValue: string = headerPair.substring(separatorIndex + 2);
+            headers[headerName] = headerValue;
+        }
     }
 
     /**

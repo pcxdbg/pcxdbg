@@ -185,13 +185,28 @@ class UIElement {
      * @return this
      */
     i18n(key?: string, parameters?: {[parameterName: string]: any}, ...options: string[]): UIElement {
-        let parametersString: string = '';
         let attributeValue: string;
 
         if (key === undefined) {
             this.nativeElement.removeAttribute('i18n');
             return this;
         }
+
+        attributeValue = this.getI18nParametersString(parameters, ...options) + key;
+
+        this.nativeElement.setAttribute('i18n', attributeValue);
+
+        return this;
+    }
+
+    /**
+     * Get an i18n parameters string
+     * @param parameters Parameters
+     * @param options    Options
+     * @return i18n parameters string
+     */
+    private getI18nParametersString(parameters?: {[parameterName: string]: any}, ...options: string[]): string {
+        let parametersString: string = '';
 
         if (parameters) {
             parametersString = '(' + JSON.stringify(parameters) + ')';
@@ -205,11 +220,7 @@ class UIElement {
             parametersString = '[' + options[0] + ']' + parametersString;
         }
 
-        attributeValue = parametersString + key;
-
-        this.nativeElement.setAttribute('i18n', attributeValue);
-
-        return this;
+        return parametersString;
     }
 
     /**

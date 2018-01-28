@@ -36,16 +36,14 @@ class CommandManager {
      */
     registerCommand(commandDefinition: CommandDefinition): void {
         let command: Command = this.commands[commandDefinition.id];
-        if (command) {
-            if (command.definition) {
-                throw new Error('command ' + commandDefinition.id + ' is already registered');
-            } else {
-                command.definition = commandDefinition;
-            }
-        } else {
+        if (!command) {
             command = this.commands[commandDefinition.id] = {
                 definition: commandDefinition
             };
+        } else if (command.definition) {
+            throw new Error('command ' + commandDefinition.id + ' is already registered');
+        } else {
+            command.definition = commandDefinition;
         }
 
         if (commandDefinition.accelerator) {
