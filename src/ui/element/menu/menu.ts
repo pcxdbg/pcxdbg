@@ -2,6 +2,7 @@ import {CommandManager, CommandDefinition} from '../../command';
 import {UIElement} from '../element';
 import {Icon, IconManager} from '../icon';
 import {MenuItemDefinition} from './menu-item-definition';
+import {MenuItem} from './menu-item';
 import {MenuManager} from './menu-manager';
 import {I18nManager} from 'i18n';
 import {applicationContext} from 'injection';
@@ -11,7 +12,7 @@ import {applicationContext} from 'injection';
  */
 class MenuItemData {
     definition: MenuItemDefinition;
-    element: UIElement;
+    menuItem: MenuItem;
 }
 
 /**
@@ -102,25 +103,20 @@ class Menu extends UIElement {
         return subMenu;
     }
 
-    private static HTML_MENUITEM: string = `
-        <menu-item-icon></menu-item-icon>
-        <menu-item-label></menu-item-label>
-    `;
-
     /**
      * Add an item
      * @param item Menu item definition
      * @return this
      */
     item(itemDefinition: MenuItemDefinition): Menu {
-        let menuItem: UIElement = new UIElement('menu-item', Menu.HTML_MENUITEM);
+        let menuItem: MenuItem = new MenuItem(this.iconManager);
         let menuItemData: MenuItemData = {
             definition: itemDefinition,
-            element: menuItem
+            menuItem: menuItem
         };
 
         if (itemDefinition.icon) {
-            menuItem.element('menu-item-icon').attach(this.iconManager.createIcon(16, 16, itemDefinition.icon));
+            menuItem.setIcon(itemDefinition.icon);
         }
 
         if (itemDefinition.label || itemDefinition.labelText) {
@@ -182,7 +178,7 @@ class Menu extends UIElement {
      * @return this
      */
     enable(id: string): Menu {
-        this.getItemData(id).element.removeAttribute('disabled');
+        this.getItemData(id).menuItem.removeAttribute('disabled');
         return this;
     }
 
@@ -192,7 +188,7 @@ class Menu extends UIElement {
      * @return this
      */
     disable(id: string): Menu {
-        this.getItemData(id).element.attribute('disabled');
+        this.getItemData(id).menuItem.attribute('disabled');
         return this;
     }
 
@@ -202,7 +198,7 @@ class Menu extends UIElement {
      * @return this
      */
     show(id: string): Menu {
-        this.getItemData(id).element.removeAttribute('hidden');
+        this.getItemData(id).menuItem.removeAttribute('hidden');
         return this;
     }
 
@@ -212,7 +208,7 @@ class Menu extends UIElement {
      * @return this
      */
     hide(id: string): Menu {
-        this.getItemData(id).element.attribute('hidden');
+        this.getItemData(id).menuItem.attribute('hidden');
         return this;
     }
 
@@ -262,7 +258,7 @@ class Menu extends UIElement {
      */
     private applyLabel(itemData: MenuItemData): void {
         let itemDefinition: MenuItemDefinition = itemData.definition;
-        let labelElement: UIElement = itemData.element.element('menu-item-label');
+        let labelElement: UIElement = itemData.menuItem.element('menu-item-label');
         let labelText: string;
         let n: number;
 
@@ -294,7 +290,7 @@ class Menu extends UIElement {
         if (itemData.definition.icon !== icon) {
             itemData.definition.icon = icon;
             // TODO: remove the previous icon
-            itemData.element.element('menu-item-icon').attach(this.iconManager.createIcon(16, 16, icon));
+            itemData.menuItem.element('menu-item-icon').attach(this.iconManager.createIcon(16, 16, icon));
         }
 
         return this;

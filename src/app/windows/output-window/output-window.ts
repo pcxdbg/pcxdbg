@@ -25,19 +25,11 @@ class OutputWindowView extends Window {
         this.setTitle('app:window.output-window.title');
         this.toolbar = new Toolbar();
         this.toolbar
-            .item({
-                label: 'app:window.output-window.toolbar.show-from'
-            })
+            .item({label: 'app:window.output-window.toolbar.show-from'})
             .separator()
-            .item({
-                label: 'app:window.output-window.toolbar.clear-all',
-                handler: () => this.clearAll()
-            })
+            .item({label: 'app:window.output-window.toolbar.clear-all', icon: 'output-window-clear-all', handler: () => this.clearAll()})
             .separator()
-            .item({
-                label: 'app:window.output-window.toolbar.word-wrap',
-                handler: () => this.toggleWordWrap()
-            })
+            .item({label: 'app:window.output-window.toolbar.word-wrap', icon: 'output-window-word-wrap', handler: () => this.toggleWordWrap()})
             .attachTo(this)
         ;
     }

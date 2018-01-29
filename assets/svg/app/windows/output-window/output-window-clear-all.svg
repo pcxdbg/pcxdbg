@@ -1,0 +1,6 @@
+<svg viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<rect class="outline" fill="#2d2d30" x="2" y="0" width="14" height="16"/>
+<path class="content" fill="#c1c1c1" d="M3,1h12v2h-12zm0,4h12v2h-12zm0,4h12v2h-12zm0,4h12v2h-12z"/>
+<path class="outline" fill="#2d2d30" d="M1,3v-3h3l8,8v2h-1zM4,10h-3v-4l8,-6h2v2z"/>
+<path class="content red" fill="#f2806a" d="M2,2.5v-1.5h1.5l7.5,7v1zM3.5,9h-1.5v-2.5l7,-5.5h1v0.75z"/>
+</svg>
