@@ -31,6 +31,10 @@ class ToolbarItem extends UIElement {
             this.setLabelText(itemDefinition.labelText);
         }
 
+        if (itemDefinition.element) {
+            this.attach(itemDefinition.element);
+        }
+
         if (itemDefinition.command) {
             this.setCommand(itemDefinition.command, itemDefinition.commandParameters);
         } else if (itemDefinition.handler) {
@@ -38,6 +42,11 @@ class ToolbarItem extends UIElement {
         }
     }
 
+    /**
+     * Set the icon
+     * @param icon Icon
+     * @return this
+     */
     setIcon(icon: string): ToolbarItem {
         if (icon) {
             this.attach(this.iconManager.createIcon(16, 16, icon));
@@ -55,7 +64,8 @@ class ToolbarItem extends UIElement {
      * @param commandId       Command identifier
      */
     setLabel(labelId: string, labelParameters: {[parameterName: string]: any}, commandId?: string): ToolbarItem {
-        let i18nKey: string = '[title]' + labelId;
+        let i18nKey: string = labelId;
+        let target: UIElement = this;
 
         if (commandId) {
             let commandDefinition: CommandDefinition = this.commandManager.getCommandDefinition(commandId);
@@ -64,7 +74,13 @@ class ToolbarItem extends UIElement {
             }
         }
 
-        this.i18n(i18nKey, labelParameters).applyTranslations();
+        if (this.definition.element) {
+            target = new UIElement('label').attachTo(this);
+        } else {
+            i18nKey = '[title]' + i18nKey;
+        }
+
+        target.i18n(i18nKey, labelParameters).applyTranslations();
 
         return this;
     }
@@ -74,7 +90,12 @@ class ToolbarItem extends UIElement {
      * @param labelText Label text
      */
     setLabelText(labelText: string): ToolbarItem {
-        this.attribute('title', labelText);
+        if (this.definition.element) {
+            this.attach(new UIElement('label').text(labelText));
+        } else {
+            this.attribute('title', labelText);
+        }
+
         return this;
     }
 

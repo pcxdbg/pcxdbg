@@ -14,13 +14,19 @@ toolbar {
 
     > toolbar-item {
         display: flex;
-        width: $toolbaritem-height;
+        min-width: $toolbaritem-height;
         height: $toolbaritem-height;
         align-items: center;
         justify-content: center;
 
         &:hover {
             background-color: $toolbaritem-backgroundcolorhover;
+        }
+
+        > label {
+            white-space: nowrap;
+            margin-right: 6px;
+            color: #f1f1f1;
         }
     }
 

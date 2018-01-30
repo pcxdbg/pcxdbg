@@ -11,7 +11,7 @@ import {applicationContext} from 'injection';
 /**
  * Toolbar
  */
-class Toolbar extends UIElement {
+class Toolbar extends UIElement { // TODO: configurable grip display
     private static HTML: string = `
         <toolbar-grip></toolbar-grip>
     `;
