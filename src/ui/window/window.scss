@@ -101,4 +101,8 @@ window {
         display: none;
     }
 
+    &[flexible-layout] > window-content {
+        display: flex;
+        flex-direction: column;
+    }
 }

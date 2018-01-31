@@ -1,0 +1,16 @@
+
+output-window-output {
+    display: block;
+    background-color: #252526;
+    overflow: auto;
+
+    > output-window-output-content {
+
+        > output-window-output-message {
+            display: block;
+            font-family: monospace;
+            color: #f1f1f1;
+            padding-left: 12px;
+        }
+    }
+}

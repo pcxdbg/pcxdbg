@@ -241,7 +241,7 @@ class Window extends UIElement {
 
     /**
      * Class constructor
-     * @param styles Window styles
+     * @param windowProperties Window properties
      */
     constructor(windowProperties?: WindowProperties) {
         super('window', Window.HTML_WINDOW);
@@ -276,6 +276,10 @@ class Window extends UIElement {
 
         if (this.hasStyle(WindowStyle.NO_TITLE)) {
             this.attribute('no-title');
+        }
+
+        if (this.hasStyle(WindowStyle.FLEXIBLE_LAYOUT)) {
+            this.attribute('flexible-layout');
         }
 
         if (windowProperties && windowProperties.title) {
