@@ -14,7 +14,7 @@ class OutputWindowOutput extends UIElement {
     constructor() {
         super('output-window-output', OutputWindowOutput.HTML_OUTPUTWINDOWOUTPUT);
         this.outputContent = this.element('output-window-output-content');
-        for (let i: number = 0; i != 4; ++i) {
+        for (let i: number = 0; i !== 4; ++i) {
             this.outputContent.attach(new UIElement('output-window-output-message', 'Output message #' + (i + 1)));
         }
     }
