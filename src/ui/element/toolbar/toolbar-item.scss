@@ -1,0 +1,30 @@
+
+toolbar-item {
+    display: flex;
+    min-width: $toolbaritem-height;
+    height: $toolbaritem-height;
+    align-items: center;
+    justify-content: center;
+
+    > toolbar-item-content {
+        display: flex;
+        min-width: $toolbaritemcontent-height;
+        height: $toolbaritemcontent-height;
+        align-items: center;
+        justify-content: center;
+
+        > label {
+            white-space: nowrap;
+            margin-right: 6px;
+            color: #f1f1f1;
+        }
+    }
+
+    &:hover > toolbar-item-content {
+        background: $toolbaritemcontent-backgroundhover;
+    }
+
+    &[selected] > toolbar-item-content {
+        outline: $toolbaritemcontent-outline;
+    }
+}

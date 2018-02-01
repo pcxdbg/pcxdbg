@@ -7,9 +7,12 @@ import {CommandDefinition, CommandManager} from '../../command';
  * Toolbar item
  */
 class ToolbarItem extends UIElement {
+    private static HTML_TOOLBARITEM: string = '<toolbar-item-content></toolbar-item-content>';
+
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private definition: ToolbarItemDefinition;
+    private content: UIElement;
 
     /**
      * Class constructor
@@ -18,7 +21,9 @@ class ToolbarItem extends UIElement {
      * @param commandManager Command manager
      */
     constructor(itemDefinition: ToolbarItemDefinition, iconManager: IconManager, commandManager: CommandManager) {
-        super('toolbar-item');
+        super('toolbar-item', ToolbarItem.HTML_TOOLBARITEM);
+
+        this.content = this.element('toolbar-item-content');
         this.definition = itemDefinition;
         this.iconManager = iconManager;
         this.commandManager = commandManager;
@@ -49,7 +54,7 @@ class ToolbarItem extends UIElement {
      */
     setIcon(icon: string): ToolbarItem {
         if (icon) {
-            this.attach(this.iconManager.createIcon(16, 16, icon));
+            this.content.attach(this.iconManager.createIcon(16, 16, icon));
         }
 
         this.definition.icon = icon;
@@ -65,7 +70,7 @@ class ToolbarItem extends UIElement {
      */
     setLabel(labelId: string, labelParameters: {[parameterName: string]: any}, commandId?: string): ToolbarItem {
         let i18nKey: string = labelId;
-        let target: UIElement = this;
+        let target: UIElement = this.content;
 
         if (commandId) {
             let commandDefinition: CommandDefinition = this.commandManager.getCommandDefinition(commandId);
@@ -75,7 +80,7 @@ class ToolbarItem extends UIElement {
         }
 
         if (this.definition.element) {
-            target = new UIElement('label').attachTo(this);
+            target = new UIElement('label').attachTo(target);
         } else {
             i18nKey = '[title]' + i18nKey;
         }

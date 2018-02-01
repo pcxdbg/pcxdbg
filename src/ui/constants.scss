@@ -6,13 +6,18 @@ $color-text-highlight: #ffffff;
 $font-family: "segoe ui", arial, sans-serif;
 $font-size: 9pt;
 
+$menu-backgroundcolor: #1b1b1c;
+$menu-border: solid 1px #333337;
+$menu-boxshadow: 2px 2px 3px rgba(0,0,0,0.5);
 $menuitem-backgroundcolorhover: #3e3e40;
 $menuitem-height: 22px;
 $menuitem-height-nopopup: 18px;
 
-$toolbar-height: 24px;
-$toolbaritem-backgroundcolorhover: $menuitem-backgroundcolorhover;
-$toolbaritem-height: $toolbar_height;
+$toolbar-height: 26px;
+$toolbaritem-height: 24px;
+$toolbaritemcontent-backgroundhover: $menuitem-backgroundcolorhover;
+$toolbaritemcontent-height: 20px;
+$toolbaritemcontent-outline: solid 1px #3399ff;
 /*
 $toolbaritemselectlabel-margin: 6px;
 $toolbariteminputlabel-margin: 6px;
@@ -21,8 +26,8 @@ $toolbargrip-width: 5px;
 $toolbargrip-height: 18px;
 $toolbargrip-margin: 2px;
 $toolbarseparator-height: 20px;
-$toolbarseparator-margin: 4px;
-$toolbarseparator-color-left: #222222;
+$toolbarseparator-margin: 2px;
+$toolbarseparator-color-left: #131212;
 $toolbarseparator-color-right: #46464a;
 
 $windowtitle-height: 22px;
