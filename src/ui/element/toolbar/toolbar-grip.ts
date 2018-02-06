@@ -1,19 +1,19 @@
 import {UIElementBase} from '../element-base';
 
 /**
- * Toolbar separator
+ * Toolbar grip
  */
-class ToolbarSeparator extends UIElementBase {
+class ToolbarGrip extends UIElementBase {
 
     /**
      * Class constructor
      */
     constructor() {
-        super('toolbar-separator');
+        super('toolbar-grip');
     }
 
 }
 
 export {
-    ToolbarSeparator
+    ToolbarGrip
 };

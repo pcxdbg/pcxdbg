@@ -1,9 +1,9 @@
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 
 /**
  * Icon implementation
  */
-class Icon extends UIElement {
+class Icon extends UIElementBase {
     private width: number;
     private height: number;
     private src: string;
@@ -55,7 +55,8 @@ class Icon extends UIElement {
      * @param labelText Label text
      */
     setLabelText(labelText: string): void {
-        this.i18n().attribute('title', labelText);
+        this.i18n();
+        this.attribute('title', labelText);
     }
 
     /**

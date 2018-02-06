@@ -1,5 +1,5 @@
 import {Component, Controller, Inject} from 'injection';
-import {Toolbar, UIElement, Window, WindowStyle} from 'ui';
+import {Toolbar, UIElementBase, Window, WindowStyle} from 'ui';
 import {OutputWindowOutput} from './output-window-output';
 
 /**
@@ -27,7 +27,7 @@ class OutputWindowView extends Window {
         this.setTitle('app:window.output-window.title');
         this.toolbar = new Toolbar();
         this.toolbar
-            .item({label: 'app:window.output-window.toolbar.show-from', element: new UIElement('select')})
+            .item({label: 'app:window.output-window.toolbar.show-from', element: new UIElementBase('select')})
             .separator()
             .item({label: 'app:window.output-window.toolbar.clear-all', icon: 'output-window-clear-all', handler: () => this.clearAll()})
             .separator()

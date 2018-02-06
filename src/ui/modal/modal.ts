@@ -1,4 +1,4 @@
-import {UIElement, Button} from '../element';
+import {UIElement, UIElementBase, Button} from '../element';
 import {ModalManager} from './modal-manager';
 import {ModalStyle} from './modal-style';
 import {applicationContext, Component, Inject} from 'injection';
@@ -6,7 +6,7 @@ import {applicationContext, Component, Inject} from 'injection';
 /**
  * Modal view
  */
-abstract class ModalView extends UIElement {
+abstract class ModalView extends UIElementBase {
     private static SUFFIX_DIALOG: string = 'dialog';
     private static MODAL_HTML: string = `
         <modal-title>
@@ -18,6 +18,7 @@ abstract class ModalView extends UIElement {
     `;
 
     private id: string;
+    private title: UIElement;
 
     /**
      * Class constructor
@@ -26,6 +27,7 @@ abstract class ModalView extends UIElement {
     constructor(...modalStyles: ModalStyle[]) {
         super('modal', ModalView.MODAL_HTML);
         this.id = this.buildModalId();
+        this.title = this.element('modal-title', 'modal-title-text');
 
         for (let modalStyle of modalStyles) {
             switch (modalStyle) {
@@ -50,7 +52,7 @@ abstract class ModalView extends UIElement {
      * @param labelParameters Label parameters
      */
     setTitle(label: string, labelParameters?: {[parameterName: string]: any}): void {
-        this.element('modal-title', 'modal-title-text').i18n(label, labelParameters).applyTranslations();
+        this.title.i18n(label, labelParameters).applyTranslations();
     }
 
     /**
@@ -58,7 +60,8 @@ abstract class ModalView extends UIElement {
      * @param labelText Label text
      */
     setTitleText(labelText: string): void {
-        this.element('modal-title', 'modal-title-text').i18n().text(labelText);
+        this.title.i18n();
+        this.title.text(labelText);
     }
 
     /**
@@ -125,7 +128,7 @@ abstract class ModalView extends UIElement {
      * Clear content, i.e. all child nodes
      * @return this
      */
-    clearContent(): UIElement {
+    clearContent = (): UIElement => {
         super.clearContent();
         this.element('modal-controls').clearContent();
         return this;
@@ -140,7 +143,7 @@ abstract class ModalView extends UIElement {
      * Get the child target
      * @return Child target
      */
-    protected getChildTarget(): UIElement {
+    getChildTarget = (): UIElement => {
         return this.element('modal-content');
     }
 

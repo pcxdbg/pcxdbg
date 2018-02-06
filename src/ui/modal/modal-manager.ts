@@ -1,5 +1,5 @@
 import {CommandManager} from '../command';
-import {UIElement} from '../element';
+import {UIElement, UIElementBase} from '../element';
 import {ModalView} from './modal';
 import {Component, Inject} from 'injection';
 
@@ -16,7 +16,7 @@ class ModalManager {
      * Class constructor
      */
     constructor() {
-        this.cover = new UIElement('modal-cover');
+        this.cover = new UIElementBase('modal-cover');
         document.body.appendChild(this.cover.getNativeElement());
     }
 

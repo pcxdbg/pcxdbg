@@ -1,11 +1,11 @@
 import {Component, Inject} from 'injection';
-import {CommandManager, UIElement} from 'ui';
+import {CommandManager, UIElementBase} from 'ui';
 
 /**
  * Quick launch
  */
 @Component
-class QuickLaunch extends UIElement {
+class QuickLaunch extends UIElementBase {
     private static HTML: string = `
         <form i18n="[title]app:quick-launch.title">
             <input type="text" name="quicklaunch" i18n="[placeholder]app:quick-launch.placeholder" autocomplete="off" autocorrect="off" autocapitalize="off"/>

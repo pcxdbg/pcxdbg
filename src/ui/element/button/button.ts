@@ -1,9 +1,9 @@
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 
 /**
  * Button
  */
-class Button extends UIElement {
+class Button extends UIElementBase {
 
     /**
      * Class constructor
@@ -29,7 +29,8 @@ class Button extends UIElement {
      * @return this
      */
     labelText(labelText: string): Button {
-        this.i18n().text(labelText);
+        this.i18n();
+        this.text(labelText);
         return this;
     }
 

@@ -1,11 +1,10 @@
 import {Component} from 'injection';
-import {ModalView, UIElement} from 'ui';
+import {ModalView, UIElementBase} from 'ui';
 
 /**
- * Open connection dialog box
+ * Options dialog view
  */
-@Component
-class OptionsDialog extends ModalView {
+class OptionsDialogView extends UIElementBase {
     private static HTML: string = `
         <options-dialog-navigation>
             <options-dialog-navigation-filter></options-dialog-navigation-filter>
@@ -17,14 +16,26 @@ class OptionsDialog extends ModalView {
     `;
 
     /**
+     * Class constructor
+     */
+    constructor() {
+        super('options-dialog', OptionsDialogView.HTML);
+    }
+
+}
+
+/**
+ * Open connection dialog box
+ */
+@Component
+class OptionsDialog extends ModalView {
+
+    /**
      * Build the modal content
      */
     protected buildModalContent(): void {
-        let dialogElement: UIElement = new UIElement('options-dialog', OptionsDialog.HTML);
-
         this.setTitle('app:dialog.options.title');
-
-        this.attach(dialogElement);
+        this.attach(new OptionsDialogView());
     }
 
 }

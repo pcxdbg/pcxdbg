@@ -1,4 +1,4 @@
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {TreeItem} from './tree-item';
 import {TreeItemTypeDefinition} from './tree-item-type-definition';
 import {TreeItemTypeDictionary} from './tree-item-type-dictionary';
@@ -7,7 +7,7 @@ import {TreeItemTypeDictionary} from './tree-item-type-dictionary';
  * Tree
  * @param <D> Dictionary of possible item types
  */
-class Tree<D extends TreeItemTypeDictionary> extends UIElement {
+class Tree<D extends TreeItemTypeDictionary> extends UIElementBase {
     private itemTypeDefinitions: {[typeName: string]: TreeItemTypeDefinition<any, D>} = {};
 
     /**

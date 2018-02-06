@@ -1,6 +1,7 @@
 import {CommandDefinition, CommandManager} from '../../command';
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {IconManager} from '../icon';
+import {ToolbarGrip} from './toolbar-grip';
 import {ToolbarItem} from './toolbar-item';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
 import {ToolbarSeparator} from './toolbar-separator';
@@ -11,18 +12,15 @@ import {applicationContext} from 'injection';
 /**
  * Toolbar
  */
-class Toolbar extends UIElement { // TODO: configurable grip display
-    private static HTML: string = `
-        <toolbar-grip></toolbar-grip>
-    `;
-
+class Toolbar extends UIElementBase {
     private items: {[itemId: string]: ToolbarItem} = {};
 
     /**
      * Class constructor
      */
-    constructor() {
-        super('toolbar', Toolbar.HTML);
+    constructor() { // TODO: configurable grip display
+        super('toolbar');
+        this.attach(new ToolbarGrip());
     }
 
     /**

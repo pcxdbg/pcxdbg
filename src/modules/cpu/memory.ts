@@ -1,5 +1,5 @@
 import {Component, Controller} from 'injection';
-import {UIElement, Window} from 'ui';
+import {UIElement, UIElementBase, Window} from 'ui';
 
 /**
  * Memory manager
@@ -36,7 +36,7 @@ class MemoryView extends Window {
         this.offset = 0x82000000;
         this.size = 0x400;
         this.columns = 32;
-        this.tableElement = new UIElement('table', MemoryView.HTML_TABLE);
+        this.tableElement = new UIElementBase('table', MemoryView.HTML_TABLE);
         this.tableElement.class('memory-view');
 
         for (let rowIndex: number = 0, rows: number = this.size / this.columns; rowIndex !== rows; ++rowIndex) {

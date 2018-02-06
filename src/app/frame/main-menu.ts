@@ -1,12 +1,12 @@
 import {Component} from 'injection';
 import {Module} from 'modules';
-import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElement, WindowManager} from 'ui';
+import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElementBase, WindowManager} from 'ui';
 
 /**
  * Main menu view
  */
 @Component
-class MainMenuView extends UIElement {
+class MainMenuView extends UIElementBase {
     private commandManager: CommandManager;
     private windowManager: WindowManager;
     private modalManager: ModalManager;

@@ -1,12 +1,12 @@
 import {StandardToolbar} from '../toolbars';
 import {Component, Inject} from 'injection';
-import {UIElement} from 'ui';
+import {UIElement, UIElementBase} from 'ui';
 
 /**
  * Toolbar container view
  */
 @Component
-class ToolbarContainerView extends UIElement {
+class ToolbarContainerView extends UIElementBase {
     private static HTML: string = `
     `;
 

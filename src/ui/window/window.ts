@@ -1,5 +1,5 @@
 import {CommandManager} from '../command';
-import {Icon, IconManager, UIElement} from '../element';
+import {Icon, IconManager, UIElement, UIElementBase} from '../element';
 import {WindowContainer} from './window-container';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
@@ -226,7 +226,7 @@ class WindowControlProperties {
 /**
  * Window
  */
-class Window extends UIElement {
+class Window extends UIElementBase {
     private static HTML_WINDOW: string = `
         <window-titlebar>
             <window-titlebar-text></window-titlebar-text>
@@ -446,7 +446,7 @@ class Window extends UIElement {
      * Get the child target
      * @return Child target
      */
-    getChildTarget(): UIElement {
+    getChildTarget = (): UIElement => {
         return this.element('window-content');
     }
 

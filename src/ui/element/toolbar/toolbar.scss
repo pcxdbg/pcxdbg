@@ -3,13 +3,4 @@ toolbar {
     height: $toolbar-height;
     display: flex;
     align-items: center;
-
-    > toolbar-grip {
-        display: block;
-        width: $toolbargrip-width;
-        height: $toolbargrip-height;
-        margin: (($toolbaritem-height - $toolbargrip-height) / 2) $toolbargrip-margin 0px;
-        background-repeat: repeat;
-        background-image: url(images/window-grip-pattern-2.svg);
-    }
 }

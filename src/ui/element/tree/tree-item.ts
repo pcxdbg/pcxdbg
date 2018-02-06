@@ -1,4 +1,5 @@
 import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {Icon, IconManager} from '../icon';
 import {TreeItemTypeDefinition} from './tree-item-type-definition';
 import {applicationContext} from 'injection';
@@ -8,7 +9,7 @@ import {applicationContext} from 'injection';
  * @param <K> Item type key within the dictionary
  * @param <D> Item dictionary type
  */
-class TreeItem<K extends keyof D, D> extends UIElement {
+class TreeItem<K extends keyof D, D> extends UIElementBase {
     private static HTML: string = `
         <tree-item-content>
             <tree-item-expander></tree-item-expander>
@@ -34,12 +35,12 @@ class TreeItem<K extends keyof D, D> extends UIElement {
         itemTypeDefinition.labelProvider(labelElement, <any> itemData);
 
         expanderElement
-            .attach(iconManager.createIcon(16, 16, 'tree-expand'))
-            .attach(iconManager.createIcon(16, 16, 'tree-expanded'))
             .click(e => {
                 e.stopPropagation();
                 this.toggleAttribute('expanded');
             })
+            .attach(iconManager.createIcon(16, 16, 'tree-expand'))
+            .attach(iconManager.createIcon(16, 16, 'tree-expanded'))
         ;
 
         if (itemTypeDefinition.iconResolver) {
@@ -66,7 +67,7 @@ class TreeItem<K extends keyof D, D> extends UIElement {
      * Get the child target
      * @return Child target
      */
-    protected getChildTarget(): UIElement {
+    getChildTarget = (): UIElement => {
         return this.element('tree-item-children');
     }
 

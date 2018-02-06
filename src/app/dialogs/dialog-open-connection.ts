@@ -1,11 +1,7 @@
 import {Component} from 'injection';
-import {Button, ModalView, UIElement} from 'ui';
+import {Button, ModalView, UIElementBase} from 'ui';
 
-/**
- * Open connection dialog box
- */
-@Component
-class OpenConnectionDialog extends ModalView {
+class OpenConnectionDialogView extends UIElementBase {
     private static HTML: string = `
         TODO:
         <h3>New connection button leading to a second panel with inputs</h3>
@@ -22,6 +18,20 @@ class OpenConnectionDialog extends ModalView {
         </ul>
     `;
 
+    /**
+     * Class constructor
+     */
+    constructor() {
+        super('open-connection-dialog', OpenConnectionDialogView.HTML);
+    }
+
+}
+
+/**
+ * Open connection dialog box
+ */
+@Component
+class OpenConnectionDialog extends ModalView {
     private buttonNext: Button;
     private buttonNew: Button;
 
@@ -29,8 +39,6 @@ class OpenConnectionDialog extends ModalView {
      * Build the modal content
      */
     protected buildModalContent(): void {
-        let dialogElement: UIElement = new UIElement('open-connection-dialog', OpenConnectionDialog.HTML);
-
         this.buttonNew = new Button();
         this.buttonNew.label('app:dialog.open-connection.control.new');
         this.buttonNew.click(() => this.onButtonNew());
@@ -47,7 +55,7 @@ class OpenConnectionDialog extends ModalView {
 
         this.setTitle('app:dialog.options.title');
 
-        this.attach(dialogElement);
+        this.attach(new OpenConnectionDialogView());
     }
 
     /**

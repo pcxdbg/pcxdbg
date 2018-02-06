@@ -1,4 +1,4 @@
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {IconManager} from '../icon';
 
 // TODO: prototype component through external injection library
@@ -6,7 +6,7 @@ import {IconManager} from '../icon';
 /**
  * Menu item
  */
-class MenuItem extends UIElement {
+class MenuItem extends UIElementBase {
     private static HTML_MENUITEM: string = `
         <menu-item-icon></menu-item-icon>
         <menu-item-label></menu-item-label>

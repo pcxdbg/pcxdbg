@@ -1,12 +1,12 @@
 import {Component, Inject} from 'injection';
 import {ConnectionManager} from 'network';
-import {Icon, IconManager, UIElement} from 'ui';
+import {Icon, IconManager, UIElement, UIElementBase} from 'ui';
 
 /**
  * Status bar view
  */
 @Component
-class StatusBarView extends UIElement {
+class StatusBarView extends UIElementBase {
     private static HTML: string = `
         <status-bar-backgroundtasks i18n="[title]app:status-bar.background-tasks"></status-bar-backgroundtasks>
         <status-bar-label>Ready</status-bar-label>
@@ -21,11 +21,14 @@ class StatusBarView extends UIElement {
         <status-bar-resizer></status-bar-resizer>
     `;
 
+    private label: UIElement;
+
     /**
      * Class constructor
      */
     constructor(iconManager: IconManager) {
         super('status-bar', StatusBarView.HTML);
+        this.label = this.element('status-bar-label');
         this.applyTranslations();
     }
 
@@ -36,8 +39,8 @@ class StatusBarView extends UIElement {
     @Inject
     setIconManager(iconManager: IconManager): void {
         this.element('status-bar-backgroundtasks')
-            .attach(iconManager.createIcon(16, 16, 'status-bar-background-tasks'))
             .click(() => this.onBackgroundTasks())
+            .attach(iconManager.createIcon(16, 16, 'status-bar-background-tasks'))
         ;
         this.element('status-bar-resizer')
             .attach(iconManager.createIcon(16, 16, 'status-bar-grip'))
@@ -59,7 +62,7 @@ class StatusBarView extends UIElement {
      * @param labelParameters Label parameters
      */
     setLabel(labelId: string, labelParameters?: {[parameterName: string]: string}): void {
-        this.element('status-bar-label').i18n(labelId, labelParameters).applyTranslations();
+        this.label.i18n(labelId, labelParameters).applyTranslations();
     }
 
     /**
@@ -67,7 +70,8 @@ class StatusBarView extends UIElement {
      * @param labelText Label text
      */
     setLabelText(labelText: string): void {
-        this.element('status-bar-label').i18n().text(labelText);
+        this.label.i18n();
+        this.label.text(labelText);
     }
 
     /**

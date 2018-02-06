@@ -1,5 +1,6 @@
 import {CommandManager, CommandDefinition} from '../../command';
 import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {Icon, IconManager} from '../icon';
 import {MenuItemDefinition} from './menu-item-definition';
 import {MenuItem} from './menu-item';
@@ -16,9 +17,54 @@ class MenuItemData {
 }
 
 /**
+ * Menu item expander
+ */
+class MenuItemExpander extends UIElementBase {
+
+    /**
+     * Class constructor
+     * @param iconManager Icon manager
+     */
+    constructor(iconManager: IconManager) {
+        super('menu-item-expander');
+        this.attach(iconManager.createIcon(16, 16, 'menu-item-expander'));
+    }
+
+}
+
+/**
+ * Menu item shortcut
+ */
+class MenuItemShortcut extends UIElementBase {
+
+    /**
+     * Class constructor
+     * @param text Text
+     */
+    constructor(text: string) {
+        super('menu-item-shortcut');
+    }
+
+}
+
+/**
+ * Menu separator
+ */
+class MenuSeparator extends UIElementBase {
+
+    /**
+     * Class constructor
+     */
+    constructor() {
+        super('menu-separator');
+    }
+
+}
+
+/**
  * Menu
  */
-class Menu extends UIElement {
+class Menu extends UIElementBase {
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private menuManager: MenuManager;
@@ -140,18 +186,12 @@ class Menu extends UIElement {
 
             menuItem.click(() => this.commandManager.executeCommand(itemDefinition.command, itemDefinition.commandParameters));
             if (commandDefinition.accelerator) {
-                new UIElement('menu-item-shortcut')
-                    .text(commandDefinition.accelerator)
-                    .attachTo(menuItem)
-                ;
+                menuItem.attach(new MenuItemShortcut(commandDefinition.accelerator));
             }
         }
 
         if (this.popup && itemDefinition.popupMenu) {
-            new UIElement('menu-item-expander')
-                .attach(this.iconManager.createIcon(16, 16, 'menu-item-expander'))
-                .attachTo(menuItem)
-            ;
+            menuItem.attach(new MenuItemExpander(this.iconManager));
         }
 
         if (itemDefinition.id) {
@@ -168,7 +208,7 @@ class Menu extends UIElement {
      * @return this
      */
     separator(): Menu {
-        this.getNativeElement().appendChild(document.createElement('menu-separator'));
+        this.attach(new MenuSeparator());
         return this;
     }
 

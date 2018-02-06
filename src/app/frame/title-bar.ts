@@ -1,4 +1,4 @@
-import {Icon, IconManager, UIElement} from '../../ui';
+import {Icon, IconManager, UIElement, UIElementBase} from '../../ui';
 import {QuickLaunch} from './quick-launch';
 import {Host} from 'host';
 import {Component, Inject} from 'injection';
@@ -16,7 +16,7 @@ class TitleBarControlIcon {
  * Title bar view
  */
 @Component
-class TitleBarView extends UIElement {
+class TitleBarView extends UIElementBase {
     private static ICON_LOGO: string = 'title-bar-logo';
     private static ICON_MINIMIZE: string = 'title-bar-minimize';
     private static ICON_RESTORE: string = 'title-bar-restore';
@@ -68,8 +68,8 @@ class TitleBarView extends UIElement {
             let titleBarControlIcon: TitleBarControlIcon = titleBarControlIcons[i];
 
             controlIcons[i]
-                .attach(iconManager.createIcon(16, 16, titleBarControlIcon.name))
                 .click(titleBarControlIcon.action)
+                .attach(iconManager.createIcon(16, 16, titleBarControlIcon.name))
             ;
         }
 

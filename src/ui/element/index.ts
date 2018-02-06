@@ -1,5 +1,7 @@
 export {Button} from './button';
+export {UIDragAction, UIDragActionType} from './drag-action';
 export {UIElement} from './element';
+export {UIElementBase} from './element-base';
 export {Icon, IconManager} from './icon';
 export {Input} from './input';
 export {List, ListColumnDefinition, ListItemDefinition} from './list';

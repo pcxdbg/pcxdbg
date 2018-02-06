@@ -1,5 +1,5 @@
 import {CommandManager} from './command';
-import {UIElement} from './element';
+import {UIElementBase} from './element';
 import {WindowManager} from './window';
 import {Component, Inject} from 'injection';
 
@@ -62,7 +62,7 @@ class DocumentManager {
 /**
  * Document view
  */
-class DocumentView extends UIElement {
+class DocumentView extends UIElementBase {
 
 }
 

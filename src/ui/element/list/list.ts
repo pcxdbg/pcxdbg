@@ -1,4 +1,5 @@
 import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {ListColumnDefinition} from './list-column-definition';
 import {ListItemDefinition} from './list-item-definition';
 
@@ -6,7 +7,7 @@ import {ListItemDefinition} from './list-item-definition';
  * List
  * @param <T> Item data type
  */
-class List<T> extends UIElement {
+class List<T> extends UIElementBase {
     private static HTML: string = `
 	    <table>
             <thead>
@@ -45,7 +46,7 @@ class List<T> extends UIElement {
      * @return this
      */
     addColumn(columnDefinition: ListColumnDefinition<T>): List<T> {
-        let columnElement: UIElement = new UIElement('th');
+        let columnElement: UIElement = new UIElementBase('th');
         let classNames: string[] = [columnDefinition.id];
 
         if (columnDefinition.className) {
@@ -77,12 +78,12 @@ class List<T> extends UIElement {
      * @return this
      */
     addItem(item: T, definition?: ListItemDefinition<T>): List<T> {
-        let rowElement: UIElement = new UIElement('tr');
+        let rowElement: UIElement = new UIElementBase('tr');
 
         rowElement.click(() => this.onItemClick(rowElement, item, definition));
 
         this.columnDefinitions.forEach(columnDefinition => {
-            let cellElement: UIElement = new UIElement('td');
+            let cellElement: UIElement = new UIElementBase('td');
             let classNames: string[] = [columnDefinition.id];
 
             if (columnDefinition.className) {

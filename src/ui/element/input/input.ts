@@ -1,9 +1,9 @@
-import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 
 /**
  * Input
  */
-class Input extends UIElement {
+class Input extends UIElementBase {
 
     /**
      * Class constructor

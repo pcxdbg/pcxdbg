@@ -1,7 +1,7 @@
 import {remote} from 'electron';
 import {Component, Inject} from 'injection';
 import {I18nManager} from 'i18n';
-import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement} from 'ui';
+import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement, UIElementBase} from 'ui';
 import {FileUtils, NodePackage} from 'utils';
 
 /**
@@ -100,7 +100,7 @@ class AboutDialog extends ModalView {
      * Build the modal content
      */
     protected async buildModalContent(): Promise<void> {
-        let dialogElement: UIElement = new UIElement('about-dialog', AboutDialog.HTML);
+        let dialogElement: UIElement = new UIElementBase('about-dialog', AboutDialog.HTML);
         let versionInfoBlock: UIElement = dialogElement.element('about-content', 'version-info-list');
         let versionInfoList: VersionInformation[] = this.prepareVersionInformationList();
         let dependencyList: List<DependencyInformation> = await this.buildDependencyList();
@@ -126,7 +126,7 @@ class AboutDialog extends ModalView {
      * @return Element
      */
     private createVersionInformationElement(versionInfo: VersionInformation): UIElement {
-        let versionInfoElement: UIElement = new UIElement('version-info');
+        let versionInfoElement: UIElement = new UIElementBase('version-info');
         versionInfoElement.i18n(versionInfo.value, versionInfo.parameters).applyTranslations();
         versionInfoElement.class(versionInfo.name);
         return versionInfoElement;

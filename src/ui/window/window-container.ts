@@ -1,4 +1,4 @@
-import {Icon, IconManager, UIElement} from '../element';
+import {Icon, IconManager, UIElement, UIElementBase} from '../element';
 import {Window} from './window';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
@@ -6,7 +6,7 @@ import {WindowContainerMode} from './window-container-mode';
 /**
  * Window container
  */
-class WindowContainer extends UIElement {
+class WindowContainer extends UIElementBase {
     private static HTML: string = `
         <window-container-position-overlay>
             <window-container-position class="top"></window-container-position>
@@ -50,16 +50,20 @@ class WindowContainer extends UIElement {
      */
     addWindow(window: Window): void {
         let windowTitle: string = window.getTitle(); // TODO: register for title changes
-        let tabElement: UIElement = new UIElement('window-container-tab')
+        let tabElement: UIElement = new UIElementBase('window-container-tab')
             .click(() => this.select(window))
             .attribute('title', windowTitle)
             .text(windowTitle)
+        ;
+
+        tabElement
             .attach(this.iconManager.createIcon(16, 16, 'window-unpinned').i18n('[title]ui:window-container.tab.control.pin'))
             .attach(this.iconManager.createIcon(16, 16, 'window-pinned').i18n('[title]ui:window-container.tab.control.unpin'))
             .attach(this.iconManager.createIcon(16, 16, 'window-close').i18n('[title]ui:window-container.tab.control.close'))
-            .applyTranslations()
             .attachTo(this.element('window-container-headers', 'window-container-headers-tabs'))
         ;
+
+        tabElement.applyTranslations();
 
         this.windows.push(window);
         if (this.selectedIndex !== -1) {

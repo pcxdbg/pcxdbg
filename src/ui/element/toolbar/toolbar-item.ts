@@ -1,29 +1,59 @@
 import {UIElement} from '../element';
+import {UIElementBase} from '../element-base';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
 import {IconManager} from '../icon';
 import {CommandDefinition, CommandManager} from '../../command';
 
 /**
+ * Toolbar item content
+ */
+class ToolbarItemContent extends UIElementBase {
+
+    /**
+     * Class constructor
+     */
+     constructor() {
+         super('toolbar-item-content');
+     }
+
+}
+
+/**
+ * Toolbar item label
+ */
+class ToolbarItemLabel extends UIElementBase {
+
+    /**
+     * Class constructor
+     */
+    constructor() {
+        super('toolbar-item-label');
+    }
+
+}
+
+
+/**
  * Toolbar item
  */
-class ToolbarItem extends UIElement {
-    private static HTML_TOOLBARITEM: string = '<toolbar-item-content></toolbar-item-content>';
-
+class ToolbarItem extends UIElementBase {
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private definition: ToolbarItemDefinition;
-    private content: UIElement;
+    private content: ToolbarItemContent;
 
     /**
      * Class constructor
      * @param itemDefinition Item definition
      * @param iconManager    Icon manager
      * @param commandManager Command manager
+     * @param i18nManager    i18n manager
      */
     constructor(itemDefinition: ToolbarItemDefinition, iconManager: IconManager, commandManager: CommandManager) {
-        super('toolbar-item', ToolbarItem.HTML_TOOLBARITEM);
+        super('toolbar-item');
 
-        this.content = this.element('toolbar-item-content');
+        this.content = new ToolbarItemContent();
+        this.content.attachTo(this);
         this.definition = itemDefinition;
         this.iconManager = iconManager;
         this.commandManager = commandManager;
@@ -31,7 +61,7 @@ class ToolbarItem extends UIElement {
         this.setIcon(itemDefinition.icon);
 
         if (itemDefinition.label) {
-            this.setLabel(itemDefinition.label, itemDefinition.labelParameters);
+            this.setLabel(itemDefinition.label, itemDefinition.labelParameters, itemDefinition.command);
         } else if (itemDefinition.labelText) {
             this.setLabelText(itemDefinition.labelText);
         }
@@ -75,12 +105,12 @@ class ToolbarItem extends UIElement {
         if (commandId) {
             let commandDefinition: CommandDefinition = this.commandManager.getCommandDefinition(commandId);
             if (commandDefinition && commandDefinition.accelerator) {
-                i18nKey += ' ($cmdacc(' + commandId + '))';
+                i18nKey = 'ui:toolbar.item.command';
             }
         }
 
         if (this.definition.element) {
-            target = new UIElement('label').attachTo(target);
+            target = new ToolbarItemLabel().attachTo(target);
         } else {
             i18nKey = '[title]' + i18nKey;
         }
@@ -96,7 +126,7 @@ class ToolbarItem extends UIElement {
      */
     setLabelText(labelText: string): ToolbarItem {
         if (this.definition.element) {
-            this.attach(new UIElement('label').text(labelText));
+            this.content.attach(new ToolbarItemLabel().text(labelText));
         } else {
             this.attribute('title', labelText);
         }

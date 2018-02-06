@@ -5,7 +5,7 @@ import {HostExplorerView, NetworkExplorerView, OutputWindowView} from './windows
 import {Component, Controller, Inject, PreDestroy} from 'injection';
 import {Host} from 'host';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from 'modules';
-import {CommandManager, DocumentManager, ModalManager, UIElement, Window, WindowManager} from 'ui';
+import {CommandManager, DocumentManager, ModalManager, UIElementBase, Window, WindowManager} from 'ui';
 
 /**
  * Application
@@ -33,17 +33,31 @@ class Application {
 }
 
 /**
+ * Application client area
+ */
+class ApplicationClientArea extends UIElementBase {
+
+    /**
+     * Class constructor
+     */
+    constructor() {
+        super('application-client-area');
+    }
+
+}
+
+/**
  * Application view
  */
 @Controller
-class ApplicationView extends UIElement {
+class ApplicationView extends UIElementBase {
     private static URL_REPORTBUG: string = 'https://github.com/pcxdbg/pcxdbg/issues/new';
 
     private commandManager: CommandManager;
     private windowManager: WindowManager;
     private modalManager: ModalManager;
     private application: Application;
-    private clientArea: UIElement;
+    private clientArea: ApplicationClientArea;
     private host: Host;
 
     /**
@@ -56,7 +70,7 @@ class ApplicationView extends UIElement {
      */
     constructor(application: Application, commandManager: CommandManager, documentManager: DocumentManager, modalManager: ModalManager, windowManager: WindowManager) {
         super('application');
-        this.clientArea = new UIElement('application-client-area');
+        this.clientArea = new ApplicationClientArea();
         this.commandManager = commandManager;
         this.modalManager = modalManager;
         this.windowManager = windowManager;

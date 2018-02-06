@@ -1,24 +1,35 @@
 import {Component} from 'injection';
-import {ModalView, UIElement} from 'ui';
+import {ModalView, UIElementBase} from 'ui';
+
+/**
+ * Extensions dialog view
+ */
+class ExtensionsDialogView extends UIElementBase {
+    private static HTML: string = `
+        Extensions &amp; Updates.
+    `;
+
+    /**
+     * Class constructor
+     */
+    constructor() {
+        super('open-connection-dialog', ExtensionsDialogView.HTML);
+    }
+
+}
 
 /**
  * Extensions dialog box
  */
 @Component
 class ExtensionsDialog extends ModalView {
-    private static HTML: string = `
-        Extensions &amp; Updates.
-    `;
 
     /**
      * Build the modal content
      */
     protected buildModalContent(): void {
-        let dialogElement: UIElement = new UIElement('open-connection-dialog', ExtensionsDialog.HTML);
-
         this.setTitle('app:dialog.extensions.title');
-
-        this.attach(dialogElement);
+        this.attach(new ExtensionsDialogView());
     }
 
 }
