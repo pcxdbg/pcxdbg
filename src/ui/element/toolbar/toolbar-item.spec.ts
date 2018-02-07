@@ -2,7 +2,7 @@ import {ToolbarItem} from './toolbar-item';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
 import {IconManager} from '../icon';
 import {CommandDefinition, CommandManager} from '../../command';
-import {createMockInstance} from 'jest-create-mock-instance'
+import {createMockInstance} from 'jest-create-mock-instance';
 
 describe('Toolbar item', () => {
     let commandManager: jest.Mocked<CommandManager> = createMockInstance(CommandManager);

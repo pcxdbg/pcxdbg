@@ -5,7 +5,7 @@ import {UIElement} from './element';
  */
 interface AbstractUIElementFocus extends UIElement { }
 abstract class AbstractUIElementFocus {
-    
+
     /**
      * Give focus to the element
      * @return this

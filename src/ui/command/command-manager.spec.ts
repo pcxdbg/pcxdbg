@@ -67,7 +67,7 @@ describe('Command manager', () => {
             // when
             let returnedDefinition: CommandDefinition = commandManager.getCommandDefinition('test');
             // then
-            expect(returnedDefinition).not.toBeUndefined;
+            expect(returnedDefinition).not.toBeUndefined();
             expect(returnedDefinition.id).toEqual('test');
         });
 
@@ -139,7 +139,7 @@ describe('Command manager', () => {
             // then
             expect(() => commandManager.registerCommand(commandDefinition2)).toThrowError(/already registered/);
         });
-    
+
         it('registering multiple handlers for the same command', () => {
             // given
             let commandDefinition: CommandDefinition = {id: 'test'};
