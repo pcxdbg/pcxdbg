@@ -1,37 +1,10 @@
 import {UIElement} from '../element';
 import {UIElementBase} from '../element-base';
+import {ToolbarItemContent} from './toolbar-item-content';
 import {ToolbarItemDefinition} from './toolbar-item-definition';
+import {ToolbarItemLabel} from './toolbar-item-label';
 import {IconManager} from '../icon';
 import {CommandDefinition, CommandManager} from '../../command';
-
-/**
- * Toolbar item content
- */
-class ToolbarItemContent extends UIElementBase {
-
-    /**
-     * Class constructor
-     */
-     constructor() {
-         super('toolbar-item-content');
-     }
-
-}
-
-/**
- * Toolbar item label
- */
-class ToolbarItemLabel extends UIElementBase {
-
-    /**
-     * Class constructor
-     */
-    constructor() {
-        super('toolbar-item-label');
-    }
-
-}
-
 
 /**
  * Toolbar item
@@ -41,27 +14,30 @@ class ToolbarItem extends UIElementBase {
     private iconManager: IconManager;
     private definition: ToolbarItemDefinition;
     private content: ToolbarItemContent;
+    private label: ToolbarItemLabel;
 
     /**
      * Class constructor
      * @param itemDefinition Item definition
      * @param iconManager    Icon manager
      * @param commandManager Command manager
-     * @param i18nManager    i18n manager
      */
     constructor(itemDefinition: ToolbarItemDefinition, iconManager: IconManager, commandManager: CommandManager) {
         super('toolbar-item');
-
         this.content = new ToolbarItemContent();
+        this.label = new ToolbarItemLabel();
+        this.label.attachTo(this.content);
         this.content.attachTo(this);
         this.definition = itemDefinition;
         this.iconManager = iconManager;
         this.commandManager = commandManager;
 
-        this.setIcon(itemDefinition.icon);
+        if (itemDefinition.icon) {
+            this.setIcon(itemDefinition.icon);
+        }
 
         if (itemDefinition.label) {
-            this.setLabel(itemDefinition.label, itemDefinition.labelParameters, itemDefinition.command);
+            this.setLabel(itemDefinition.label, itemDefinition.labelParameters);
         } else if (itemDefinition.labelText) {
             this.setLabelText(itemDefinition.labelText);
         }
@@ -96,28 +72,26 @@ class ToolbarItem extends UIElementBase {
      * Set the label using i18n
      * @param labelId         Label identifier
      * @param labelParameters Label parameters
-     * @param commandId       Command identifier
      */
-    setLabel(labelId: string, labelParameters: {[parameterName: string]: any}, commandId?: string): ToolbarItem {
-        let i18nKey: string = labelId;
-        let target: UIElement = this.content;
+    setLabel(labelId: string, labelParameters: {[parameterName: string]: any}): ToolbarItem {
+        let commandId: string = this.definition.command;
+        let i18nKey: string;
+        let target: UIElement = this.definition.element ? this.label : this.content;
 
-        if (commandId) {
-            let commandDefinition: CommandDefinition = this.commandManager.getCommandDefinition(commandId);
-            if (commandDefinition && commandDefinition.accelerator) {
-                i18nKey = 'ui:toolbar.item.command';
-            }
-        }
+        labelParameters = {
+            labelId: labelId,
+            labelParameters: labelParameters
+        };
 
-        if (this.definition.element) {
-            target = new ToolbarItemLabel().attachTo(target);
+        if (commandId && this.commandManager.hasAccelerator(commandId)) {
+            i18nKey = 'ui:toolbar.item.label-accelerator';
+            labelParameters.commandId = commandId;
+            labelParameters.commandParameters = this.definition.commandParameters;
         } else {
-            i18nKey = '[title]' + i18nKey;
+            i18nKey = 'ui:toolbar.item.label';
         }
 
-        target.i18n(i18nKey, labelParameters).applyTranslations();
-
-        return this;
+        return this.setI18nLabel(i18nKey, labelParameters);
     }
 
     /**
@@ -125,18 +99,26 @@ class ToolbarItem extends UIElementBase {
      * @param labelText Label text
      */
     setLabelText(labelText: string): ToolbarItem {
-        if (this.definition.element) {
-            this.content.attach(new ToolbarItemLabel().text(labelText));
+        let commandId: string = this.definition.command;
+        let i18nKey: string;
+        let labelParameters: {[parameterName: string]: any} = {
+            text: labelText
+        };
+
+        if (commandId && this.commandManager.hasAccelerator(commandId)) {
+            i18nKey = 'ui:toolbar.item.text-accelerator';
+            labelParameters.commandId = commandId;
+            labelParameters.commandParameters = this.definition.commandParameters;
         } else {
-            this.attribute('title', labelText);
+            i18nKey = 'ui:toolbar.item.text';
         }
 
-        return this;
+        return this.setI18nLabel(i18nKey, labelParameters);
     }
 
     /**
      * Set the command to execute when selecting the toolbar item
-     * @param commandId         Command identifier
+     * @param commandId         Command identifier or handler
      * @param commandParameters Command parameters
      * @return this
      */
@@ -148,6 +130,31 @@ class ToolbarItem extends UIElementBase {
         }
 
         return this;
+    }
+
+    /**
+     * Set an i18n label
+     * @param i18nKey         i18n key
+     * @param labelParameters Label parameters
+     */
+    private setI18nLabel(i18nKey: string, labelParameters: {[parameterName: string]: any}): ToolbarItem {
+        let options: string[] = [];
+
+        if (!this.definition.element) {
+            options.push('title');
+        }
+
+        this.getLabelTarget().i18n(i18nKey, labelParameters, ...options).applyTranslations();
+
+        return this;
+    }
+
+    /**
+     * Get a label target element
+     * @return Label target element
+     */
+    private getLabelTarget(): UIElement {
+        return this.definition.element ? this.label : this.content;
     }
 
 }

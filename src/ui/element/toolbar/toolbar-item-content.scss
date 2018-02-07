@@ -1,0 +1,22 @@
+
+toolbar-item-content {
+    display: flex;
+    min-width: $toolbaritemcontent-height;
+    height: $toolbaritemcontent-height;
+    align-items: center;
+    justify-content: center;
+
+    > label {
+        white-space: nowrap;
+        margin-right: 6px;
+        color: #f1f1f1;
+    }
+}
+
+toolbar-item:hover > toolbar-item-content {
+    background: $toolbaritemcontent-backgroundhover;
+}
+
+toolbar-item[selected] > toolbar-item-content {
+    outline: $toolbaritemcontent-outline;
+}

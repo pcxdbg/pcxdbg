@@ -199,6 +199,20 @@
         },
         "label": "pcxdbg"
     },
+    "toolbar": {
+        "standard": {
+            "copy": "Copy",
+            "cut": "Cut",
+            "navigate-backward": "Navigate Backward",
+            "navigate-forward": "Navigate Forward",
+            "open-file": "Open File",
+            "paste": "Paste",
+            "redo": "Redo",
+            "save": "Save",
+            "save-all": "Save All",
+            "undo": "Undo"
+        }
+    },
     "window": {
         "host-explorer": {
             "title": "Host Explorer",

@@ -7,7 +7,15 @@
             "save": "Save"
         }
     },
-    "window": {
+    "toolbar": {
+        "item": {
+            "label": "$t({{labelId}})",
+            "label-accelerator": "$t({{labelId}}) ($cmdacc({{commandId}}))",
+            "text": "$t({{text}})",
+            "text-accelerator": "$t({{text}}) ($cmdacc({{commandId}}))"
+        }
+    },
+    "window": { 
         "title-bar": {
             "auto-hide": {
                 "off": "Disable Auto Hide",
@@ -20,7 +28,7 @@
     "window-container": {
         "tab": {
             "control": {
-                "close": "Close (Ctrl+F4)",
+                "close": "Close",
                 "pin": "Toggle pin status",
                 "unpin": "Toggle pin status"
             }
