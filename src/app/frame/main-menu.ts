@@ -46,15 +46,8 @@ class MainMenuView extends UIElementBase {
      * Build the file menu
      */
     private buildFileMenu(): void {
-        let fileRecentConnectionsMenu: Menu = this.menuManager.createPopupMenu();
-        let fileRecentFilesMenu: Menu = this.menuManager.createPopupMenu();
-
         this.menu.popup('app:main-menu.file.label')
-            .popup('app:main-menu.file.open.label')
-                .item({label: 'app:main-menu.file.open.connection', command: 'connection.open', icon: 'file-open-connection'})
-                .separator()
-                .item({label: 'app:main-menu.file.open.file', command: 'document.open', icon: 'file-open-file'})
-            .popup()
+            .popup('app:main-menu.file.open.label', this.createFileOpenMenu())
             .separator()
             .item({label: 'app:main-menu.file.close', command: 'document.close'})
             .item({label: 'app:main-menu.file.close-connection', command: 'connection.close', icon: 'file-close-connection'})
@@ -63,18 +56,52 @@ class MainMenuView extends UIElementBase {
             .item({label: 'app:main-menu.file.save-as', command: 'document.save.as'})
             .item({label: 'app:main-menu.file.save-all', command: 'document.save.all', icon: 'file-save-all'})
             .separator()
-            .popup('app:main-menu.file.source-control.label')
-                // TODO
-            .popup()
+            .popup('app:main-menu.file.source-control.label', this.createFileSourceControlMenu())
             .separator()
             .item({label: 'app:main-menu.file.page-setup', command: 'print.setup', icon: 'file-page-setup'})
             .item({label: 'app:main-menu.file.print', command: 'print', icon: 'file-print'})
             .separator()
-            .popup('app:main-menu.file.recent-connections', fileRecentConnectionsMenu)
-            .popup('app:main-menu.file.recent-files', fileRecentFilesMenu)
+            .popup('app:main-menu.file.recent-connections', this.createFileRecentConnectionsMenu())
+            .popup('app:main-menu.file.recent-files', this.createFileRecentFilesMenu())
             .separator()
             .item({label: 'app:main-menu.file.exit', command: 'exit', icon: 'file-exit'})
         .popup();
+    }
+
+    /**
+     * Create the file open menu
+     * @return File open popup menu
+     */
+    private createFileOpenMenu(): Menu {
+        return this.menuManager.createPopupMenu()
+            .item({label: 'app:main-menu.file.open.connection', command: 'connection.open', icon: 'file-open-connection'})
+            .separator()
+            .item({label: 'app:main-menu.file.open.file', command: 'document.open', icon: 'file-open-file'})
+        ;
+    }
+
+    /**
+     * Create the file source control menu
+     * @return File source control popup menu
+     */
+    private createFileSourceControlMenu(): Menu {
+        return this.menuManager.createPopupMenu(); // TODO
+    }
+
+    /**
+     * Create the file recent connections menu
+     * @return File recent connections popup menu
+     */
+    private createFileRecentConnectionsMenu(): Menu {
+        return this.menuManager.createPopupMenu(); // TODO
+    }
+
+    /**
+     * Create the file recent files menu
+     * @return File recent files popup menu
+     */
+    private createFileRecentFilesMenu(): Menu {
+        return this.menuManager.createPopupMenu(); // TODO
     }
 
     /**

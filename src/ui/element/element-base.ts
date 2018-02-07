@@ -18,19 +18,15 @@ class UIElementBase implements UIElement {
 
     /**
      * Class constructor
-     * @param tagName   Tag name
+     * @param tagName   Tag name or native element
      * @param innerHTML Inner HTML
      */
     constructor(tagName?: string|HTMLElement, innerHTML?: string) {
         if (tagName) {
             if (typeof(tagName) === 'string') {
-                this.nativeElement = document.createElement(tagName);
-
-                if (innerHTML) {
-                    this.nativeElement.innerHTML = innerHTML;
-                }
+                this.initializeWithTagName(tagName, innerHTML);
             } else {
-                this.nativeElement = tagName;
+                this.initializeWithNativeElement(tagName);
             }
         }
     }
@@ -41,6 +37,27 @@ class UIElementBase implements UIElement {
      */
     getNativeElement(): HTMLElement {
         return this.nativeElement;
+    }
+
+    /**
+     * Initialize with a tag name
+     * @param tagName   Tag name
+     * @param innerHTML Inner HTML
+     */
+    private initializeWithTagName(tagName: string, innerHTML?: string): void {
+        this.nativeElement = document.createElement(tagName);
+
+        if (innerHTML) {
+            this.nativeElement.innerHTML = innerHTML;
+        }
+    }
+
+    /**
+     * Initialize with a native element
+     * @param nativeElement Native element
+     */
+    private initializeWithNativeElement(nativeElement: HTMLElement): void {
+        this.nativeElement = nativeElement;
     }
 
     // DOM

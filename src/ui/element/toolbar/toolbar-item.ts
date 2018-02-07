@@ -32,6 +32,10 @@ class ToolbarItem extends UIElementBase {
         this.iconManager = iconManager;
         this.commandManager = commandManager;
 
+        if (itemDefinition.element) {
+            this.content.attach(itemDefinition.element);
+        }
+ 
         if (itemDefinition.icon) {
             this.setIcon(itemDefinition.icon);
         }
@@ -42,14 +46,10 @@ class ToolbarItem extends UIElementBase {
             this.setLabelText(itemDefinition.labelText);
         }
 
-        if (itemDefinition.element) {
-            this.attach(itemDefinition.element);
-        }
-
         if (itemDefinition.command) {
             this.setCommand(itemDefinition.command, itemDefinition.commandParameters);
         } else if (itemDefinition.handler) {
-            this.setCommand(itemDefinition.handler);
+            this.setHandler(itemDefinition.handler);
         }
     }
 
@@ -118,17 +118,22 @@ class ToolbarItem extends UIElementBase {
 
     /**
      * Set the command to execute when selecting the toolbar item
-     * @param commandId         Command identifier or handler
+     * @param commandId         Command identifier
      * @param commandParameters Command parameters
      * @return this
      */
-    setCommand(commandId: string|{(): void}, commandParameters?: {[parameterName: string]: any}): ToolbarItem {
-        if (typeof(commandId) === 'string') {
-            this.click(() => this.commandManager.executeCommand(commandId, commandParameters));
-        } else {
-            this.click(() => commandId());
-        }
+    setCommand(commandId: string, commandParameters?: {[parameterName: string]: any}): ToolbarItem {
+        this.click(() => this.commandManager.executeCommand(commandId, commandParameters));
+        return this;
+    }
 
+    /**
+     * Set the handler to call when selecting the toolbar item
+     * @param handler Handler
+     * @return this
+     */
+    setHandler(handler: () => void): ToolbarItem {
+        this.click(() => handler());
         return this;
     }
 
