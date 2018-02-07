@@ -81,6 +81,19 @@ class CommandManager {
     }
 
     /**
+     * Test whether a command has a bound accelerator
+     * @param commandId Command identifier
+     */
+    hasAccelerator(commandId: string): boolean {
+        let commandDefinition: CommandDefinition = this.getCommandDefinition(commandId);
+        if (commandDefinition && commandDefinition.accelerator) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Register a command handler
      * @param commandId      Command identifier
      * @param commandHandler Command handler
