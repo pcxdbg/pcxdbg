@@ -35,7 +35,7 @@ class ToolbarItem extends UIElementBase {
         if (itemDefinition.element) {
             this.content.attach(itemDefinition.element);
         }
- 
+
         if (itemDefinition.icon) {
             this.setIcon(itemDefinition.icon);
         }
