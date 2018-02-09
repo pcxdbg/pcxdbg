@@ -10,6 +10,9 @@ import {CommandDefinition, CommandManager} from '../../command';
  * Toolbar item
  */
 class ToolbarItem extends UIElementBase {
+    private static ATTRIBUTENAME_CHECKED: string = 'checked';
+    private static ATTRIBUTENAME_DISABLED: string = 'disabled';
+
     private commandManager: CommandManager;
     private iconManager: IconManager;
     private definition: ToolbarItemDefinition;
@@ -138,9 +141,40 @@ class ToolbarItem extends UIElementBase {
     }
 
     /**
+     * Set whether the item is enabled or disabled
+     * @param enabled true if the item is enabled
+     * @return this
+     */
+    setEnabled(enabled: boolean): ToolbarItem {
+        if (!enabled) {
+            this.attribute(ToolbarItem.ATTRIBUTENAME_DISABLED);
+        } else {
+            this.removeAttribute(ToolbarItem.ATTRIBUTENAME_DISABLED);
+        }
+
+        return this;
+    }
+
+    /**
+     * Set whether the item is checked or unchecked
+     * @param checked true if the item is checked
+     * @return this
+     */
+    setChecked(checked: boolean): ToolbarItem {
+        if (checked) {
+            this.attribute(ToolbarItem.ATTRIBUTENAME_CHECKED);
+        } else {
+            this.removeAttribute(ToolbarItem.ATTRIBUTENAME_CHECKED);
+        }
+
+        return this;
+    }
+
+    /**
      * Set an i18n label
      * @param i18nKey         i18n key
      * @param labelParameters Label parameters
+     * @return this
      */
     private setI18nLabel(i18nKey: string, labelParameters: {[parameterName: string]: any}): ToolbarItem {
         let options: string[] = [];

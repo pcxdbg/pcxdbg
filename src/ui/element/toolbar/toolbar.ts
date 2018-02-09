@@ -52,12 +52,17 @@ class Toolbar extends UIElementBase {
     }
 
     /**
-     * Enable a toolbar item
-     * @param itemId Item identifier
+     * Enable or disable a toolbar item
+     * @param itemId  Item identifier
+     * @param enabled true if the item is enabled
      * @return this
      */
-    enable(itemId: string): Toolbar {
-        return this;
+    enable(itemId: string, enabled?: boolean): Toolbar {
+        if (enabled === undefined) {
+            enabled = true;
+        }
+
+        return this.setEnabled(itemId, enabled);
     }
 
     /**
@@ -66,12 +71,69 @@ class Toolbar extends UIElementBase {
      * @return this
      */
     disable(itemId: string): Toolbar {
+        return this.setEnabled(itemId, false);
+    }
+
+    /**
+     * Check or uncheck a toolbar item
+     * @param itemId  Item identifier
+     * @param checked true if the item is checked
+     */
+    check(itemId: string, checked?: boolean): Toolbar {
+        if (checked === undefined) {
+            checked = true;
+        }
+
+        return this.setChecked(itemId, checked);
+    }
+
+    /**
+     * Uncheck a toolbar item
+     * @param itemId Item identifier
+     * @return this
+     */
+    uncheck(itemId: string): Toolbar {
+        return this.setChecked(itemId, false);
+    }
+
+    /**
+     * Set whether a toolbar item is enabled or disabled
+     * @param itemId  Item identifier
+     * @param enabled true if the item is enabled
+     * @return this
+     */
+    private setEnabled(itemId: string, enabled: boolean): Toolbar {
+        this.getItem(itemId).setEnabled(enabled);
         return this;
+    }
+
+    /**
+     * Set whether a toolbar item is checked or unchecked
+     * @param itemId  Item identifier
+     * @param checked true if the item is checked
+     * @return this
+     */
+    private setChecked(itemId: string, checked: boolean): Toolbar {
+        this.getItem(itemId).setChecked(checked);
+        return this;
+    }
+
+    /**
+     * Get a toolbar item by identifier
+     * @param itemId Item identifier
+     * @return Toolbar item
+     */
+    private getItem(itemId: string): ToolbarItem {
+        let toolbarItem: ToolbarItem = this.items[itemId];
+        if (!toolbarItem) {
+            throw new Error('toolbar item ' + itemId + ' not found');
+        }
+
+        return toolbarItem;
     }
 
 }
 
 export {
-    Toolbar,
-    ToolbarItemDefinition
+    Toolbar
 };

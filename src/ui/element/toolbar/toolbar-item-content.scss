@@ -17,6 +17,6 @@ toolbar-item:hover > toolbar-item-content {
     background: $toolbaritemcontent-backgroundhover;
 }
 
-toolbar-item[selected] > toolbar-item-content {
+toolbar-item[checked] > toolbar-item-content {
     outline: $toolbaritemcontent-outline;
 }
