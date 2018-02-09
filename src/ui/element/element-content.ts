@@ -40,8 +40,11 @@ abstract class AbstractUIElementContent {
      */
     clearContent(): UIElement {
         let childTarget: HTMLElement = this.getChildTarget().getNativeElement();
-        let clone: HTMLElement = <HTMLElement> childTarget.cloneNode(false);
-        childTarget.parentNode.replaceChild(clone, childTarget);
+        while (childTarget.lastChild) {
+            childTarget.removeChild(childTarget.lastChild);
+        }
+        // let clone: HTMLElement = <HTMLElement> childTarget.cloneNode(false);
+        // childTarget.parentNode.replaceChild(clone, childTarget);
         return this;
     }
 
