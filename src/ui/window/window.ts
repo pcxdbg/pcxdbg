@@ -3,26 +3,9 @@ import {Icon, IconManager, UIElement, UIElementBase} from '../element';
 import {WindowContainer} from './window-container';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
+import {WindowProperties} from './window-properties';
 import {WindowStyle} from './window-style';
 import {Component, Inject} from 'injection';
-
-/**
- * Window layout orientation
- */
-enum WindowLayoutOrientation {
-    HORIZONTAL,
-    VERTICAL
-}
-
-/**
- * Window layout for containers
- */
-interface WindowLayout {
-    orientation: WindowLayoutOrientation;
-    thickness: number;
-    windows: Window[];
-    windowsThickness: number[];
-}
 
 /**
  * Window manager
@@ -205,16 +188,6 @@ class WindowManager {
 }
 
 /**
- * Window properties
- */
-interface WindowProperties {
-    title?: string;
-    titleParameters?: {[parameterName: string]: string};
-    titleText?: string;
-    styles?: WindowStyle[];
-}
-
-/**
  * Window control properties
  */
 class WindowControlProperties {
@@ -222,6 +195,16 @@ class WindowControlProperties {
     icon: string;
     handler: () => void;
 }
+
+const STYLE_ATTRIBUTES: Map<WindowStyle, string> = new Map();
+
+STYLE_ATTRIBUTES.set(WindowStyle.NO_AUTOHIDE, 'no-auto-hide');
+STYLE_ATTRIBUTES.set(WindowStyle.NO_BACKGROUND, 'no-background');
+STYLE_ATTRIBUTES.set(WindowStyle.NO_CLOSE, 'no-close');
+STYLE_ATTRIBUTES.set(WindowStyle.NO_MOVE, 'no-move');
+STYLE_ATTRIBUTES.set(WindowStyle.NO_POSITION, 'no-position');
+STYLE_ATTRIBUTES.set(WindowStyle.NO_TITLE, 'no-title');
+STYLE_ATTRIBUTES.set(WindowStyle.FLEXIBLE_LAYOUT, 'flexible-layout');
 
 /**
  * Window
@@ -250,36 +233,12 @@ class Window extends UIElementBase {
         this.clickListener = e => { this.setFocus(true); e.stopPropagation(); };
         this.mouseDown(this.clickListener);
 
-        if (this.hasStyle(WindowStyle.NO_AUTOHIDE)) {
-            this.attribute('no-auto-hide');
-        }
+        this.applyStyles();
 
-        if (this.hasStyle(WindowStyle.NO_BACKGROUND)) {
-            this.attribute('no-background');
-        }
-
-        if (this.hasStyle(WindowStyle.NO_CLOSE)) {
-            this.attribute('no-close');
-        }
-
-        if (this.hasStyle(WindowStyle.NO_MOVE)) {
-            this.attribute('no-move');
-        } else {
+        if (!this.hasStyle(WindowStyle.NO_MOVE)) {
             this.element('window-titlebar').draggable(() => {
                 console.log('wee');
             });
-        }
-
-        if (this.hasStyle(WindowStyle.NO_POSITION)) {
-            this.attribute('no-position');
-        }
-
-        if (this.hasStyle(WindowStyle.NO_TITLE)) {
-            this.attribute('no-title');
-        }
-
-        if (this.hasStyle(WindowStyle.FLEXIBLE_LAYOUT)) {
-            this.attribute('flexible-layout');
         }
 
         if (windowProperties && windowProperties.title) {
@@ -303,23 +262,12 @@ class Window extends UIElementBase {
     @Inject
     setIconManager(iconManager: IconManager): void {
         let controls: UIElement = this.element('window-titlebar', 'window-titlebar-controls');
-        let controlProperties: WindowControlProperties[] = [{
-            label: 'ui:window.title-bar.position',
-            icon: 'window-position',
-            handler: () => { /* TODO */ }
-        }, {
-            label: 'ui:window.title-bar.auto-hide.on',
-            icon: 'window-auto-hide-on',
-            handler: () => this.setAutoHide(true)
-        }, {
-            label: 'ui:window.title-bar.auto-hide.off',
-            icon: 'window-auto-hide-off',
-            handler: () => this.setAutoHide(false)
-        }, {
-            label: 'ui:window.title-bar.close',
-            icon: 'window-close',
-            handler: () => this.close()
-        }];
+        let controlProperties: WindowControlProperties[] = [
+            {label: 'ui:window.title-bar.position', icon: 'window-position', handler: () => { /* TODO */ }},
+            {label: 'ui:window.title-bar.auto-hide.on', icon: 'window-auto-hide-on', handler: () => this.setAutoHide(true)},
+            {label: 'ui:window.title-bar.auto-hide.off', icon: 'window-auto-hide-off', handler: () => this.setAutoHide(false)},
+            {label: 'ui:window.title-bar.close', icon: 'window-close', handler: () => this.close()}
+        ];
 
         for (let controlProperty of controlProperties) {
             iconManager.createIcon(16, 16, controlProperty.icon)
@@ -448,6 +396,17 @@ class Window extends UIElementBase {
      */
     getChildTarget = (): UIElement => {
         return this.element('window-content');
+    }
+
+    /**
+     * Apply styles
+     */
+    private applyStyles(): void {
+        STYLE_ATTRIBUTES.forEach((attributeName, style) => {
+            if (this.hasStyle(style)) {
+                this.attribute(attributeName);
+            }
+        });
     }
 
 }

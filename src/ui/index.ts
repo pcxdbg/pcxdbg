@@ -12,4 +12,4 @@ export {Button,
         UIElement, UIElementBase} from './element';
 export {ModalManager, ModalStyle, ModalView} from './modal';
 export {UIManager} from './ui-manager';
-export {Window, WindowContainer, WindowManager, WindowStyle} from './window';
+export {Window, WindowContainer, WindowManager, WindowProperties, WindowStyle} from './window';
