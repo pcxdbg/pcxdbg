@@ -5,6 +5,7 @@ import {UIElement, UIElementBase} from 'ui';
  */
 class OutputWindowOutput extends UIElementBase {
     private static HTML_OUTPUTWINDOWOUTPUT: string = '<output-window-output-content></output-window-output-content>';
+    private static ATTRIBUTENAME_WORDWRAP: string = 'word-wrap';
 
     private outputContent: UIElement;
 
@@ -24,6 +25,15 @@ class OutputWindowOutput extends UIElementBase {
      */
     clear(): void {
         this.outputContent.clearContent();
+    }
+
+    /**
+     * Toggle word wrapping
+     * @return true if word wrapping is enabled
+     */
+    toggleWordWrap(): boolean {
+        this.toggleAttribute(OutputWindowOutput.ATTRIBUTENAME_WORDWRAP);
+        return this.hasAttribute(OutputWindowOutput.ATTRIBUTENAME_WORDWRAP);
     }
 
 }
