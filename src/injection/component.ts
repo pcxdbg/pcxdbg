@@ -386,6 +386,10 @@ const Inject: MethodDecorator = (target, propertyKey) => applicationContext.regi
 const PostConstruct: MethodDecorator = () => { /* Nothing */ };
 const PreDestroy: MethodDecorator = () => { /* Nothing */ };
 
+
+enum ScopeType { PROTOTYPE, SINGLETON }
+function Scope(scopeType: ScopeType): ClassDecorator { return target => { }; }
+
 export {
     ApplicationContext,
     applicationContext,
@@ -396,5 +400,7 @@ export {
     PostConstruct,
     PreDestroy,
     Repository,
+    Scope,
+    ScopeType,
     Service
 };
