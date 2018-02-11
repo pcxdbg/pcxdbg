@@ -1,5 +1,6 @@
 import {Component, Inject} from 'injection';
-import {CommandLanguagePostProcessor} from 'ui/command';
+import {CommandLanguagePostProcessor} from './command';
+import {MenuItemLanguagePostProcessor} from './element/menu/menu-item-language-post-processor';
 
 /**
  * UI manager
@@ -9,10 +10,11 @@ class UIManager {
 
     /**
      * Set the command language post-processor
-     * @param commandLanguagePostProcessor Command language post-processor
+     * @param commandLanguagePostProcessor  Command language post-processor
+     * @param menuItemLanguagePostProcessor Menu item language post-processor
      */
     @Inject
-    setLanguagePostProcessors(commandLanguagePostProcessor: CommandLanguagePostProcessor): void {
+    setLanguagePostProcessors(commandLanguagePostProcessor: CommandLanguagePostProcessor, menuItemLanguagePostProcessor: MenuItemLanguagePostProcessor): void {
         // Forces injection
     }
 

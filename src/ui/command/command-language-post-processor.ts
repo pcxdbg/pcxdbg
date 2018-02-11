@@ -19,6 +19,10 @@ class CommandLanguagePostProcessor extends LanguagePostProcessor {
         super('ui-command');
     }
 
+    /**
+     * Set the command manager
+     * @param commandManager Command manager
+     */
     @Inject
     setCommandManager(commandManager: CommandManager): void {
         this.commandManager = commandManager;
