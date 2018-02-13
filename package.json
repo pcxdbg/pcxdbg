@@ -63,7 +63,7 @@
     "@types/i18next": "8.4.3",
     "@types/i18next-xhr-backend": "1.4.1",
     "@types/jest": "22.1.1",
-    "@types/node": "9.4.2",
+    "@types/node": "9.4.6",
     "autoprefixer": "7.2.5",
     "codecov": "3.0.0",
     "copy-webpack-plugin": "4.4.1",
