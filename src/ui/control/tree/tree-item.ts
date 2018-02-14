@@ -69,7 +69,7 @@ class TreeItem<K extends keyof D, D> extends UIElementBase {
 
     /**
      * Set the item data
-     * @param itemData 
+     * @param itemData Item data
      */
     setItemData(itemData: D[K]): TreeItem<K, D> {
         let labelElement: UIElement = this.element('tree-item-content', 'tree-item-label');

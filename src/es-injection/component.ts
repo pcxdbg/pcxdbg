@@ -435,9 +435,7 @@ const PostConstruct: MethodDecorator = (target, propertyKey) => applicationConte
 const PreDestroy: MethodDecorator = () => { /* Nothing */ };
 
 function Order(index: number): MethodDecorator {
-    return (target, propertyKey) => {
-
-    };
+    return (target, propertyKey) => { /* Nothing */ };
 }
 
 function Scope(scopeType: ScopeType): ClassDecorator {

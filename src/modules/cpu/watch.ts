@@ -9,33 +9,19 @@ class Watch {
 }
 
 /**
- * Watch manager
- */
-@Component
-class WatchManager {
-
-}
-
-/**
  * Watch list view
  */
 @Controller
 class WatchListView extends Window {
-    private watchManager: WatchManager;
     private list: List<Watch>;
 
     /**
      * Class constructor
-     * @param watchManager Watch manager
      */
-    constructor(watchManager: WatchManager) {
+    constructor() {
         super({
             title: 'cpu:watch-list.title'
         });
-        this.watchManager = watchManager;
-
-        this.list = new List();
-        this.list
     }
 
     /**
@@ -68,6 +54,5 @@ class WatchListView extends Window {
 }
 
 export {
-    WatchListView,
-    WatchManager
+    WatchListView
 };

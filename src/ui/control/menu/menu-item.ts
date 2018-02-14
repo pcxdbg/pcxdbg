@@ -80,7 +80,7 @@ class MenuItem extends UIElementBase {
         if (itemDefinition.popupMenu) {
             this
                 .attribute(MenuItem.ATTRIBUTENAME_POPUP)
-                .attach(itemDefinition.popupMenu);
+                .attach(itemDefinition.popupMenu)
             ;
 
             //TODO: this
