@@ -2,7 +2,7 @@ import {COMMANDS} from './application-commands';
 import {AboutDialog, ExtensionsDialog, OpenConnectionDialog, OptionsDialog} from './dialogs';
 import {TitleBarView, MainMenuView, StatusBarView, ToolbarContainerView} from './frame';
 import {HostExplorerView, NetworkExplorerView, OutputWindowView} from './windows';
-import {Component, Controller, Inject, PreDestroy} from 'injection';
+import {Component, Controller, Inject, PreDestroy} from 'es-injection';
 import {Host} from 'host';
 import {ApuModule, CameraModule, CpuModule, GpuModule, InputModule, Module, NetworkModule, OnlineModule, StorageModule, SystemModule} from 'modules';
 import {CommandManager, DocumentManager, ModalManager, UIElementBase, Window, WindowManager} from 'ui';

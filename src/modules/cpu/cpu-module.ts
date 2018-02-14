@@ -3,11 +3,12 @@ import {CallStackView} from './call-stack';
 import {COMMANDS} from './cpu-commands';
 import {DisassemblyView} from './disassembly';
 import {MemoryView} from './memory';
-import {Module, ModuleInformation} from '../module';
+import {Module} from '../module';
+import {ModuleInformation} from '../module-information';
 import {ThreadListView} from './thread';
 import {WatchListView} from './watch';
-import {Component, Inject} from 'injection';
-import {CommandManager, Menu, WindowManager} from 'ui';
+import {CommandManager, MenuBuilder, WindowManager} from 'ui';
+import {Component, Inject} from 'es-injection';
 
 /**
  * CPU module
@@ -54,10 +55,10 @@ class CpuModule extends Module {
 
     /**
      * Build menu entries
-     * @param parentMenu Menu
+     * @param menuBuilder Menu builder
      */
-    buildMenu(parentMenu: Menu): void {
-        parentMenu.popup('app:main-menu.debug.label')
+    buildMenu(menuBuilder: MenuBuilder): void {
+        menuBuilder.popup('app:main-menu.debug.label')
             .popup('app:main-menu.debug.windows.label')
                 .item({label: 'app:main-menu.debug.windows.breakpoints', command: 'window.open.cpu.breakpoints', icon: 'debug-windows-breakpoints'})
                 .item({label: 'app:main-menu.debug.windows.output', command: 'window.open.cpu.output', icon: 'debug-windows-output'})

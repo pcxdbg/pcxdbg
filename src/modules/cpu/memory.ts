@@ -1,5 +1,5 @@
-import {Component, Controller} from 'injection';
 import {UIElement, UIElementBase, Window} from 'ui';
+import {Component, Controller} from 'es-injection';
 
 /**
  * Memory manager

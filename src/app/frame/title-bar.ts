@@ -1,8 +1,8 @@
 import {Icon, IconManager, UIElement, UIElementBase} from '../../ui';
 import {QuickLaunch} from './quick-launch';
 import {Host} from 'host';
-import {Component, Inject} from 'injection';
 import {I18nManager} from 'i18n';
+import {Component, Inject, PostConstruct} from 'es-injection';
 
 /**
  * Title bar control icon
@@ -47,6 +47,24 @@ class TitleBarView extends UIElementBase {
      */
     constructor(iconManager: IconManager, quickLaunch: QuickLaunch) {
         super('title-bar', TitleBarView.HTML);
+    }
+
+    /**
+     * Set the host
+     * @param host Host
+     */
+    @Inject
+    setHost(host: Host): void {
+        this.host = host;
+        this.setMaximized(false); // TODO: recover from previous run
+    }
+
+    /**
+     * Set the icon manager
+     * @param iconManager Icon manager
+     */
+    @Inject
+    setIconManager(iconManager: IconManager): void {
         let controlIcons: UIElement[];
         let titleBarControlIcons: TitleBarControlIcon[] = [
             { name: TitleBarView.ICON_MINIMIZE, action: () => this.minimize() },
@@ -59,10 +77,6 @@ class TitleBarView extends UIElementBase {
             .attach(iconManager.createIcon(24, 24, TitleBarView.ICON_LOGO))
         ;
 
-        this.element('title-bar-controls')
-            .attach(quickLaunch)
-        ;
-
         controlIcons = this.elements('title-bar-controls', 'title-bar-control-icons', 'title-bar-control-icon');
         for (let i: number = 0; i !== titleBarControlIcons.length; ++i) {
             let titleBarControlIcon: TitleBarControlIcon = titleBarControlIcons[i];
@@ -72,18 +86,25 @@ class TitleBarView extends UIElementBase {
                 .attach(iconManager.createIcon(16, 16, titleBarControlIcon.name))
             ;
         }
-
-        this.applyTranslations();
     }
 
     /**
-     * Set the host
-     * @param host Host
+     * Set the quick launch view
+     * @param quickLaunch Quick launch view
      */
     @Inject
-    setHost(host: Host): void {
-        this.host = host;
-        this.setMaximized(false); // TODO: recover from previous run
+    setQuickLaunch(quickLaunch: QuickLaunch): void {
+        this.element('title-bar-controls')
+            .attach(quickLaunch)
+        ;
+    }
+
+    /**
+     * Initialize the title bar
+     */
+    @PostConstruct
+    initialize(): void {
+        this.element('title-bar-application', 'title-bar-application-title').applyTranslations();
     }
 
     /**

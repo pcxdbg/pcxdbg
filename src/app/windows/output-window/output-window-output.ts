@@ -1,8 +1,11 @@
 import {UIElement, UIElementBase} from 'ui';
+import {Component, Scope, ScopeType} from 'es-injection';
 
 /**
  * Output window output
  */
+@Component
+@Scope(ScopeType.PROTOTYPE)
 class OutputWindowOutput extends UIElementBase {
     private static HTML_OUTPUTWINDOWOUTPUT: string = '<output-window-output-content></output-window-output-content>';
     private static ATTRIBUTENAME_WORDWRAP: string = 'word-wrap';

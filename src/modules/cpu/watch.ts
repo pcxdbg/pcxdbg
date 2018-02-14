@@ -1,5 +1,5 @@
-import {Component, Controller} from 'injection';
 import {List, Window} from 'ui';
+import {Component, Controller, Inject} from 'es-injection';
 
 /**
  * Watch
@@ -35,6 +35,16 @@ class WatchListView extends Window {
         this.watchManager = watchManager;
 
         this.list = new List();
+        this.list
+    }
+
+    /**
+     * Set the list
+     * @param list List
+     */
+    @Inject
+    setList(list: List<any>): void {
+        this.list = list;
         this.list
             .addColumn({
                 id: 'name',

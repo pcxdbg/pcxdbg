@@ -1,4 +1,4 @@
-import {Component, Inject, PreDestroy} from 'injection';
+import {Component, Inject, PreDestroy} from 'es-injection';
 import {Host} from 'host';
 import * as path from 'path';
 

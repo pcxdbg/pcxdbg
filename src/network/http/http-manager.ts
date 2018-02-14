@@ -1,7 +1,7 @@
 import {HttpRequest} from './http-request';
 import {HttpRequestInstance} from './http-request-instance';
 import {HttpResponse} from './http-response';
-import {Component} from 'injection';
+import {Component} from 'es-injection';
 
 /**
  * HTTP manager

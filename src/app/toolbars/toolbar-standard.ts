@@ -1,5 +1,5 @@
-import {Component} from 'injection';
 import {Toolbar} from 'ui';
+import {Component, PostConstruct} from 'es-injection';
 
 /**
  * Standard toolbar
@@ -12,7 +12,13 @@ class StandardToolbar extends Toolbar {
      */
     constructor() {
         super();
+    }
 
+    /**
+     * Initialize the toolbar
+     */
+    @PostConstruct
+    initialize(): void {
         this.item({label: 'app:toolbar.standard.navigate-backward', icon: 'view-navigate-backward', command: 'navigation.backward'})
             .item({label: 'app:toolbar.standard.navigate-forward', icon: 'view-navigate-forward', command: 'navigation.forward'})
             .separator()

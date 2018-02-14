@@ -1,21 +1,12 @@
 import {NetworkExplorerTypeDictionary} from './network-explorer-type-dictionary';
-import {Component, Controller, Inject} from 'injection';
 import {Tree, TreeItemTypeDefinition, Window, WindowManager} from 'ui';
-
-/**
- * Network explorer
- */
-@Component
-class NetworkExplorer {
-
-}
+import {Component, Controller, Inject} from 'es-injection';
 
 /**
  * Network explorer view
  */
 @Controller
 class NetworkExplorerView extends Window {
-    private networkExplorer: NetworkExplorer;
     private tree: Tree<NetworkExplorerTypeDictionary>;
 
     /**
@@ -27,13 +18,12 @@ class NetworkExplorerView extends Window {
     }
 
     /**
-     * Set the network explorer
-     * @param networkExplorer Network explorer
+     * Set the tree
+     * @param tree Tree
      */
     @Inject
-    setNetworkExplorer(networkExplorer: NetworkExplorer): void {
-        this.networkExplorer = networkExplorer;
-        this.tree = new Tree<NetworkExplorerTypeDictionary>();
+    setTree(tree: Tree<NetworkExplorerTypeDictionary>): void {
+        this.tree = tree;
         this.tree
             .setItemTypeDefinition('discovered-list', {
                 labelProvider: element => {
@@ -78,6 +68,5 @@ class NetworkExplorerView extends Window {
 }
 
 export {
-    NetworkExplorer,
     NetworkExplorerView
 };

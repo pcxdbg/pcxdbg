@@ -1,7 +1,7 @@
 import {CommandDefinition} from './command-definition';
 import {CommandManager} from './command-manager';
-import {Component, Inject} from 'injection';
 import {LanguagePostProcessor} from 'i18n';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Command language post-processor

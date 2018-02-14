@@ -1,6 +1,6 @@
 import {StandardToolbar} from '../toolbars';
-import {Component, Inject} from 'injection';
 import {UIElement, UIElementBase} from 'ui';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Toolbar container view

@@ -1,4 +1,5 @@
-import {Icon, IconManager, UIElement, UIElementBase} from '../element';
+import {Icon, IconManager} from '../control';
+import {UIElement, UIElementBase} from '../element';
 import {Window} from './window';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';

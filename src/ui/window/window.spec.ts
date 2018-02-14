@@ -1,5 +1,5 @@
 import {CommandManager} from '../command';
-import {IconManager} from '../element';
+import {IconManager} from '../control';
 import {Window, WindowManager} from './window';
 import {createMockInstance} from 'jest-create-mock-instance';
 

@@ -1,36 +1,46 @@
-import {Component} from 'injection';
 import {Module} from 'modules';
-import {ClipboardManager, CommandManager, DocumentManager, Menu, MenuManager, ModalManager, UIElementBase, WindowManager} from 'ui';
+import {DocumentManager, Menu, MenuBuilder, ModalManager, UIElementBase, WindowManager} from 'ui';
+import {ApplicationContext, Component, Inject, Order} from 'es-injection';
 
 /**
  * Main menu view
  */
 @Component
 class MainMenuView extends UIElementBase {
-    private commandManager: CommandManager;
+    private applicationContext: ApplicationContext;
     private windowManager: WindowManager;
     private modalManager: ModalManager;
-    private menuManager: MenuManager;
+    private menuBuilder: MenuBuilder;
     private modules: Module[];
-    private menu: Menu;
 
     /**
      * Class constructor
-     * @param windowManager    Window manager
-     * @param modalManager     Modal manager
-     * @param menuManager      Menu manager
-     * @param commandManager   Command manager
-     * @param clipboardManager Clipboard manager
-     * @param moduleList       Module list
+     * @param modalManager Modal manager
+     * @param moduleList   Module list
      */
-    constructor(windowManager: WindowManager, modalManager: ModalManager, menuManager: MenuManager, commandManager: CommandManager, clipboardManager: ClipboardManager, moduleList: Module[]) {
+    constructor(modalManager: ModalManager, moduleList: Module[]) {
         super('application-main-menu');
-        this.commandManager = commandManager;
-        this.windowManager = windowManager;
         this.modalManager = modalManager;
-        this.menuManager = menuManager;
         this.modules = moduleList;
-        this.menu = this.menuManager.createMenu();
+    }
+
+    /**
+     * Set the application context
+     * @param applicationContext Application context
+     */
+    @Inject
+    @Order(0)
+    setApplicationContext(applicationContext): void {
+        this.applicationContext = applicationContext;
+    }
+
+    /**
+     * Set the menu builder
+     * @param menuBuilder Menu builder
+     */
+    @Inject
+    setMenuBuilder(menuBuilder: MenuBuilder): void {
+        this.menuBuilder = menuBuilder;
         this.buildFileMenu();
         this.buildEditMenu();
         this.buildViewMenu();
@@ -39,14 +49,23 @@ class MainMenuView extends UIElementBase {
         this.buildWindowMenu();
         this.buildHelpMenu();
         this.buildProfileMenu();
-        this.menu.attachTo(this);
+        this.menuBuilder.getMenu().attachTo(this);
+    }
+
+    /**
+     * Set the window manager
+     * @param windowManager Window manager
+     */
+    @Inject
+    setWindowManager(windowManager: WindowManager): void {
+        this.windowManager = windowManager;
     }
 
     /**
      * Build the file menu
      */
     private buildFileMenu(): void {
-        this.menu.popup('app:main-menu.file.label')
+        this.menuBuilder.popup('app:main-menu.file.label')
             .popup('app:main-menu.file.open.label', this.createFileOpenMenu())
             .separator()
             .item({label: 'app:main-menu.file.close', command: 'document.close'})
@@ -73,10 +92,11 @@ class MainMenuView extends UIElementBase {
      * @return File open popup menu
      */
     private createFileOpenMenu(): Menu {
-        return this.menuManager.createPopupMenu()
+        return this.newPopupMenu()
             .item({label: 'app:main-menu.file.open.connection', command: 'connection.open', icon: 'file-open-connection'})
             .separator()
             .item({label: 'app:main-menu.file.open.file', command: 'document.open', icon: 'file-open-file'})
+            .getMenu()
         ;
     }
 
@@ -85,7 +105,9 @@ class MainMenuView extends UIElementBase {
      * @return File source control popup menu
      */
     private createFileSourceControlMenu(): Menu {
-        return this.menuManager.createPopupMenu(); // TODO
+        return this.newPopupMenu()
+            .getMenu()
+        ;
     }
 
     /**
@@ -93,7 +115,9 @@ class MainMenuView extends UIElementBase {
      * @return File recent connections popup menu
      */
     private createFileRecentConnectionsMenu(): Menu {
-        return this.menuManager.createPopupMenu(); // TODO
+        return this.newPopupMenu()
+            .getMenu()
+        ;
     }
 
     /**
@@ -101,14 +125,16 @@ class MainMenuView extends UIElementBase {
      * @return File recent files popup menu
      */
     private createFileRecentFilesMenu(): Menu {
-        return this.menuManager.createPopupMenu(); // TODO
+        return this.newPopupMenu()
+            .getMenu()
+        ;
     }
 
     /**
      * Build the edit menu
      */
     private buildEditMenu(): void {
-        this.menu.popup('app:main-menu.edit.label')
+        this.menuBuilder.popup('app:main-menu.edit.label')
             .popup('app:main-menu.edit.goto.label')
                 .item({label: 'app:main-menu.edit.goto.line', command: 'goto.line'})
                 .item({label: 'app:main-menu.edit.goto.function', command: 'goto.function'})
@@ -134,7 +160,7 @@ class MainMenuView extends UIElementBase {
      * Build the view menu
      */
     private buildViewMenu(): void {
-        this.menu.popup('app:main-menu.view.label')
+        this.menuBuilder.popup('app:main-menu.view.label')
             .item({label: 'app:main-menu.view.host-explorer', command: 'window.open.host-explorer', icon: 'view-host-explorer'})
             .item({label: 'app:main-menu.view.network-explorer', command: 'window.open.network-explorer', icon: 'view-network-explorer'})
             .separator()
@@ -171,7 +197,7 @@ class MainMenuView extends UIElementBase {
      * Build the tools menu
      */
     private buildToolsMenu(): void {
-        this.menu.popup('app:main-menu.tools.label')
+        this.menuBuilder.popup('app:main-menu.tools.label')
             .item({label: 'app:main-menu.tools.extensions', command: 'modal.open.extensions', icon: 'tools-extensions'})
             .separator()
             .item({label: 'app:main-menu.tools.customize', command: 'modal.open.customize'})
@@ -183,7 +209,7 @@ class MainMenuView extends UIElementBase {
      * Build the window menu
      */
     private buildWindowMenu(): void {
-        this.menu.popup('app:main-menu.window.label')
+        this.menuBuilder.popup('app:main-menu.window.label')
             .item({label: 'app:main-menu.window.new-window', command: 'window.new', icon: 'window-new-window'})
             .item({label: 'app:main-menu.window.split', command: 'window.split', icon: 'window-split'})
             .separator()
@@ -215,7 +241,7 @@ class MainMenuView extends UIElementBase {
      * Build the help menu
      */
     private buildHelpMenu(): void {
-        this.menu.popup('app:main-menu.help.label')
+        this.menuBuilder.popup('app:main-menu.help.label')
             .popup('app:main-menu.help.feedback.label')
                 .item({label: 'app:main-menu.help.feedback.report-bug', command: 'external.open.report-bug', icon: 'help-feedback-report-bug'})
             .popup()
@@ -230,12 +256,20 @@ class MainMenuView extends UIElementBase {
      * Build the profile menu
      */
     private buildProfileMenu(): void {
-        this.menu.popupText('<username>')
+        this.menuBuilder.popupText('<username>')
             .item({label: 'app:main-menu.profile.preferences', command: 'modal.open.profile.preferences'})
             .item({label: 'app:main-menu.profile.rights', command: 'modal.open.profile.rights'})
             .separator()
             .item({label: 'app:main-menu.profile.logout', command: 'profile.signout'})
         .popup();
+    }
+
+    /**
+     * Create a new popup menu
+     * @return Menu builder
+     */
+    private newPopupMenu(): MenuBuilder {
+        return this.applicationContext.getComponent(MenuBuilder);
     }
 
 }

@@ -1,7 +1,8 @@
-import {UIElement, UIElementBase, Button} from '../element';
+import {Button} from '../control';
+import {UIElement, UIElementBase} from '../element';
 import {ModalManager} from './modal-manager';
 import {ModalStyle} from './modal-style';
-import {applicationContext, Component, Inject} from 'injection';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Modal view
@@ -17,6 +18,7 @@ abstract class ModalView extends UIElementBase {
         <modal-controls></modal-controls>
     `;
 
+    private modalManager: ModalManager;
     private id: string;
     private title: UIElement;
 
@@ -44,6 +46,15 @@ abstract class ModalView extends UIElementBase {
                 break;
             }
         }
+    }
+
+    /**
+     * Set the modal manager
+     * @param modalManager Modal manager
+     */
+    @Inject
+    setModalManager(modalManager: ModalManager): void {
+        this.modalManager = modalManager;
     }
 
     /**
@@ -121,7 +132,7 @@ abstract class ModalView extends UIElementBase {
      * Close the modal
      */
     close(): void {
-        applicationContext.getComponent(ModalManager).hideModal(this.id);
+        this.modalManager.hideModal(this.id);
     }
 
     /**

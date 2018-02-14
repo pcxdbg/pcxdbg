@@ -1,13 +1,5 @@
-import {CommandManager, Menu, WindowManager} from 'ui';
-
-/**
- * Module information
- */
-class ModuleInformation {
-    name: string;
-    description: string;
-    version: string;
-}
+import {ModuleInformation} from './module-information';
+import {CommandManager, MenuBuilder, WindowManager} from 'ui';
 
 /**
  * Module interface
@@ -22,9 +14,9 @@ abstract class Module {
 
     /**
      * Build menu entries
-     * @param parentMenu Parent menu
+     * @param menuBuilder Menu builder
      */
-    buidMenu(parentMenu: Menu): void {
+    buidMenu(menuBuilder: MenuBuilder): void {
         // Default: no menu entries added
     }
 
@@ -47,6 +39,5 @@ abstract class Module {
 }
 
 export {
-    Module,
-    ModuleInformation
+    Module
 };

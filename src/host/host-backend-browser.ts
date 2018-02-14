@@ -1,5 +1,5 @@
 import {HostBackend} from './host-backend';
-import {Component} from 'injection';
+import {Component} from 'es-injection';
 
 /**
  * Browser host back-end

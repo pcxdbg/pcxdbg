@@ -1,5 +1,5 @@
-import {Component} from 'injection';
 import {ModalView, UIElementBase} from 'ui';
+import {Component} from 'es-injection';
 
 /**
  * Extensions dialog view

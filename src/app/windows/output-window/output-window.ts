@@ -1,6 +1,6 @@
-import {Component, Controller, Inject} from 'injection';
-import {Toolbar, UIElementBase, Window, WindowStyle} from 'ui';
 import {OutputWindowOutput} from './output-window-output';
+import {Toolbar, UIElementBase, Window, WindowStyle} from 'ui';
+import {Component, Controller, Inject} from 'es-injection';
 
 /**
  * Output window view
@@ -18,7 +18,15 @@ class OutputWindowView extends Window {
     constructor() {
         super({styles: [WindowStyle.FLEXIBLE_LAYOUT]});
         this.setTitle('app:window.output-window.title');
-        this.toolbar = new Toolbar();
+    }
+
+    /**
+     * Set the toolbar
+     * @param toolbar Toolbar
+     */
+    @Inject
+    setToolbar(toolbar: Toolbar): void {
+        this.toolbar = toolbar;
         this.toolbar
             .item({label: 'app:window.output-window.toolbar.show-from', element: new UIElementBase('select')})
             .separator()
@@ -27,7 +35,15 @@ class OutputWindowView extends Window {
             .item({id: OutputWindowView.ID_WORDWRAP, label: 'app:window.output-window.toolbar.word-wrap', icon: 'output-window-word-wrap', handler: () => this.toggleWordWrap()})
             .attachTo(this)
         ;
-        this.output = new OutputWindowOutput();
+    }
+
+    /**
+     * Set the output window output
+     * @param outputWindowOutput Output window output
+     */
+    @Inject
+    setOutputWindowOutput(outputWindowOutput: OutputWindowOutput): void {
+        this.output = outputWindowOutput;
         this.output.attachTo(this);
     }
 

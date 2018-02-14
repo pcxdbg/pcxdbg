@@ -1,6 +1,6 @@
-import {Component, Inject} from 'injection';
 import {CommandLanguagePostProcessor} from './command';
-import {MenuItemLanguagePostProcessor} from './element/menu/menu-item-language-post-processor';
+import {MenuItemLanguagePostProcessor} from './control/menu/menu-item-language-post-processor';
+import {Component, Inject} from 'es-injection';
 
 /**
  * UI manager

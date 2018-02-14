@@ -1,5 +1,5 @@
 import {PathUtils} from './path-utils';
-import {Component, Inject, PreDestroy} from 'injection';
+import {Component, Inject, PreDestroy} from 'es-injection';
 import * as fs from 'fs';
 
 /**

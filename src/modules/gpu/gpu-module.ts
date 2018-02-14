@@ -1,6 +1,7 @@
-import {Module, ModuleInformation} from '../module';
-import {Component} from 'injection';
+import {Module} from '../module';
+import {ModuleInformation} from '../module-information';
 import {WindowManager} from 'ui';
+import {Component} from 'es-injection';
 
 /**
  * GPU module

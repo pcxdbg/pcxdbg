@@ -1,23 +1,14 @@
 import {HostExplorerTypeDictionary} from './host-explorer-type-dictionary';
-import {Component, Controller, Inject} from 'injection';
+import {Component, Controller, Inject} from 'es-injection';
 import {Icon, IconManager, Tree, TreeItemChild, Window} from 'ui';
 import {HostExplorerHostItem} from './host-explorer-host-item';
 import {HostExplorerProcessItem} from './host-explorer-process-item';
-
-/**
- * Host explorer
- */
-@Component
-class HostExplorer {
-
-}
 
 /**
  * Host explorer view
  */
 @Controller
 class HostExplorerView extends Window {
-    private hostExplorer: HostExplorer;
     private iconManager: IconManager;
     private tree: Tree<HostExplorerTypeDictionary>;
 
@@ -32,13 +23,12 @@ class HostExplorerView extends Window {
     }
 
     /**
-     * Set the host explorer
-     * @param hostExplorer Host explorer
+     * Set the tree
+     * @param tree Tree
      */
     @Inject
-    setHostExplorer(hostExplorer: HostExplorer) {
-        this.hostExplorer = hostExplorer;
-        this.tree = new Tree<HostExplorerTypeDictionary>();
+    setTree(tree: Tree<HostExplorerTypeDictionary>) {
+        this.tree = tree;
         this.tree
             .setItemTypeDefinition('host', {
                 matcher: (lhs, rhs) => lhs.backend === rhs.backend && lhs.name === rhs.name,
@@ -96,6 +86,5 @@ class HostExplorerView extends Window {
 }
 
 export {
-    HostExplorer,
     HostExplorerView
 };

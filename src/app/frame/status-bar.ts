@@ -1,6 +1,6 @@
-import {Component, Inject} from 'injection';
-import {ConnectionManager} from 'network';
 import {Icon, IconManager, UIElement, UIElementBase} from 'ui';
+import {ConnectionManager} from 'network';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Status bar view

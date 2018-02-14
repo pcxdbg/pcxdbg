@@ -1,11 +1,12 @@
 import {CommandManager} from '../command';
-import {Icon, IconManager, UIElement, UIElementBase} from '../element';
+import {Icon, IconManager} from '../control';
+import {UIElement, UIElementBase} from '../element';
 import {WindowContainer} from './window-container';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';
 import {WindowProperties} from './window-properties';
 import {WindowStyle} from './window-style';
-import {Component, Inject} from 'injection';
+import {Component, Inject, PostConstruct} from 'es-injection';
 
 /**
  * Window manager
@@ -232,17 +233,12 @@ class Window extends UIElementBase {
 
         this.clickListener = e => { this.setFocus(true); e.stopPropagation(); };
         this.mouseDown(this.clickListener);
-
         this.applyStyles();
 
         if (!this.hasStyle(WindowStyle.NO_MOVE)) {
             this.element('window-titlebar').draggable(() => {
                 console.log('wee');
             });
-        }
-
-        if (windowProperties && windowProperties.title) {
-            this.setTitle(windowProperties.title, windowProperties.titleParameters);
         }
     }
 
@@ -274,6 +270,16 @@ class Window extends UIElementBase {
                 .click(controlProperty.handler)
                 .attachTo(controls)
             ;
+        }
+    }
+
+    /**
+     * Initialize the window
+     */
+    @PostConstruct
+    initialize(): void {
+        if (this.properties && this.properties.title) {
+            this.setTitle(this.properties.title, this.properties.titleParameters);
         }
     }
 

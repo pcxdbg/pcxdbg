@@ -1,4 +1,10 @@
 {
+    "menu": {
+        "item": {
+            "label": "$menuitem($t({{labelId}}))",
+            "text": "$menuitem({{text}})"
+        }
+    },
     "modal": {
         "control": {
             "cancel": "Cancel",

@@ -1,8 +1,8 @@
 import {remote} from 'electron';
-import {Component, Inject} from 'injection';
 import {I18nManager} from 'i18n';
 import {Button, Icon, IconManager, List, ListItemDefinition, ModalStyle, ModalView, UIElement, UIElementBase} from 'ui';
 import {FileUtils, NodePackage} from 'utils';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Version information

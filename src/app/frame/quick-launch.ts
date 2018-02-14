@@ -1,5 +1,5 @@
-import {Component, Inject} from 'injection';
 import {CommandManager, UIElementBase} from 'ui';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Quick launch

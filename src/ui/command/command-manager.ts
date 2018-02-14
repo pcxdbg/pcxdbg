@@ -3,7 +3,7 @@ import {Command} from './command';
 import {CommandAliasDefinition} from './command-alias-definition';
 import {CommandDefinition} from './command-definition';
 import {CommandHandler} from './command-handler';
-import {Component, Inject, PreDestroy} from 'injection';
+import {Component, Inject, PreDestroy} from 'es-injection';
 
 /**
  * Command manager

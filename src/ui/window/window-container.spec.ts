@@ -1,4 +1,4 @@
-import {Icon, IconManager} from '../element';
+import {Icon, IconManager} from '../control';
 import {WindowContainer} from './window-container';
 import {WindowContainerAnchor} from './window-container-anchor';
 import {WindowContainerMode} from './window-container-mode';

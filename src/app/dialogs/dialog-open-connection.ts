@@ -1,5 +1,5 @@
-import {Component} from 'injection';
 import {Button, ModalView, UIElementBase} from 'ui';
+import {Component} from 'es-injection';
 
 class OpenConnectionDialogView extends UIElementBase {
     private static HTML: string = `

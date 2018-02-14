@@ -1,7 +1,7 @@
 import {I18nBackend} from './i18n-backend';
-import {Component, Inject} from 'injection';
 import {LanguageChangeHandler} from './language-change-handler';
 import {LanguagePostProcessor} from './language-post-processor';
+import {Component, Inject} from 'es-injection';
 import * as i18next from 'i18next';
 import * as i18nextXHRBackend from 'i18next-xhr-backend';
 import * as moment from 'moment';

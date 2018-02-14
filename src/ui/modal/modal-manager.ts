@@ -1,7 +1,7 @@
 import {CommandManager} from '../command';
 import {UIElement, UIElementBase} from '../element';
 import {ModalView} from './modal';
-import {Component, Inject} from 'injection';
+import {Component, Inject} from 'es-injection';
 
 /**
  * Modal manager

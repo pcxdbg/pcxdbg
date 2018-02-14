@@ -1,12 +1,22 @@
 import {UIElement} from './element';
 import {I18nManager} from 'i18n';
-import {applicationContext} from 'injection';
+import {Inject} from 'es-injection';
 
 /**
  * User interface element (i18n)
  */
 interface AbstractUIElementI18n extends UIElement { }
 abstract class AbstractUIElementI18n {
+    private i18nManager: I18nManager;
+
+    /**
+     * Set the i18n manager
+     * @param i18nManager i18n manager
+     */
+    @Inject
+    setI18nManager(i18nManager: I18nManager): void {
+        this.i18nManager = i18nManager;
+    }
 
     /**
      * Set the i18n properties for the element
@@ -36,7 +46,10 @@ abstract class AbstractUIElementI18n {
      * @return this
      */
     applyTranslations(): UIElement {
-        applicationContext.getComponent(I18nManager).translateElement(this.getNativeElement(), true);
+        if (this.i18nManager) { // FIXME
+            this.i18nManager.translateElement(this.getNativeElement(), true);
+        }
+
         return this;
     }
 

@@ -1,5 +1,5 @@
 import {HostBackend} from './host-backend';
-import {Component, Inject, PreDestroy} from 'injection';
+import {Component, Inject, PreDestroy} from 'es-injection';
 
 /**
  * Host

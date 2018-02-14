@@ -1,6 +1,6 @@
 import {I18nBackend} from './i18n-backend';
-import {Component, Inject, PreDestroy} from 'injection';
-import { LanguagePostProcessor } from 'i18n/language-post-processor';
+import {LanguagePostProcessor} from './language-post-processor';
+import {Component, Inject, PreDestroy} from 'es-injection';
 
 /**
  * i18n manager
