@@ -54,7 +54,7 @@
     }
   },
   "dependencies": {
-    "i18next": "10.3.0",
+    "i18next": "10.4.1",
     "i18next-xhr-backend": "1.5.1",
     "moment": "2.20.1",
     "simple-git": "^1.89.0"
