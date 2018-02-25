@@ -9,8 +9,6 @@ import {AbstractUIElementI18n} from './element-i18n';
 import {AbstractUIElementQuery} from './element-query';
 import {UIDragAction} from './drag-action';
 import {UIElement} from './element';
-import {I18nManager} from 'i18n';
-import {Inject} from 'es-injection';
 
 /**
  * Base user interface element
