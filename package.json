@@ -83,7 +83,7 @@
     "jest": "22.1.4",
     "jest-create-mock-instance": "1.0.3",
     "jest-junit-reporter": "1.1.0",
-    "jest-plugin-fs": "2.7.0",
+    "jest-plugin-fs": "2.9.0",
     "jest-plugins": "2.7.0",
     "json-loader": "0.5.7",
     "minimist": "1.2.0",
