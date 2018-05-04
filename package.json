@@ -90,7 +90,7 @@
     "mkdirp": "0.5.1",
     "node-sass": "4.8.3",
     "npm-run-all": "4.1.2",
-    "postcss-loader": "2.1.4",
+    "postcss-loader": "2.1.5",
     "postcss-url": "7.3.2",
     "protractor": "5.3.1",
     "raw-loader": "0.5.1",
