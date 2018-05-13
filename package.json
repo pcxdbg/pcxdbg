@@ -65,7 +65,7 @@
     "@types/i18next-xhr-backend": "1.4.1",
     "@types/jest": "22.2.3",
     "@types/node": "10.0.3",
-    "autoprefixer": "8.4.1",
+    "autoprefixer": "8.5.0",
     "codecov": "3.0.1",
     "copy-webpack-plugin": "4.5.1",
     "copyfiles": "2.0.0",
