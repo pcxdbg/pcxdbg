@@ -58,7 +58,7 @@
     "i18next-xhr-backend": "1.5.1",
     "moment": "2.22.2",
     "simple-git": "^1.89.0",
-    "uglifyjs-webpack-plugin": "^1.2.2"
+    "uglifyjs-webpack-plugin": "^2.0.1"
   },
   "devDependencies": {
     "@types/i18next": "8.4.3",
