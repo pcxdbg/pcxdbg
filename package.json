@@ -86,7 +86,7 @@
     "jest-plugin-fs": "2.9.0",
     "jest-plugins": "2.9.0",
     "json-loader": "0.5.7",
-    "minimist": "1.2.0",
+    "minimist": "1.2.4",
     "mkdirp": "0.5.1",
     "node-sass": "4.8.3",
     "npm-run-all": "4.1.3",
